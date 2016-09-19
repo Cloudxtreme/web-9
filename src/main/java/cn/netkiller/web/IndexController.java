@@ -1,5 +1,10 @@
 package cn.netkiller.web;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,12 +46,44 @@ public class IndexController {
 		return message;
 	}
 	
-	@RequestMapping("/hello")
-	public ModelAndView hello() {
+	@RequestMapping("/index")
+	public ModelAndView index() {
 		String message = "Hello";
 		return new ModelAndView("index").addObject("message", message);
 	}
 
+	
+	@RequestMapping("/deploy/{group}/{project}")
+	public ModelAndView restfulGetId(@PathVariable String group, @PathVariable String project) {
+		String output = "";
+		String command = String.format("/bin/sh -c ls %s", ".");
+        try {  
+        	String [] cmd={"/bin/sh","-c", command};
+            // 使用Runtime来执行command，生成Process对象  
+            Runtime runtime = Runtime.getRuntime();  
+            Process process = runtime.exec(cmd, null, new File("/www/"+group));  
+            // 取得命令结果的输出流  
+            InputStream is = process.getInputStream();  
+            // 用一个读输出流类去读  
+            InputStreamReader isr = new InputStreamReader(is);  
+            // 用缓冲器读行  
+            BufferedReader br = new BufferedReader(isr);  
+/*            String line = null;  
+            while ((line = br.readLine()) != null) {  
+                System.out.println(line);  
+            }  */
+            output = br.toString();
+            is.close();  
+            isr.close();  
+            br.close();  
+        } catch (IOException e) {  
+            // TODO Auto-generated catch block  
+            e.printStackTrace();  
+        }
+		
+		return new ModelAndView("output").addObject("output", output);
+	}
+	
 	/*@RequestMapping("/repository")
 	@ResponseBody
 	public String repository() {
@@ -72,12 +109,6 @@ public class IndexController {
 
 		String message = "Hello";
 		return message;
-	}
-
-	@RequestMapping("/config")
-	@ResponseBody
-	public String config() {
-		return propertie.toString();
 	}
 
 	@RequestMapping("/service")
