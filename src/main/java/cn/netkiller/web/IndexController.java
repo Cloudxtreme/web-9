@@ -5,18 +5,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 //import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 /*import api.domain.City;
@@ -38,7 +34,8 @@ public class IndexController {
 	@Autowired
 	private ApplicationConfiguration propertie;
 */
-
+	private static final Logger log = LoggerFactory.getLogger(IndexController.class);
+	
 	@RequestMapping("/ping")
 	@ResponseBody
 	public String ping() {
@@ -53,26 +50,38 @@ public class IndexController {
 	}
 
 	
-	@RequestMapping("/deploy/{group}/{project}")
-	public ModelAndView restfulGetId(@PathVariable String group, @PathVariable String project) {
+	@RequestMapping("/deploy/{group}/{envionment}/{project}")
+	public ModelAndView restfulGetId(@PathVariable String group, @PathVariable String envionment, @PathVariable String project) {
 		String output = "";
-		String command = String.format("/bin/sh -c ls %s", ".");
+		String command = "";
+		if(envionment.equals("testing")){
+			command = String.format("ant %s", "push deploy restart");
+		}else if(envionment.equals("production")){
+			command = String.format("ant %s", "push deploy restart");
+		}else{
+			command = String.format("ant %s", "pull deploy restart");
+		}
+		
         try {  
         	String [] cmd={"/bin/sh","-c", command};
+        	log.info("The deploy command is {}", cmd.toString());
             // 使用Runtime来执行command，生成Process对象  
             Runtime runtime = Runtime.getRuntime();  
-            Process process = runtime.exec(cmd, null, new File("/www/"+group));  
+            Process process = runtime.exec(cmd, null, new File(String.format("/www/%s/%s/%s", group, envionment, project)));  
             // 取得命令结果的输出流  
             InputStream is = process.getInputStream();  
             // 用一个读输出流类去读  
             InputStreamReader isr = new InputStreamReader(is);  
             // 用缓冲器读行  
-            BufferedReader br = new BufferedReader(isr);  
-/*            String line = null;  
+            BufferedReader br = new BufferedReader(isr); 
+            
+            StringBuilder sb = new StringBuilder();
+            String line = null;  
             while ((line = br.readLine()) != null) {  
-                System.out.println(line);  
-            }  */
-            output = br.toString();
+                sb.append(line);  
+            }  
+            output = sb.toString();
+            log.info("The output is {}", output);
             is.close();  
             isr.close();  
             br.close();  
@@ -80,7 +89,7 @@ public class IndexController {
             // TODO Auto-generated catch block  
             e.printStackTrace();  
         }
-		
+        
 		return new ModelAndView("output").addObject("output", output);
 	}
 	
