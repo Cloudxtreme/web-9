@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -71,8 +73,16 @@ public class IndexController {
 			 * String.format("ant %s %s", "push", build); } else { command =
 			 * String.format("ant %s %s", "pull", build); }
 			 */
-
-			String[] cmd = { "/bin/sh", "-c", command };
+			
+			List<String> list = new ArrayList<String>();
+			list.add("/bin/sh");
+			list.add("-c");
+			for(String arguments : command.split(" ")){
+				list.add(arguments);
+			}
+		   
+		    String[] cmd = (String[]) list.toArray();
+		    
 			log.info("The deploy command is {}", Arrays.toString(cmd));
 			// 使用Runtime来执行command，生成Process对象
 			Runtime runtime = Runtime.getRuntime();
