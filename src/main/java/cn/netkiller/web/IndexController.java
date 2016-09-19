@@ -78,7 +78,7 @@ public class IndexController {
             StringBuilder sb = new StringBuilder();
             String line = null;  
             while ((line = br.readLine()) != null) {  
-                sb.append(line);  
+                sb.append(line+"\n");
             }  
             output = sb.toString();
             log.info("The output is {}", output);
