@@ -81,7 +81,7 @@ public class IndexController {
 				list.add(arguments);
 			}
 		   
-		    String[] cmd = (String[]) list.toArray();
+		    String[] cmd = (String[]) list.toArray(new String[0]);
 		    
 			log.info("The deploy command is {}", Arrays.toString(cmd));
 			// 使用Runtime来执行command，生成Process对象
