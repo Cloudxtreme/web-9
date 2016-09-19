@@ -7,6 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
+<pre>
 ${output}
+</pre>
 </body>
 </html>

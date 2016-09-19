@@ -43,7 +43,7 @@ public class IndexController {
 		return message;
 	}
 	
-	@RequestMapping("/index")
+	@RequestMapping("/")
 	public ModelAndView index() {
 		String message = "Hello";
 		return new ModelAndView("index").addObject("message", message);
