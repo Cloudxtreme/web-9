@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -72,7 +73,7 @@ public class IndexController {
 			 */
 
 			String[] cmd = { "/bin/sh", "-c", command };
-			log.info("The deploy command is {}", cmd.toString());
+			log.info("The deploy command is {}", Arrays.toString(cmd));
 			// 使用Runtime来执行command，生成Process对象
 			Runtime runtime = Runtime.getRuntime();
 			Process process = runtime.exec(cmd, null, new File(String.format("/www/%s/%s/%s", group, envionment, project)));
