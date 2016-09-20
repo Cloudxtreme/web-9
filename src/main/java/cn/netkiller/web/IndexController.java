@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -58,15 +57,14 @@ public class IndexController {
 		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "config")));
 		ModelAndView modelAndView = new ModelAndView("index");
 		modelAndView.addObject("project", project);
-		//modelAndView.addObject("groups",);	
+		// modelAndView.addObject("groups",);
 		log.info(String.valueOf(properties.get("group")).concat(","));
-		return modelAndView ;
-//		return new ModelAndView("index").addObject("project", project);
+		return modelAndView;
+		// return new ModelAndView("index").addObject("project", project);
 	}
 
-	@RequestMapping(value="/deploy/{group}/{envionment}/{project}",  method = RequestMethod.GET)
+	@RequestMapping(value = "/deploy/{group}/{envionment}/{project}", method = RequestMethod.GET)
 	public ModelAndView restfulGetId(@PathVariable String group, @PathVariable String envionment, @PathVariable String project) {
-		
 
 		String output = this.deploy(group, envionment, project, null);
 
@@ -89,68 +87,44 @@ public class IndexController {
 
 	}
 
-	@RequestMapping(value="/deploy/post",  method = RequestMethod.POST)
-	public ModelAndView post(@ModelAttribute("deploy")Deploy deploy, BindingResult result) {
+	@RequestMapping(value = "/deploy/post", method = RequestMethod.POST)
+	public ModelAndView post(@ModelAttribute("deploy") Deploy deploy, BindingResult result) {
 		if (result.hasErrors()) {
 			System.out.println(result.toString());
-        }
+		}
 		String output = this.deploy(deploy.getGroup(), deploy.getEnvionment(), deploy.getProject(), deploy.getArguments());
 		System.out.println(deploy.toString());
 		return new ModelAndView("output").addObject("output", output);
 	}
-	
-	private String deploy( String group,  String envionment, String project, List<String> arguments){
+
+	private String deploy(String group, String envionment, String project, List<String> arguments) {
 		String output = "";
-		
+
 		try {
 			String command = "";
-			
-			List<String> list = new ArrayList<String>();
-			/*list.add("/bin/sh");
-			list.add("-c");*/
-			
-			if(arguments == null){
+
+			if (arguments == null) {
 				Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", envionment)));
 
 				command = "ant deploy restart";
 				if (properties.containsKey(project)) {
 					command = properties.getProperty(project);
-				}				
-				for(String c : command.split(" ")){
-					list.add(c);
 				}
-			}else{
-				
-				for(String arg : arguments){
-					list.add(arg);
-				}
-
+			} else {
+				command = String.join(", ", arguments);
 			}
-			
 
-			/*
-			 * if (envionment.equals("testing")) { command =
-			 * String.format("ant %s %s", "push", build); } else if
-			 * (envionment.equals("production")) { command =
-			 * String.format("ant %s %s", "push", build); } else { command =
-			 * String.format("ant %s %s", "pull", build); }
-			 */
+			String[] cmd = new String[] { "/bin/bash", "-c", command };
 
-//		    String[] cmd = (String[]) list.toArray(new String[0]);
-		    
-		    String[] cmd = new String[] { "/bin/bash", "-c", command };
-		    
 			log.info("The deploy command is {}", Arrays.toString(cmd));
-			/*String shell = "/bin/sh -c \""+ command + "\"";
-			log.info("The deploy shell is {}", shell);*/
-			// 使用Runtime来执行command，生成Process对象
+
 			Runtime runtime = Runtime.getRuntime();
 			Process process = runtime.exec(cmd, null, new File(String.format("/www/%s/%s/%s", group, envionment, project)));
-			// 取得命令结果的输出流
+
 			InputStream is = process.getInputStream();
-			// 用一个读输出流类去读
+
 			InputStreamReader isr = new InputStreamReader(is);
-			// 用缓冲器读行
+
 			BufferedReader br = new BufferedReader(isr);
 
 			StringBuilder sb = new StringBuilder();
@@ -159,18 +133,18 @@ public class IndexController {
 				sb.append(line + "\n");
 			}
 			output = sb.toString();
-			
+
 			is.close();
 			isr.close();
 			br.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
+		}
 		log.info("The output is {}", output);
 		return output;
 	}
-	
+
 	/*
 	 * @RequestMapping("/repository")
 	 * 
