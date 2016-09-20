@@ -48,9 +48,15 @@ public class IndexController {
 	}
 
 	@RequestMapping("/")
-	public ModelAndView index() {
+	public ModelAndView index() throws IOException {
 		String project = "www.netkiller.cn";
-		return new ModelAndView("index").addObject("project", project);
+		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "config")));
+		ModelAndView modelAndView = new ModelAndView("index");
+		modelAndView.addObject("project", project);
+		//modelAndView.addObject("groups",);	
+		log.info(String.valueOf(properties.get("group")).concat(","));
+		return modelAndView ;
+//		return new ModelAndView("index").addObject("project", project);
 	}
 
 	@RequestMapping("/deploy/{group}/{envionment}/{project}")

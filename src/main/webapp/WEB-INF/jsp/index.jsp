@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,35 +14,30 @@
 </head>
 <body>
 
-	<form action="action_page.php">
+	<form id="deploy" action="">
 
+	<select id="group">
+		<option value="">Group</option>
+	</select> 
 		<select id="envionment">
 			<option value="">Envionment</option>
-			<option value="development">development</option>
-			<option value="testing">testing</option>
-			<option value="production">production</option>
-			<option value="stable">stable</option>
-			<option value="unstable">unstable</option>
-			<option value="alpha">alpha</option>
-			<option value="beta">beta</option>
-			<option value="release">release</option>
 		</select> 
 		<input id="project" list="projectList" name="project" value="${project}">
 		<datalist id="projectList">
 			<!-- <option value="www.example.com"> -->
 		</datalist>
-		<input type="button" id="submit" value="Deploy" />
+		<input type="submit" id="submit" value="Deploy" />
 		<fieldset>
 			<legend>Command</legend>
 			<input type="checkbox" name="animal" value="restart" />Restart <input type="checkbox" name="animal" value="merge" />Merge <input type="checkbox" name="animal" value="Bird" />Birds
 
 		</fieldset>
-
+<!-- 
 		<fieldset>
 			<legend>Logging</legend>
-
-			<iframe id="log" src="" width="100%">
+			<iframe id="log" src="" width="100%" height="100%">
 		</iframe>
+ -->
 	</form>
 
 	<script>
@@ -49,12 +45,32 @@
 	
 	jQuery(document).ready(function() {
 		
+		$.getJSON('/v1/config/group.json', 
+
+			function(data) {
+					
+				$.each(data, function(key,val) {
+			   	$("#group").append('<option value="' + val + '">'+val+"</option>");
+			});
+				 
+		});
+
+		$.getJSON('/v1/config/envionment.json', 
+
+				function(data) {
+						
+					$.each(data, function(key,val) {
+				   	$("#envionment").append('<option value="' + val + '">'+val+"</option>");
+				});
+					 
+			});
+		
 		$( "#envionment" ).change(function() {
 			  
 			
 			    var str = $( "#envionment option:selected" ).text();
 			  
-			$.getJSON('/v1/config/envionment/'+str+'.json', 
+			$.getJSON('/v1/config/project/'+str+'.json', 
 							
 			function(data) {
 				
@@ -66,10 +82,15 @@
 		
 		});
 		
-		jQuery( "#submit" ).click(function() {
+		//jQuery( "#submit" ).click(function() {
+		$( "form" ).submit(function( event ) {
+			var group = $("#group").val();
 			var env = $("#envionment").val();
 			var prj = $("#project").val();
-			  $("#log").attr("src","/deploy/cf88.com/"+env+"/"+prj+"/");
+			$("#deploy").attr("action","/deploy/"+group+"/"+env+"/"+prj+"/");
+			//alert('the action is: ' + $("#deploy").attr('action'));
+			$("#deploy").submit();
+			event.preventDefault();
 		});
 		
 		
