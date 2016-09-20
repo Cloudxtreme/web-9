@@ -17,10 +17,10 @@
 <body>
 
 	<form method="post"  id="deploy" action="/deploy/post">
-		<select id="group">
-			<option value="">Group</option>
+		<select id="group" name="group">
+			<option value="">-- Group --</option>
 		</select> 
-		<select id="envionment">
+		<select id="envionment" name="envionment">
 			<option value="">Envionment</option>
 		</select> 
 		<input id="project" list="projectList" name="project" value="${project}" />
