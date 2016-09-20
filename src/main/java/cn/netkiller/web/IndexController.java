@@ -49,8 +49,8 @@ public class IndexController {
 
 	@RequestMapping("/")
 	public ModelAndView index() {
-		String message = "Hello";
-		return new ModelAndView("index").addObject("message", message);
+		String project = "www.netkiller.cn";
+		return new ModelAndView("index").addObject("project", project);
 	}
 
 	@RequestMapping("/deploy/{group}/{envionment}/{project}")
