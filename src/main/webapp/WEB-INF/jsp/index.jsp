@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
@@ -14,30 +16,35 @@
 </head>
 <body>
 
-	<form id="deploy" action="">
-
-	<select id="group">
-		<option value="">Group</option>
-	</select> 
+	<form method="post"  id="deploy" action="/deploy/post">
+		<select id="group">
+			<option value="">Group</option>
+		</select> 
 		<select id="envionment">
 			<option value="">Envionment</option>
 		</select> 
-		<input id="project" list="projectList" name="project" value="${project}">
+		<input id="project" list="projectList" name="project" value="${project}" />
 		<datalist id="projectList">
 			<!-- <option value="www.example.com"> -->
 		</datalist>
 		<input type="submit" id="submit" value="Deploy" />
 		<fieldset>
-			<legend>Command</legend>
-			<input type="checkbox" name="animal" value="restart" />Restart <input type="checkbox" name="animal" value="merge" />Merge <input type="checkbox" name="animal" value="Bird" />Birds
-
+			<legend>Tools</legend>
+			<input type="checkbox" name="arguments" value="ant" />Ant 
+			<input type="checkbox" name="arguments" value="deployment" />Deployment
 		</fieldset>
-<!-- 
 		<fieldset>
-			<legend>Logging</legend>
-			<iframe id="log" src="" width="100%" height="100%">
-		</iframe>
- -->
+			<legend>Arguments</legend>
+			<input type="checkbox" name="arguments" value="pull" />Pull 
+			<input type="checkbox" name="arguments" value="push" />Merge
+			<input type="checkbox" name="arguments" value="install" />Install
+			<input type="checkbox" name="arguments" value="package" />Package
+			<input type="checkbox" name="arguments" value="deploy" />Deploy
+			<input type="checkbox" name="arguments" value="restart" />Restart
+		</fieldset>
+
+		
+
 	</form>
 
 	<script>
@@ -87,7 +94,7 @@
 			var group = $("#group").val();
 			var env = $("#envionment").val();
 			var prj = $("#project").val();
-			$("#deploy").attr("action","/deploy/"+group+"/"+env+"/"+prj+"/");
+			//$("#deploy").attr("action","/deploy/"+group+"/"+env+"/"+prj+"/");
 			//alert('the action is: ' + $("#deploy").attr('action'));
 			$("#deploy").submit();
 			event.preventDefault();

@@ -16,10 +16,15 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 //import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import cn.netkiller.pojo.Deploy;
 
 /*import api.domain.City;
 import api.config.ApplicationConfiguration;
@@ -59,18 +64,67 @@ public class IndexController {
 //		return new ModelAndView("index").addObject("project", project);
 	}
 
-	@RequestMapping("/deploy/{group}/{envionment}/{project}")
+	@RequestMapping(value="/deploy/{group}/{envionment}/{project}",  method = RequestMethod.GET)
 	public ModelAndView restfulGetId(@PathVariable String group, @PathVariable String envionment, @PathVariable String project) {
+		
+
+		String output = this.deploy(group, envionment, project, null);
+
+		return new ModelAndView("output").addObject("output", output);
+	}
+
+	@RequestMapping("/config")
+	@ResponseBody
+	public void config() {
+		try {
+			Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource("/config.properties"));
+			for (String key : properties.stringPropertyNames()) {
+				String value = properties.getProperty(key);
+				System.out.println(key + " => " + value);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	@RequestMapping(value="/deploy/post",  method = RequestMethod.POST)
+	public ModelAndView post(@ModelAttribute("deploy")Deploy deploy, BindingResult result) {
+		if (result.hasErrors()) {
+			System.out.println(result.toString());
+        }
+		String output = this.deploy(deploy.getGroup(), deploy.getEnvionment(), deploy.getProject(), deploy.getArguments());
+		System.out.println(deploy.toString());
+		return new ModelAndView("output").addObject("output", output);
+	}
+	
+	private String deploy( String group,  String envionment, String project, List<String> arguments){
 		String output = "";
 		String command = "";
 		try {
+			List<String> list = new ArrayList<String>();
+			list.add("/bin/sh");
+			list.add("-c");
+			
+			if(arguments == null){
+				Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", envionment)));
 
-			Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", envionment)));
+				command = "ant deploy restart";
+				if (properties.containsKey(project)) {
+					command = properties.getProperty(project);
+				}				
+				for(String c : command.split(" ")){
+					list.add(c);
+				}
+			}else{
+				
+				for(String arg : arguments){
+					list.add(arg);
+				}
 
-			command = "ant deploy restart";
-			if (properties.containsKey(project)) {
-				command = properties.getProperty(project);
 			}
+			
 
 			/*
 			 * if (envionment.equals("testing")) { command =
@@ -79,14 +133,7 @@ public class IndexController {
 			 * String.format("ant %s %s", "push", build); } else { command =
 			 * String.format("ant %s %s", "pull", build); }
 			 */
-			
-			List<String> list = new ArrayList<String>();
-			list.add("/bin/sh");
-			list.add("-c");
-			for(String arguments : command.split(" ")){
-				list.add(arguments);
-			}
-		   
+
 		    String[] cmd = (String[]) list.toArray(new String[0]);
 		    
 			log.info("The deploy command is {}", Arrays.toString(cmd));
@@ -113,27 +160,10 @@ public class IndexController {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-
-		return new ModelAndView("output").addObject("output", output);
+		}		
+		return output;
 	}
-
-	@RequestMapping("/config")
-	@ResponseBody
-	public void config() {
-		try {
-			Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource("/config.properties"));
-			for (String key : properties.stringPropertyNames()) {
-				String value = properties.getProperty(key);
-				System.out.println(key + " => " + value);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
+	
 	/*
 	 * @RequestMapping("/repository")
 	 * 
