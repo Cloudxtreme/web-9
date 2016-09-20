@@ -138,7 +138,7 @@ public class IndexController {
 
 //		    String[] cmd = (String[]) list.toArray(new String[0]);
 		    
-		    String[] cmd = new String[] { "/bin/sh", "-c", command };
+		    String[] cmd = new String[] { "/bin/bash", "-c", command };
 		    
 			log.info("The deploy command is {}", Arrays.toString(cmd));
 			/*String shell = "/bin/sh -c \""+ command + "\"";
