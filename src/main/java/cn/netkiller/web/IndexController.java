@@ -111,7 +111,7 @@ public class IndexController {
 					command = properties.getProperty(project);
 				}
 			} else {
-				command = String.join(", ", arguments);
+				command = String.join(" ", arguments);
 			}
 
 			String[] cmd = new String[] { "/bin/bash", "-c", command };
