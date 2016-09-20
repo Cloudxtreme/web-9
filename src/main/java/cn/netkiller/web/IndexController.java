@@ -136,14 +136,16 @@ public class IndexController {
 			 * String.format("ant %s %s", "pull", build); }
 			 */
 
-		    String[] cmd = (String[]) list.toArray(new String[0]);
+//		    String[] cmd = (String[]) list.toArray(new String[0]);
+		    
+		    String[] cmd = new String[] { "bash", "-c", command };
 		    
 			log.info("The deploy command is {}", Arrays.toString(cmd));
-			String shell = "/bin/sh -c \""+ command + "\"";
-			log.info("The deploy shell is {}", shell);
+			/*String shell = "/bin/sh -c \""+ command + "\"";
+			log.info("The deploy shell is {}", shell);*/
 			// 使用Runtime来执行command，生成Process对象
 			Runtime runtime = Runtime.getRuntime();
-			Process process = runtime.exec(shell, null, new File(String.format("/www/%s/%s/%s", group, envionment, project)));
+			Process process = runtime.exec(cmd, null, new File(String.format("/www/%s/%s/%s", group, envionment, project)));
 			// 取得命令结果的输出流
 			InputStream is = process.getInputStream();
 			// 用一个读输出流类去读
