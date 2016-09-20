@@ -101,11 +101,13 @@ public class IndexController {
 	
 	private String deploy( String group,  String envionment, String project, List<String> arguments){
 		String output = "";
-		String command = "";
+		
 		try {
+			String command = "";
+			
 			List<String> list = new ArrayList<String>();
-			list.add("/bin/sh");
-			list.add("-c");
+			/*list.add("/bin/sh");
+			list.add("-c");*/
 			
 			if(arguments == null){
 				Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", envionment)));
@@ -137,9 +139,10 @@ public class IndexController {
 		    String[] cmd = (String[]) list.toArray(new String[0]);
 		    
 			log.info("The deploy command is {}", Arrays.toString(cmd));
+			String shell = "/bin/sh -c \""+ command + "\""; 
 			// 使用Runtime来执行command，生成Process对象
 			Runtime runtime = Runtime.getRuntime();
-			Process process = runtime.exec(cmd, null, new File(String.format("/www/%s/%s/%s", group, envionment, project)));
+			Process process = runtime.exec(shell, null, new File(String.format("/www/%s/%s/%s", group, envionment, project)));
 			// 取得命令结果的输出流
 			InputStream is = process.getInputStream();
 			// 用一个读输出流类去读
@@ -153,14 +156,15 @@ public class IndexController {
 				sb.append(line + "\n");
 			}
 			output = sb.toString();
-			log.info("The output is {}", output);
+			
 			is.close();
 			isr.close();
 			br.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}	
+		log.info("The output is {}", output);
 		return output;
 	}
 	
