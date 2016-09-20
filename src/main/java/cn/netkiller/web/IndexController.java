@@ -139,7 +139,8 @@ public class IndexController {
 		    String[] cmd = (String[]) list.toArray(new String[0]);
 		    
 			log.info("The deploy command is {}", Arrays.toString(cmd));
-			String shell = "/bin/sh -c \""+ command + "\""; 
+			String shell = "/bin/sh -c \""+ command + "\"";
+			log.info("The deploy shell is {}", shell);
 			// 使用Runtime来执行command，生成Process对象
 			Runtime runtime = Runtime.getRuntime();
 			Process process = runtime.exec(shell, null, new File(String.format("/www/%s/%s/%s", group, envionment, project)));
