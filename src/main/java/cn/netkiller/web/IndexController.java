@@ -56,11 +56,7 @@ public class IndexController {
 		String project = "www.netkiller.cn";
 		// Properties properties = PropertiesLoaderUtils.loadProperties(new
 		// ClassPathResource(String.format("/%s.properties", "config")));
-		// ModelAndView modelAndView = new ModelAndView("index");
-		// modelAndView.addObject("project", project);
-		// // modelAndView.addObject("groups",);
-		// log.info(String.valueOf(properties.get("group")).concat(","));
-		// return modelAndView;
+		
 		return new ModelAndView("index").addObject("project", project);
 	}
 

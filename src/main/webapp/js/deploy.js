@@ -41,7 +41,10 @@ jQuery(document).ready(
 						var env = $("#envionment").val();
 						var prj = $("#project").val();
 						var url = "/deploy/" + group + "/" + env;
-						var color = "green";
+						var color = "";
+						if (envionment == "testing") {
+							color = "blue";
+						}
 						if (envionment == "production") {
 							color = "red";
 						}
@@ -74,35 +77,33 @@ jQuery(document).ready(
 				event.preventDefault();
 			});
 
-		})
+			jQuery("#project").click(function() {
+				jQuery("#project").val("");
+			});
+			jQuery("#ant").click(function() {
+				$("input[value=mvn]").prop("checked", false);
+				$("input[value=deployment]").prop("checked", false);
 
-jQuery("#project").click(function() {
-	jQuery("#project").val("");
-});
-jQuery("#ant").click(function() {
-	$("input[value=mvn]").prop("checked", false);
-	$("input[value=deployment]").prop("checked", false);
+				$("input[value=tgz]").prop("checked", true);
+				$("input[value=deploy]").attr("checked", "checked");
+				$("input[value=deployment]").prop("checked", false);
+			});
+			jQuery("#mvn").click(function() {
+				$("input[value=ant]").prop("checked", false);
+				$("input[value=deployment]").prop("checked", false);
 
-	$("input[value=tgz]").prop("checked", true);
-	$("input[value=deploy]").attr("checked", "checked");
-	$("input[value=deployment]").prop("checked", false);
-});
-jQuery("#mvn").click(function() {
-	$("input[value=ant]").prop("checked", false);
-	$("input[value=deployment]").prop("checked", false);
+				$("input[value=tgz]").prop("checked", true);
+				$("input[value=pull]").prop("checked", true);
+				$("input[value=install]").prop("checked", true);
+				$("input[value=deploy]").prop("checked", true);
+				$("input[value=deployment]").prop("checked", false);
 
-	$("input[value=tgz]").prop("checked", true);
-	$("input[value=pull]").prop("checked", true);
-	$("input[value=install]").prop("checked", true);
-	$("input[value=deploy]").prop("checked", true);
-	$("input[value=deployment]").prop("checked", false);
-
-});
-jQuery("#deployment").click(function() {
-	$("input[value=ant]").prop("checked", false);
-	$("input[value=mvn]").prop("checked", false);
-});
-
+			});
+			jQuery("#deployment").click(function() {
+				$("input[value=ant]").prop("checked", false);
+				$("input[value=mvn]").prop("checked", false);
+			});
+		});
 jQuery.readyException = function(error) {
 	// "error" is thrown from any ready handler
 
