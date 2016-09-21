@@ -146,12 +146,10 @@ public class IndexController {
 		String output = "";
 
 		try {
-			String command = "";
+			String command = null;
 
 			if (arguments == null) {
 				Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", envionment)));
-
-				command = "ant deploy restart";
 				if (properties.containsKey(project)) {
 					command = properties.getProperty(project);
 				}
@@ -159,6 +157,9 @@ public class IndexController {
 				command = String.join(" ", arguments);
 			}
 
+			if(command == null){
+				return "";
+			}
 			String[] cmd = new String[] { "/bin/bash", "-c", command };
 
 			log.info("The ant command is {}", Arrays.toString(cmd));

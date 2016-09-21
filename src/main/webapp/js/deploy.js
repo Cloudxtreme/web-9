@@ -50,7 +50,7 @@ jQuery(document).ready(
 								$("#projectList").append(
 										'<option value="' + val + '"/>');
 								$("#projectItem").append(
-										'<li>' + val + '<a href="'+url+'">Deploy</a></li>');
+										'<li>' + val + '<a href="'+url+'/'+val+'">deploy</a></li>');
 								
 							});
 
