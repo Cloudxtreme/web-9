@@ -32,9 +32,9 @@ public class ConfigRestController extends CommonRestController{
 		return "[OK] Welcome to withdraw Restful version 1.0";
 	}
 
-	@RequestMapping("/project/{envionment}")
-	public Enumeration<Object> project(@PathVariable String envionment) throws IOException {
-		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", envionment)));
+	@RequestMapping("/project/{group}/{envionment}")
+	public Enumeration<Object> project(@PathVariable String group, @PathVariable String envionment) throws IOException {
+		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s/%s.properties", group, envionment)));
 		return properties.keys();
 	}
 

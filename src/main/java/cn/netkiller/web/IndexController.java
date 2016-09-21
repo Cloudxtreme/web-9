@@ -93,10 +93,15 @@ public class IndexController {
 		if (result.hasErrors()) {
 			System.out.println(">>>" + result.toString());
 		}
-		if (deploy.getArguments().contains("deployment")) {
-			output = this.deployment(deploy.getGroup(), deploy.getEnvionment(), deploy.getProject());
+		if (deploy.getArguments() != null){
+			
+			if (deploy.getArguments().contains("deployment")) {
+				output = this.deployment(deploy.getGroup(), deploy.getEnvionment(), deploy.getProject());
+			}else{
+				output = this.deploy(deploy.getGroup(), deploy.getEnvionment(), deploy.getProject(), deploy.getArguments());
+			}
 		} else {
-			output = this.deploy(deploy.getGroup(), deploy.getEnvionment(), deploy.getProject(), deploy.getArguments());
+			output = this.deploy(deploy.getGroup(), deploy.getEnvionment(), deploy.getProject(), null);
 		}
 		System.out.println(deploy.toString());
 		return new ModelAndView("output").addObject("output", output);

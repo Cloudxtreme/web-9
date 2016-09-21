@@ -35,14 +35,23 @@ jQuery(document).ready(
 					function() {
 
 						var str = $("#envionment option:selected").text();
+						
+						var group = $("#group").val();
+						var env = $("#envionment").val();
+						var prj = $("#project").val();
+						var url = "/deploy/"+group+"/"+env+"/"+prj+"/";
+						$("#projectItem").html("");
 
-						$.getJSON('/v1/config/project/' + str + '.json',
+						$.getJSON('/v1/config/project/' +group +'/'+ str + '.json',
 
 						function(data) {
 
 							$.each(data, function(key, val) {
 								$("#projectList").append(
 										'<option value="' + val + '"/>');
+								$("#projectItem").append(
+										'<li>' + val + '<a href="'+url+'">Deploy</a></li>');
+								
 							});
 
 						});
@@ -51,14 +60,13 @@ jQuery(document).ready(
 
 			
 			$("form").submit(function(event) {
-				var group = $("#group").val();
-				var env = $("#envionment").val();
-				var prj = $("#project").val();
-				// $("#deploy").attr("action","/deploy/"+group+"/"+env+"/"+prj+"/");
+				
+				// $("#deploy").attr("action",);
 				// alert('the action is: ' + $("#deploy").attr('action'));
 				$("#deploy").submit();
 				event.preventDefault();
 			});
+			
 
 		})
 
