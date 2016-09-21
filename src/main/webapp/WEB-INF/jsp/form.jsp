@@ -43,31 +43,6 @@
 	</fieldset>
 	<script>
 	
-	jQuery("#project").click(function() {
-		jQuery("#project").val("");	
-	});
-	jQuery("#ant").click(function() {
-		$( "input[value=mvn]" ).prop("checked",false);
-		$( "input[value=deployment]" ).prop("checked",false);
-		
-		$( "input[value=tgz]" ).prop("checked",true);
-		$( "input[value=deploy]" ).attr("checked","checked");
-		$( "input[value=deployment]" ).prop("checked",false);
-	});
-	jQuery("#mvn").click(function() {
-		$( "input[value=ant]" ).prop("checked",false);
-		$( "input[value=deployment]" ).prop("checked",false);
-		
-		$( "input[value=tgz]" ).prop("checked",true);
-		$( "input[value=pull]" ).prop("checked",true);
-		$( "input[value=install]" ).prop("checked",true);
-		$( "input[value=deploy]" ).prop("checked",true);
-		$( "input[value=deployment]" ).prop("checked",false);
-		
-	});
-	jQuery("#deployment").click(function() {
-		$( "input[value=ant]" ).prop("checked",false);
-		$( "input[value=mvn]" ).prop("checked",false);
-	});
+	
 	
 	</script>

@@ -34,15 +34,21 @@ jQuery(document).ready(
 			$("#envionment").change(
 					function() {
 
-						var str = $("#envionment option:selected").text();
-						
+						var envionment = $("#envionment option:selected")
+								.text();
+
 						var group = $("#group").val();
 						var env = $("#envionment").val();
 						var prj = $("#project").val();
-						var url = "/deploy/"+group+"/"+env;
+						var url = "/deploy/" + group + "/" + env;
+						var color = "green";
+						if (envionment == "production") {
+							color = "red";
+						}
 						$("#projectItem").html("");
 
-						$.getJSON('/v1/config/project/' +group +'/'+ str + '.json',
+						$.getJSON('/v1/config/project/' + group + '/'
+								+ envionment + '.json',
 
 						function(data) {
 
@@ -50,25 +56,52 @@ jQuery(document).ready(
 								$("#projectList").append(
 										'<option value="' + val + '"/>');
 								$("#projectItem").append(
-										'<li>' + val + '&nbsp;<a href="'+url+'/'+val+'/">deploy</a></li>');
-								
+										'<li><span style="color:' + color
+												+ '">' + val
+												+ '<span>&nbsp;<a href="' + url
+												+ '/' + val
+												+ '/">deploy</a></li>');
+
 							});
 
 						});
 
 					});
 
-			
 			$("form").submit(function(event) {
-				
-				// $("#deploy").attr("action",);
-				// alert('the action is: ' + $("#deploy").attr('action'));
+
 				$("#deploy").submit();
 				event.preventDefault();
 			});
-			
 
 		})
+
+jQuery("#project").click(function() {
+	jQuery("#project").val("");
+});
+jQuery("#ant").click(function() {
+	$("input[value=mvn]").prop("checked", false);
+	$("input[value=deployment]").prop("checked", false);
+
+	$("input[value=tgz]").prop("checked", true);
+	$("input[value=deploy]").attr("checked", "checked");
+	$("input[value=deployment]").prop("checked", false);
+});
+jQuery("#mvn").click(function() {
+	$("input[value=ant]").prop("checked", false);
+	$("input[value=deployment]").prop("checked", false);
+
+	$("input[value=tgz]").prop("checked", true);
+	$("input[value=pull]").prop("checked", true);
+	$("input[value=install]").prop("checked", true);
+	$("input[value=deploy]").prop("checked", true);
+	$("input[value=deployment]").prop("checked", false);
+
+});
+jQuery("#deployment").click(function() {
+	$("input[value=ant]").prop("checked", false);
+	$("input[value=mvn]").prop("checked", false);
+});
 
 jQuery.readyException = function(error) {
 	// "error" is thrown from any ready handler
