@@ -65,10 +65,10 @@ public class IndexController {
 	}
 
 	@RequestMapping(value = "/deploy/{group}/{envionment}/{project}", method = RequestMethod.GET)
-	public ModelAndView restfulGetId(@PathVariable String group, @PathVariable String envionment, @PathVariable String project) {
+	public ModelAndView deployEnvionment(@PathVariable String group, @PathVariable String envionment, @PathVariable String project) {
 
 		String output = this.deploy(group, envionment, project, null);
-
+		log.info("The output is {}", output);
 		return new ModelAndView("output").addObject("output", output);
 	}
 
@@ -158,20 +158,21 @@ public class IndexController {
 				command = String.join(" ", arguments);
 			}
 
+			String[] cmd = new String[] { "/bin/bash", "-c", command };
+
 			if (command == null) {
 				return "";
 			}
 
-			String[] cmd = new String[] { "/bin/bash", "-c", command };
-
 			log.info("The ant command is {}", Arrays.toString(cmd));
 			String workspace = String.format("/www/%s/%s/%s", group, envionment, project);
 			File file = new File(workspace);
-
-			if (!file.isDirectory()) {
-				workspace = "/www";
+			if (file.exists()) {
+				if (!file.isDirectory()) {
+					workspace = "/www";
+				}
 			}
-
+			log.info("The workspace is {}", workspace);
 			Runtime runtime = Runtime.getRuntime();
 			Process process = runtime.exec(cmd, null, new File(workspace));
 
