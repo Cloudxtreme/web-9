@@ -39,7 +39,7 @@ jQuery(document).ready(
 						var group = $("#group").val();
 						var env = $("#envionment").val();
 						var prj = $("#project").val();
-						var url = "/deploy/"+group+"/"+env+"/"+prj+"/";
+						var url = "/deploy/"+group+"/"+env;
 						$("#projectItem").html("");
 
 						$.getJSON('/v1/config/project/' +group +'/'+ str + '.json',
@@ -50,7 +50,7 @@ jQuery(document).ready(
 								$("#projectList").append(
 										'<option value="' + val + '"/>');
 								$("#projectItem").append(
-										'<li>' + val + '<a href="'+url+'/'+val+'">deploy</a></li>');
+										'<li>' + val + '&nbsp;<a href="'+url+'/'+val+'">deploy</a></li>');
 								
 							});
 

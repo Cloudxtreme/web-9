@@ -149,7 +149,7 @@ public class IndexController {
 			String command = null;
 
 			if (arguments == null) {
-				Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", envionment)));
+				Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s/%s.properties", group, envionment)));
 				if (properties.containsKey(project)) {
 					command = properties.getProperty(project);
 				}
