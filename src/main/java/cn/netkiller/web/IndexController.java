@@ -54,12 +54,13 @@ public class IndexController {
 	@RequestMapping("/")
 	public ModelAndView index() throws IOException {
 		String project = "www.netkiller.cn";
-//		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "config")));
-//		ModelAndView modelAndView = new ModelAndView("index");
-//		modelAndView.addObject("project", project);
-//		// modelAndView.addObject("groups",);
-//		log.info(String.valueOf(properties.get("group")).concat(","));
-//		return modelAndView;
+		// Properties properties = PropertiesLoaderUtils.loadProperties(new
+		// ClassPathResource(String.format("/%s.properties", "config")));
+		// ModelAndView modelAndView = new ModelAndView("index");
+		// modelAndView.addObject("project", project);
+		// // modelAndView.addObject("groups",);
+		// log.info(String.valueOf(properties.get("group")).concat(","));
+		// return modelAndView;
 		return new ModelAndView("index").addObject("project", project);
 	}
 
@@ -93,11 +94,11 @@ public class IndexController {
 		if (result.hasErrors()) {
 			System.out.println(">>>" + result.toString());
 		}
-		if (deploy.getArguments() != null){
-			
+		if (deploy.getArguments() != null) {
+
 			if (deploy.getArguments().contains("deployment")) {
 				output = this.deployment(deploy.getGroup(), deploy.getEnvionment(), deploy.getProject());
-			}else{
+			} else {
 				output = this.deploy(deploy.getGroup(), deploy.getEnvionment(), deploy.getProject(), deploy.getArguments());
 			}
 		} else {
@@ -157,15 +158,22 @@ public class IndexController {
 				command = String.join(" ", arguments);
 			}
 
-			if(command == null){
+			if (command == null) {
 				return "";
 			}
+
 			String[] cmd = new String[] { "/bin/bash", "-c", command };
 
 			log.info("The ant command is {}", Arrays.toString(cmd));
+			String workspace = String.format("/www/%s/%s/%s", group, envionment, project);
+			File file = new File(workspace);
+
+			if (!file.isDirectory()) {
+				workspace = "/www";
+			}
 
 			Runtime runtime = Runtime.getRuntime();
-			Process process = runtime.exec(cmd, null, new File(String.format("/www/%s/%s/%s", group, envionment, project)));
+			Process process = runtime.exec(cmd, null, new File(workspace));
 
 			InputStream is = process.getInputStream();
 
