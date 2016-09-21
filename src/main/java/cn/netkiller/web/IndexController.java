@@ -54,13 +54,13 @@ public class IndexController {
 	@RequestMapping("/")
 	public ModelAndView index() throws IOException {
 		String project = "www.netkiller.cn";
-		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "config")));
-		ModelAndView modelAndView = new ModelAndView("index");
-		modelAndView.addObject("project", project);
-		// modelAndView.addObject("groups",);
-		log.info(String.valueOf(properties.get("group")).concat(","));
-		return modelAndView;
-		// return new ModelAndView("index").addObject("project", project);
+//		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "config")));
+//		ModelAndView modelAndView = new ModelAndView("index");
+//		modelAndView.addObject("project", project);
+//		// modelAndView.addObject("groups",);
+//		log.info(String.valueOf(properties.get("group")).concat(","));
+//		return modelAndView;
+		return new ModelAndView("index").addObject("project", project);
 	}
 
 	@RequestMapping(value = "/deploy/{group}/{envionment}/{project}", method = RequestMethod.GET)
@@ -89,7 +89,7 @@ public class IndexController {
 
 	@RequestMapping(value = "/deploy/post", method = RequestMethod.POST)
 	public ModelAndView post(@ModelAttribute("deploy") Deploy deploy, BindingResult result) {
-		String output = null;
+		String output = "";
 		if (result.hasErrors()) {
 			System.out.println(">>>" + result.toString());
 		}

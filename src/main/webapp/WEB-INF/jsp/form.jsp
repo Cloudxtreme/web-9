@@ -26,6 +26,10 @@
 	</form>
 
 	<script>
+	
+	jQuery("#project").click(function() {
+		jQuery("#project").val("");	
+	});
 	jQuery("#ant").click(function() {
 		$( "input[value=mvn]" ).prop("checked",false);
 		$( "input[value=deployment]" ).prop("checked",false);
@@ -49,4 +53,5 @@
 		$( "input[value=ant]" ).prop("checked",false);
 		$( "input[value=mvn]" ).prop("checked",false);
 	});
+	
 	</script>
