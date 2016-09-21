@@ -167,10 +167,10 @@ public class IndexController {
 			log.info("The ant command is {}", Arrays.toString(cmd));
 			String workspace = String.format("/www/%s/%s/%s", group, envionment, project);
 			File file = new File(workspace);
-			if (file.exists()) {
-				if (!file.isDirectory()) {
+			if (!file.exists()) {
+				//if (!file.isDirectory()) {
 					workspace = "/www";
-				}
+				//}
 			}
 			log.info("The workspace is {}", workspace);
 			Runtime runtime = Runtime.getRuntime();
