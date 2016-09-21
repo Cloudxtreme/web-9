@@ -145,10 +145,13 @@ public class IndexController {
 		return output;
 	}
 
+	 @RequestMapping("/log")
+	 public String repository() {
+		return null;
+		 
+	 }
+	
 	/*
-	 * @RequestMapping("/repository")
-	 * 
-	 * @ResponseBody public String repository() {
 	 * 
 	 * repository.deleteAll();
 	 * 

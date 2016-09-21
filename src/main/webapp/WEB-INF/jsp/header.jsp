@@ -4,16 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Log output</title>
-<%@ include file="head.jsp" %>
+<title>Insert title here</title>
 </head>
 <body>
-	<%@ include file="header.jsp" %>
-	<%@ include file="form.jsp" %>
-	
-<pre>
-${output}
-</pre>
-	<%@ include file="footer.jsp" %>
+
 </body>
 </html>
