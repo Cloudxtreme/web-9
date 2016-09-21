@@ -89,12 +89,52 @@ public class IndexController {
 
 	@RequestMapping(value = "/deploy/post", method = RequestMethod.POST)
 	public ModelAndView post(@ModelAttribute("deploy") Deploy deploy, BindingResult result) {
+		String output = null;
 		if (result.hasErrors()) {
-			System.out.println(result.toString());
+			System.out.println(">>>" + result.toString());
 		}
-		String output = this.deploy(deploy.getGroup(), deploy.getEnvionment(), deploy.getProject(), deploy.getArguments());
+		if (deploy.getArguments().contains("deployment")) {
+			output = this.deployment(deploy.getGroup(), deploy.getEnvionment(), deploy.getProject());
+		} else {
+			output = this.deploy(deploy.getGroup(), deploy.getEnvionment(), deploy.getProject(), deploy.getArguments());
+		}
 		System.out.println(deploy.toString());
 		return new ModelAndView("output").addObject("output", output);
+	}
+
+	private String deployment(String group, String envionment, String project) {
+		StringBuilder stringBuilder = new StringBuilder();
+		try {
+			String command = String.format("deployment %s %s", envionment, project);
+
+			String[] cmd = new String[] { "/bin/bash", "-c", command };
+
+			log.info("The deployment command is {}", Arrays.toString(cmd));
+
+			Runtime runtime = Runtime.getRuntime();
+			Process process = runtime.exec(cmd, null, new File("/www"));
+
+			InputStream inputStream = process.getInputStream();
+
+			InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+
+			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+			String line = null;
+			while ((line = bufferedReader.readLine()) != null) {
+				stringBuilder.append(line + "\n");
+			}
+
+			inputStream.close();
+			inputStreamReader.close();
+			bufferedReader.close();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		log.info("The output is {}", stringBuilder.toString());
+		return stringBuilder.toString();
 	}
 
 	private String deploy(String group, String envionment, String project, List<String> arguments) {
@@ -116,7 +156,7 @@ public class IndexController {
 
 			String[] cmd = new String[] { "/bin/bash", "-c", command };
 
-			log.info("The deploy command is {}", Arrays.toString(cmd));
+			log.info("The ant command is {}", Arrays.toString(cmd));
 
 			Runtime runtime = Runtime.getRuntime();
 			Process process = runtime.exec(cmd, null, new File(String.format("/www/%s/%s/%s", group, envionment, project)));
@@ -145,12 +185,12 @@ public class IndexController {
 		return output;
 	}
 
-	 @RequestMapping("/log")
-	 public String repository() {
+	@RequestMapping("/log")
+	public String repository() {
 		return null;
-		 
-	 }
-	
+
+	}
+
 	/*
 	 * 
 	 * repository.deleteAll();
