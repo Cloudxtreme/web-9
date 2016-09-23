@@ -5,6 +5,18 @@
 jQuery(document).ready(
 		function() {
 
+			
+		   var socket = new SockJS('/logging');
+		   var stompClient = Stomp.over(socket);
+		    stompClient.connect({}, function (frame) {
+		        setConnected(true);
+		        console.log('Connected: ' + frame);
+		        stompClient.subscribe('/topic/log', function (greeting) {
+		            $("#output").append("<li>" + JSON.parse(greeting.body).content + "</li>");
+		        });
+		    });
+
+			
 			$.getJSON('/v1/config/group.json',
 
 			function(data) {
@@ -73,10 +85,45 @@ jQuery(document).ready(
 
 			$("form").submit(function(event) {
 
+
+				
 				$("#deploy").submit();
 				event.preventDefault();
 			});
 
+			
+			jQuery("#test").click(function() {
+				var group = $("#group").val();
+				var envionment = $("#envionment").val();
+				var project = $("#project").val();
+				var arguments = $("#arguments").val();
+				var url = "/logging/watch/" + group + "/" +envionment+"/" + project+"/";
+				
+				var protocol = {
+						group: group,
+						envionment: envionment,
+						project: project,
+						arguments: arguments
+						
+				};
+				document.write(protocol);
+				$.ajax({
+			           type: "POST",
+			           url: "/v1/deploy/manual.json",
+			           dataType: "json",
+			           data: protocol,
+			           success: function (msg) {
+			               if (msg) {
+			                   alert("Somebody" + msg + " was added in list !");
+			                   location.reload(true);
+			               } else {
+			                   alert("Cannot add to list !");
+			               }
+			           }
+			       });
+			});
+			
+			
 			jQuery("#project").click(function() {
 				jQuery("#project").val("");
 			});
@@ -103,6 +150,7 @@ jQuery(document).ready(
 				$("input[value=ant]").prop("checked", false);
 				$("input[value=mvn]").prop("checked", false);
 			});
+			
 			jQuery("#logging").click(function() {
 				var group = $("#group").val();
 				var envionment = $("#envionment").val();

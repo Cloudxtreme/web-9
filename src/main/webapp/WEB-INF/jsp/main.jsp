@@ -42,7 +42,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <table id="conversation" class="table table-striped">
+            <table id="conversation" class="table">
                 <thead>
                 <tr>
                     <th>Greetings</th>

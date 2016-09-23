@@ -8,7 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Home</title>
-    <script src="/js/deploy.js"></script>
+    <!-- <script src="/js/deploy.js"></script> -->
 <%@ include file="head.jsp" %>
 </head>
 <body>

@@ -131,9 +131,14 @@ public class DeployRestController {
 		return protocol;
 	}
 
+	
+	/*	 
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d '{"group":"netkiller.cn", "envionment":"development", "project":"www.netkiller.cn", "arguments":["ant", "pull"]}'  http://user:password@172.30.9.11:7000/v1/deploy/manual.json
+	 */
 	@RequestMapping(value = "/manual", method = RequestMethod.POST, produces = { "application/xml", "application/json" })
-	public String test(@RequestBody Deploy deploy) {
-		String status = "OK";
+	public Protocol test(@RequestBody Deploy deploy) {
+		Protocol protocol = new Protocol();	
+		protocol.setStatus(true);
 		String command = "";
 		ScreenOutput screenOutput = null;
 
@@ -148,11 +153,12 @@ public class DeployRestController {
 				screenOutput = new ScreenOutput(this.template, this.exec(command, workspace));
 			}
 			new Thread(screenOutput).start();
+			protocol.setRequest(command);
 		} else {
-			status = "false";
+			protocol.setStatus(false);
 		}
 
-		return status;
+		return protocol;
 	}
 
 }
