@@ -32,7 +32,7 @@ public class DeployRestController {
 	@Autowired
 	private SimpMessagingTemplate template;
 	private static final Logger log = LoggerFactory.getLogger(IndexController.class);
-	
+
 	public DeployRestController() {
 		// TODO Auto-generated constructor stub
 	}
@@ -42,16 +42,16 @@ public class DeployRestController {
 		Process process = null;
 		String[] cmd = null;
 		try {
-			if(System.getProperty("os.name").equals("Windows 10")){
+			if (System.getProperty("os.name").equals("Windows 10")) {
 				cmd = new String[] { "cmd", "/C", command };
-			}else{
+			} else {
 				cmd = new String[] { "/bin/bash", "-c", command };
 			}
-			
+
 			log.info("The command is {}", Arrays.toString(cmd));
 
 			Runtime runtime = Runtime.getRuntime();
-			process = runtime.exec(cmd);
+			process = runtime.exec(cmd, null, new File(path));
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -61,7 +61,6 @@ public class DeployRestController {
 	}
 
 	public class ScreenOutput implements Runnable {
-
 
 		private SimpMessagingTemplate simpMessagingTemplate;
 		private Process process = null;
@@ -104,7 +103,7 @@ public class DeployRestController {
 	public String test() throws IOException {
 		ScreenOutput r = new ScreenOutput(this.template, this.exec("dir", "."));
 		new Thread(r).start();
-		System.out.println("===========os.name:"+System.getProperties().getProperty("os.name"));  
+		System.out.println("===========os.name:" + System.getProperties().getProperty("os.name"));
 		return "OK";
 	}
 
@@ -114,22 +113,22 @@ public class DeployRestController {
 		String workspace = String.format("/www/%s/%s/%s", group, envionment, project);
 		File file = new File(workspace);
 		if (!file.exists()) {
-				workspace = "/www";
+			workspace = "/www";
 		}
-		
+
 		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s/%s.properties", group, envionment)));
 		if (properties.containsKey(project)) {
 			String command = properties.getProperty(project);
 			ScreenOutput r = new ScreenOutput(this.template, this.exec(command, workspace));
 			new Thread(r).start();
-			
-		}else{
+
+		} else {
 			status = "False";
 		}
 
 		return status;
 	}
-	
+
 	@RequestMapping(value = "/manual", method = RequestMethod.POST, produces = { "application/xml", "application/json" })
 	public String test(@RequestBody Deploy deploy) {
 		String status = "OK";
@@ -150,7 +149,7 @@ public class DeployRestController {
 		} else {
 			status = "false";
 		}
-		
+
 		return status;
 	}
 
