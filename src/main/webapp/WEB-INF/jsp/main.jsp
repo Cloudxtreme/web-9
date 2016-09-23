@@ -11,7 +11,7 @@
         <div class="col-md-6">
             <form class="form-inline">
                 <div class="form-group">
-                    <label for="connect"> connection:</label>
+                    <label for="connect">Console:</label>
                     <button id="connect" class="btn btn-default" type="submit">Connect</button>
                     <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
                     </button>
@@ -19,6 +19,7 @@
             </form>
         </div>
         <div class="col-md-6">
+        <!-- 
             <form class="form-inline">
                 <div class="form-group">
                     <label for="name">What is your name?</label>
@@ -26,6 +27,7 @@
                 </div>
                 <button id="send" class="btn btn-default" type="submit">Send</button>
             </form>
+          -->
         </div>
     </div>
     <div class="row">
@@ -45,7 +47,7 @@
             <table id="conversation" class="table">
                 <thead>
                 <tr>
-                    <th>Greetings</th>
+                    <th>Screen output</th>
                 </tr>
                 </thead>
                 <tbody id="greetings">
