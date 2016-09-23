@@ -103,6 +103,19 @@ jQuery(document).ready(
 				$("input[value=ant]").prop("checked", false);
 				$("input[value=mvn]").prop("checked", false);
 			});
+			jQuery("#logging").click(function() {
+				var group = $("#group").val();
+				var envionment = $("#envionment").val();
+				var project = $("#project").val();
+				var url = "/logging/watch/" + group + "/" +envionment+"/" + project+"/";
+				
+				var win = window.open(url, 'logging');
+				  win.focus();
+			});
+			
+			
+		    
+			
 		});
 jQuery.readyException = function(error) {
 	// "error" is thrown from any ready handler

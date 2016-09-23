@@ -2,15 +2,14 @@ package cn.netkiller.pojo;
 
 public class Protocol {
 	private String send;
-	
 	private String receive;
+	private String error;
 
 	/**
 	 * @param send
 	 * @param receive
 	 */
 	public Protocol(String send, String receive) {
-		super();
 		this.send = send;
 		this.receive = receive;
 	}
@@ -34,6 +33,14 @@ public class Protocol {
 
 	public void setReceive(String receive) {
 		this.receive = receive;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
 	}
 	
 

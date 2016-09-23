@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 //import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -24,6 +26,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import cn.netkiller.pojo.Deploy;
+import cn.netkiller.pojo.Greeting;
+import cn.netkiller.pojo.HelloMessage;
 
 /*import api.domain.City;
 import api.config.ApplicationConfiguration;
@@ -33,7 +37,7 @@ import api.repository.ArticleRepository;
 import api.service.TestService;*/
 
 @Controller
-public class IndexController {
+public class IndexController extends CommonController{
 
 	/*
 	 * @Autowired private CityRepository repository;
@@ -200,6 +204,17 @@ public class IndexController {
 	public String repository() {
 		return null;
 
+	}
+	
+	@MessageMapping("/screen")
+	@SendTo("/topic/screen")
+	public Greeting log(HelloMessage message) throws Exception {
+		 Thread.sleep(1000); // simulated delay
+		//FireGreeting r = new FireGreeting(this.template, message.getName());
+		//new Thread(r).start();
+		
+		//return new Greeting("Hello, " + properties.getProperty(message.getName()) + "!");
+		return new Greeting("Hello, " + message.getName() + "!");
 	}
 
 	/*

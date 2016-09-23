@@ -11,6 +11,7 @@
 			<!-- <option value="www.example.com"> -->
 		</datalist>
 		<input type="submit" id="submit" value="Deploy" />
+		<input type="button" id="logging" value="Logging" />
 		<input type="reset" id="reset" value="Cancel" />
 		<table>
 			<tr>
@@ -41,8 +42,7 @@
 	
 		</ul>
 	</fieldset>
+	
 	<script>
-	
-	
-	
+
 	</script>
