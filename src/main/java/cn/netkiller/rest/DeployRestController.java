@@ -105,9 +105,13 @@ public class DeployRestController {
 		log.info("The config is {}", path);
 		Properties properties = null;
 		try {
-			File file = new File(path);
-			if (file.exists()) {
-				properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(path));
+			//File file = new File(path);
+			//if (file.exists()) {
+				
+			//}
+			ClassPathResource classPathResource = new ClassPathResource(path);
+			if(classPathResource .exists()){
+				properties = PropertiesLoaderUtils.loadProperties(classPathResource);
 			}
 
 		} catch (IOException e) {
