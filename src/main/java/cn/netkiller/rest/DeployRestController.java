@@ -5,8 +5,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.netkiller.pojo.Deploy;
 import cn.netkiller.pojo.Greeting;
+import cn.netkiller.web.IndexController;
 
 @RestController
 @RequestMapping("/v1/deploy")
@@ -27,24 +31,24 @@ public class DeployRestController {
 
 	@Autowired
 	private SimpMessagingTemplate template;
+	private static final Logger log = LoggerFactory.getLogger(IndexController.class);
 	
 	public DeployRestController() {
 		// TODO Auto-generated constructor stub
 	}
 
 	private Process exec(String command, String path) {
-		//
+
 		Process process = null;
 		String[] cmd = null;
 		try {
-			// String command = String.format("deployment %s %s", envionment,
-			// project);
 			if(System.getProperty("os.name").equals("Windows 10")){
 				cmd = new String[] { "cmd", "/C", command };
 			}else{
 				cmd = new String[] { "/bin/bash", "-c", command };
-			} 
-			// log.info("The deployment command is {}", Arrays.toString(cmd));
+			}
+			
+			log.info("The command is {}", Arrays.toString(cmd));
 
 			Runtime runtime = Runtime.getRuntime();
 			process = runtime.exec(cmd);
@@ -53,7 +57,6 @@ public class DeployRestController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// log.info("The output is {}", stringBuilder.toString());
 		return process;
 	}
 
@@ -70,7 +73,7 @@ public class DeployRestController {
 
 		@Override
 		public void run() {
-			// StringBuilder stringBuilder = new StringBuilder();
+			StringBuilder stringBuilder = new StringBuilder();
 			String line = null;
 			try {
 
@@ -79,7 +82,7 @@ public class DeployRestController {
 				InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
 				BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 				while ((line = bufferedReader.readLine()) != null) {
-					// stringBuilder.append(line + "\n");
+					stringBuilder.append(line + "\n");
 					this.simpMessagingTemplate.convertAndSend("/topic/log", new Greeting(line));
 				}
 				bufferedReader.close();
@@ -92,7 +95,7 @@ public class DeployRestController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
+			log.info("The output is {}", stringBuilder.toString());
 		}
 
 	}
