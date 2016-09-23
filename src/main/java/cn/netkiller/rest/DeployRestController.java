@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.netkiller.pojo.Deploy;
 import cn.netkiller.pojo.Greeting;
+import cn.netkiller.pojo.Protocol;
 import cn.netkiller.web.IndexController;
 
 @RestController
@@ -108,8 +109,9 @@ public class DeployRestController {
 	}
 
 	@RequestMapping("/config/{group}/{envionment}/{project}/")
-	public String config(@PathVariable String group, @PathVariable String envionment, @PathVariable String project) throws IOException {
-		String status = "OK";
+	public Protocol config(@PathVariable String group, @PathVariable String envionment, @PathVariable String project) throws IOException {
+		Protocol protocol = new Protocol();	
+		protocol.setStatus(true);
 		String workspace = String.format("/www/%s/%s/%s", group, envionment, project);
 		File file = new File(workspace);
 		if (!file.exists()) {
@@ -121,12 +123,12 @@ public class DeployRestController {
 			String command = properties.getProperty(project);
 			ScreenOutput r = new ScreenOutput(this.template, this.exec(command, workspace));
 			new Thread(r).start();
-
+			protocol.setRequest(command);
 		} else {
-			status = "False";
+			protocol.setStatus(false);
 		}
 
-		return status;
+		return protocol;
 	}
 
 	@RequestMapping(value = "/manual", method = RequestMethod.POST, produces = { "application/xml", "application/json" })

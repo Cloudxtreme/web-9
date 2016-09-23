@@ -57,10 +57,7 @@ public class IndexController extends CommonController{
 
 	@RequestMapping("/")
 	public ModelAndView index() throws IOException {
-		String project = "www.netkiller.cn";
-		// Properties properties = PropertiesLoaderUtils.loadProperties(new
-		// ClassPathResource(String.format("/%s.properties", "config")));
-		
+		String project = "www.netkiller.cn";		
 		return new ModelAndView("index").addObject("project", project);
 	}
 

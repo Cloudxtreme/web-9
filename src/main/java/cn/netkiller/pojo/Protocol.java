@@ -1,47 +1,44 @@
 package cn.netkiller.pojo;
 
 public class Protocol {
-	private String send;
-	private String receive;
+	private String request;
+	private String response;
+	private boolean status;
 	private String error;
-
-	/**
-	 * @param send
-	 * @param receive
-	 */
-	public Protocol(String send, String receive) {
-		this.send = send;
-		this.receive = receive;
+	
+	public Protocol() {
+		super();
+	}
+	
+	public String getRequest() {
+		return request;
+	}
+	public void setRequest(String request) {
+		this.request = request;
+	}
+	public String getResponse() {
+		return response;
+	}
+	public void setResponse(String response) {
+		this.response = response;
+	}
+	public boolean getStatus() {
+		return status;
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+	public String getError() {
+		return error;
+	}
+	public void setError(String error) {
+		this.error = error;
 	}
 
 	@Override
 	public String toString() {
-		return "Protocol [send=" + send + ", receive=" + receive + "]";
+		return "Protocol [request=" + request + ", response=" + response + ", status=" + status + ", error=" + error + "]";
 	}
 
-	public String getSend() {
-		return send;
-	}
-
-	public void setSend(String send) {
-		this.send = send;
-	}
-
-	public String getReceive() {
-		return receive;
-	}
-
-	public void setReceive(String receive) {
-		this.receive = receive;
-	}
-
-	public String getError() {
-		return error;
-	}
-
-	public void setError(String error) {
-		this.error = error;
-	}
-	
 
 }
