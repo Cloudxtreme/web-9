@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -99,12 +100,44 @@ public class DeployRestController {
 		}
 
 	}
-
+	private Properties config(String path){
+		Properties properties = null;
+		try {
+			File file = new File(path);
+			if (file.exists()) {
+				properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(path));
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return properties;
+	}
 	@RequestMapping("/test")
 	public String test() throws IOException {
 		ScreenOutput r = new ScreenOutput(this.template, this.exec("dir", "."));
 		new Thread(r).start();
 		System.out.println("===========os.name:" + System.getProperties().getProperty("os.name"));
+		return "OK";
+	}
+	@RequestMapping("/ant")
+	public String ant() throws IOException {
+		String group= "cf88.com",envionment="development",project="admin.cf88.com";
+		
+		String path = String.format("/www/%s/%s/%s", group, envionment, project);
+		String command = String.format("ant -propertyfile %s/%s", "/tmp/test", "build.properties");
+		Properties properties = this.config(path);
+		
+		for (Entry<Object, Object> entry : properties.entrySet()) {
+	        System.out.println(entry.getKey() + " => " + entry.getValue());
+	    }
+		
+		ScreenOutput r = new ScreenOutput(this.template, this.exec(command, "/tmp/test"));
+		new Thread(r).start();
+		
+
+		
 		return "OK";
 	}
 
