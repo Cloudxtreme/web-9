@@ -2,6 +2,7 @@ package cn.netkiller.rest;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -103,17 +104,17 @@ public class DeployRestController {
 
 	private Properties config(String path) {
 		log.info("The config is {}", path);
-		Properties properties = null;
+		Properties properties = new java.util.Properties();;
 		try {
-			//File file = new File(path);
-			//if (file.exists()) {
-				
-			//}
-			ClassPathResource classPathResource = new ClassPathResource(path);
+			File file = new File(path);
+			if (file.exists()) {
+				properties.load(new FileInputStream(file));
+			}
+			/*ClassPathResource classPathResource = new ClassPathResource(path);
 			if(classPathResource .exists()){
 				properties = PropertiesLoaderUtils.loadProperties(classPathResource);
 			}
-
+*/
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -133,7 +134,7 @@ public class DeployRestController {
 	public String ant() throws IOException {
 		String group = "cf88.com", envionment = "development", project = "admin.cf88.com";
 
-		String path = String.format("/%s/%s/%s/build.properties", group, envionment, project);
+		String path = String.format("/www/config/%s/%s/%s/build.properties", group, envionment, project);
 		String command = String.format("ant -propertyfile %s", path);
 		Properties properties = this.config(path);
 		if (properties != null) {
