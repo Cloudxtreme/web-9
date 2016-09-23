@@ -59,8 +59,7 @@ jQuery(document).ready(
 						if (envionment == "production") {
 							color = "red";
 						}
-						$("#projectItem").html("");
-
+						
 						$.getJSON('/v1/config/project/' + group + '/'
 								+ envionment + '.json',
 
@@ -69,12 +68,7 @@ jQuery(document).ready(
 							$.each(data, function(key, val) {
 								$("#projectList").append(
 										'<option value="' + val + '"/>');
-								$("#projectItem").append(
-										'<li><span style="color:' + color
-												+ '">' + val
-												+ '<span>&nbsp;<a href="' + url
-												+ '/' + val
-												+ '/">deploy</a></li>');
+								
 
 							});
 
@@ -117,6 +111,7 @@ jQuery(document).ready(
 				
 				//var protocol = $('form').serialize();
 				console.log('json: ' + JSON.stringify(protocol));
+				$("#output").html("");
 
 				$.ajax({
 			           type: "POST",

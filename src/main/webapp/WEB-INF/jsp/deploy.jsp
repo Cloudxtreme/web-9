@@ -10,10 +10,10 @@
 		<datalist id="projectList">
 			<!-- <option value="www.example.com"> -->
 		</datalist>
-		<input type="submit" id="submit" value="Deploy" />
-		<input type="button" id="test" value="Test" />
+		<!-- <input type="submit" id="submit" value="Deploy" /> -->
+		<input type="button" id="test" value="Deploy" />
 		<input type="reset" id="reset" value="Cancel" />
-		<table>
+		<table width="100%">
 			<tr>
 				<td>
 				<fieldset>
@@ -32,7 +32,8 @@
 			<input type="checkbox" name="arguments" value="pull" />Pull 
 			<input type="checkbox" name="arguments" value="push" />Merge 
 			<input type="checkbox" name="arguments" value="install" />Install 
-			<input type="checkbox" name="arguments" value="package" />Package 
+			<input type="checkbox" name="arguments" value="package" />Package
+			<input type="checkbox" name="arguments" value="trial" />Trial  
 			<input type="checkbox" name="arguments" value="deploy" />Deploy 
 			<input type="checkbox" name="arguments" value="restart" />Restart
 		</fieldset>
@@ -43,14 +44,17 @@
 		
 		
 	</form>
-	<fieldset>
-		<legend>Project lists</legend>
-		<ul id="output">
 	
-		</ul>
-	</fieldset>
 	<div id="error">
 	</div>
+	
+	<fieldset>
+		<legend>Screen output</legend>
+		<ol id="output">
+	
+		</ol>
+	</fieldset>
+	
 	<script>
 
 	</script>
