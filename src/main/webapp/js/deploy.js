@@ -9,7 +9,6 @@ jQuery(document).ready(
 		   var socket = new SockJS('/logging');
 		   var stompClient = Stomp.over(socket);
 		    stompClient.connect({}, function (frame) {
-		        setConnected(true);
 		        console.log('Connected: ' + frame);
 		        stompClient.subscribe('/topic/log', function (greeting) {
 		            $("#output").append("<li>" + JSON.parse(greeting.body).content + "</li>");
@@ -82,40 +81,52 @@ jQuery(document).ready(
 						});
 
 					});
-
+/*
 			$("form").submit(function(event) {
-
-
-				
 				$("#deploy").submit();
 				event.preventDefault();
 			});
-
+*/
 			
 			jQuery("#test").click(function() {
 				var group = $("#group").val();
 				var envionment = $("#envionment").val();
 				var project = $("#project").val();
-				var arguments = $("#arguments").val();
-				var url = "/logging/watch/" + group + "/" +envionment+"/" + project+"/";
+				//var arguments = $("input[name='arguments']:checked").serialize();
+				//var arguments = [];
+				//$("input[name='arguments']:checked").each(function() {
+				//	 arguments.push($(this).val());
+				//	 console.log($(this).val());
+				// });
+				
+				var arguments = (function() {
+	                var a = [];
+	                $("input[name='arguments']:checked").each(function() {
+	                    a.push(this.value);
+	                });
+	                return a;
+	            })();
 				
 				var protocol = {
-						group: group,
-						envionment: envionment,
-						project: project,
-						arguments: arguments
+						'group': group,
+						'envionment': envionment,
+						'project': project,
+						'arguments': arguments
 						
 				};
-				document.write(protocol);
+				
+				//var protocol = $('form').serialize();
+				console.log('json: ' + JSON.stringify(protocol));
+
 				$.ajax({
 			           type: "POST",
 			           url: "/v1/deploy/manual.json",
 			           dataType: "json",
-			           data: protocol,
+			           contentType: 'application/json',
+			           data: JSON.stringify(protocol),
 			           success: function (msg) {
-			               if (msg) {
-			                   alert("Somebody" + msg + " was added in list !");
-			                   location.reload(true);
+			               if (msg.status) {
+			            	   $('#error').html( "Sent" );
 			               } else {
 			                   alert("Cannot add to list !");
 			               }

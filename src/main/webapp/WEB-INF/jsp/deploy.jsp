@@ -29,7 +29,12 @@
 			
 			<input type="checkbox" name="arguments" value="tgz" />Backup
 			<input type="checkbox" name="arguments" value="clean" />Clean 
-			<input type="checkbox" name="arguments" value="pull" />Pull <input type="checkbox" name="arguments" value="push" />Merge <input type="checkbox" name="arguments" value="install" />Install <input type="checkbox" name="arguments" value="package" />Package <input type="checkbox" name="arguments" value="deploy" />Deploy <input type="checkbox" name="arguments" value="restart" />Restart
+			<input type="checkbox" name="arguments" value="pull" />Pull 
+			<input type="checkbox" name="arguments" value="push" />Merge 
+			<input type="checkbox" name="arguments" value="install" />Install 
+			<input type="checkbox" name="arguments" value="package" />Package 
+			<input type="checkbox" name="arguments" value="deploy" />Deploy 
+			<input type="checkbox" name="arguments" value="restart" />Restart
 		</fieldset>
 				
 				</td>
@@ -44,7 +49,8 @@
 	
 		</ul>
 	</fieldset>
-	
+	<div id="error">
+	</div>
 	<script>
 
 	</script>

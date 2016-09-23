@@ -137,6 +137,7 @@ curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X POS
 	 */
 	@RequestMapping(value = "/manual", method = RequestMethod.POST, produces = { "application/xml", "application/json" })
 	public Protocol test(@RequestBody Deploy deploy) {
+		System.out.println(deploy.toString());
 		Protocol protocol = new Protocol();	
 		protocol.setStatus(true);
 		String command = "";
@@ -154,6 +155,7 @@ curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X POS
 			}
 			new Thread(screenOutput).start();
 			protocol.setRequest(command);
+			protocol.setResponse(deploy.toString());
 		} else {
 			protocol.setStatus(false);
 		}
