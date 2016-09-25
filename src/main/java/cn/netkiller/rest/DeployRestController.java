@@ -104,17 +104,13 @@ public class DeployRestController {
 
 	private Properties config(String path) {
 		log.info("The config is {}", path);
-		Properties properties = new java.util.Properties();;
+		Properties properties = new java.util.Properties();
+		;
 		try {
 			File file = new File(path);
 			if (file.exists()) {
 				properties.load(new FileInputStream(file));
 			}
-			/*ClassPathResource classPathResource = new ClassPathResource(path);
-			if(classPathResource .exists()){
-				properties = PropertiesLoaderUtils.loadProperties(classPathResource);
-			}
-*/
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -133,9 +129,17 @@ public class DeployRestController {
 	@RequestMapping("/ant")
 	public String ant() throws IOException {
 		String group = "cf88.com", envionment = "development", project = "admin.cf88.com";
+		String buildfile = "";
+		ClassPathResource classPathResource = new ClassPathResource("build.xml");
+		if (classPathResource.exists()) {
+			// properties =
+			// PropertiesLoaderUtils.loadProperties(classPathResource);
+			buildfile = classPathResource.getFile().getAbsolutePath();
+			// System.out.println(buildfile);
+		}
 
 		String path = String.format("/www/config/%s/%s/%s/build.properties", group, envionment, project);
-		String command = String.format("ant -propertyfile %s", path);
+		String command = String.format("ant -propertyfile %s -buildfile=%s", path, buildfile);
 		Properties properties = this.config(path);
 		if (properties != null) {
 			for (Entry<Object, Object> entry : properties.entrySet()) {

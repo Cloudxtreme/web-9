@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
-Homepage: http://www.netkiller.cn
+     Homepage: http://www.netkiller.cn
 Author: neo <netkiller@msn.com>
 Date: 2015-12-07
 -->
 <project name="www.example.com" default="compile" basedir=".">
 
 	<property file="build.properties" />
+
 	<property name="git.repository" value="git@58.96.11.18:example.com/admin.example.com.git" />
 	<property name="git.branch" value="master" />
 	<property name="git.merge" value="development" />
 	<property name="git.revert" value="" />
 
 	<property name="remote.host" value="www@23.25.22.72" />
-	<property name="destination.host" value="/www/example.com/admin.example.com" />
+	<property name="remote.destination" value="/www/${project.group}/${project.name}" />
 
-	<property name="project.dir" value="repository/${git.branch}" />
+	<property name="project.group" value="" />
+	<property name="project.name" value="${project.name}" />
+
+	<property name="project.dir" value="repository/${git.branch}/${project.name}" />
 	<property name="project.src" value="${project.dir}/src" />
-	<property name="project.build" value="build/${git.branch}" />
+	<property name="project.build" value="build/${git.branch}/${project.name}" />
 	<property name="project.config" value="config" />
 	<property name="project.exclude" value="/dev/null" />
 	<property name="project.log" value="log" />
-	<property name="project.package" value="package" />
+	<property name="project.package" value="${project.name}" />
 	<property name="project.version" value="0.0.1" />
 
 	<property name="backup.dir" value="backup" />
@@ -31,6 +35,7 @@ Date: 2015-12-07
 
 	<property name="build.sysclasspath" value="last" />
 	<property environment="env" />
+
 
 	<path id="classpath">
 		<fileset dir="${env.JAVA_HOME}/lib">
@@ -180,7 +185,7 @@ Date: 2015-12-07
 		</git>
 
 		<!--
-		<git command="fetch" dir="${project.dir}">
+		     		<git command="fetch" dir="${project.dir}">
 			<args>
 				<arg value="-v" />
 				<arg value="origin" />
@@ -212,11 +217,11 @@ Date: 2015-12-07
 
 		<mkdir dir="${project.build}" />
 		<mkdir dir="${project.log}" />
-		<!--
-		<copy todir="${project.build}">
-			<fileset dir="${project.dir}/WebContent" includes="**/*" />
+	
+	  	<copy todir="${project.build}">
+			<fileset dir="${project.dir}/WebRoot" includes="**/*" />
 		</copy>
-		-->
+		
 		<rsync option="-av" src="${project.dir}/WebContent/" dest="${project.build}/">
 			<args>
 				<arg value="--delete" />
@@ -256,13 +261,13 @@ Date: 2015-12-07
 		<tstamp>
 			<format property="timepoint" pattern="yyyy-MM-dd.HH:mm:ss" locale="cn,CN" />
 		</tstamp>
-		<rsync option="-azv" src="${project.build}/" dest="${remote.host}:${destination.host}">
+		<rsync option="-azv" src="${project.build}/" dest="${remote.host}:${remote.destination}">
 			<args>
 				<arg value="--dry-run" />
 				<arg value="--delete" />
 				<arg value="--backup" />
-				<arg value="--backup-dir=~/${backup.dir}/${ant.project.name}.${timepoint}" />
-				<arg value="--log-file=log/${ant.project.name}.${timepoint}.trial.log" />
+				<arg value="--backup-dir=~/${backup.dir}/${project.name}.${timepoint}" />
+				<arg value="--log-file=log/${project.name}.${timepoint}.trial.log" />
 				<arg value="--exclude-from=${project.exclude}" />
 			</args>
 		</rsync>
@@ -272,22 +277,22 @@ Date: 2015-12-07
 		<tstamp>
 			<format property="timepoint" pattern="yyyy-MM-dd.HH:mm:ss" locale="cn,CN" />
 		</tstamp>
-		<rsync option="-azv" src="${project.build}/" dest="${remote}:${destination}">
+		<rsync option="-azv" src="${project.build}/" dest="${remote.host}:${remote.destination}">
 			<args>
 				<arg value="--delete" />
 				<arg value="--backup" />
-				<arg value="--backup-dir=~/${backup.dir}/${ant.project.name}.${timepoint}" />
-				<arg value="--log-file=log/${ant.project.name}.${timepoint}.log" />
+				<arg value="--backup-dir=~/${backup.dir}/${project.name}.${timepoint}" />
+				<arg value="--log-file=log/${project.name}.${timepoint}.log" />
 				<arg value="--exclude-from=${project.exclude}" />
 			</args>
 		</rsync>
 	</target>
 
 	<target name="jar" depends="compile">
-		<jar jarfile="${project.package}/${ant.project.name}-${project.version}.jar" basedir="${project.build}" />
+		<jar jarfile="${project.package}/${project.name}-${project.version}.jar" basedir="${project.build}" />
 	</target>
 	<target name="war" depends="compile">
-		<war warfile="${project.package}/${ant.project.name}-${project.version}.war" webxml="${project.build}/WEB-INF/web.xml">
+		<war warfile="${project.package}/${project.name}-${project.version}.war" webxml="${project.build}/WEB-INF/web.xml">
 			<fileset dir="${project.build}" />
 		</war>
 	</target>
@@ -306,14 +311,14 @@ Date: 2015-12-07
 			<format property="TIMEPOINT" pattern="yyyy-MM-dd.HH:mm:ss" locale="cn,CN" />
 		</tstamp>
 		<echo>the backup directory is ${TIMEPOINT}.</echo>
-		<ssh host="${remote}" command="tar zcvf ~/${backup.dir}/${ant.project.name}.${TIMEPOINT}.tgz ${destination}" />
+		<ssh host="${remote}" command="tar zcvf ~/${backup.dir}/${project.name}.${TIMEPOINT}.tgz ${destination}" />
 	</target>
 	<target name="snapshot" depends="">
 		<tstamp>
 			<format property="TIMEPOINT" pattern="yyyy-MM-dd.HH:mm:ss" locale="cn,CN" />
 		</tstamp>
 		<echo>the backup directory is ${TIMEPOINT}.</echo>
-		<ssh host="${remote}" command="btrfs subvolume snapshot /www /www/${ant.project.name}.${TIMEPOINT}" />
+		<ssh host="${remote}" command="btrfs subvolume snapshot /www /www/${project.name}.${TIMEPOINT}" />
 	</target>
 	<target name="history" depends="">
 		<ssh host="${remote}" command="ls -1 ${backup.dir}" />
@@ -359,7 +364,7 @@ Date: 2015-12-07
 		<ssh host="${remote}" command="tail -f ${catalina.home}/logs/*.${datetime}.*" />
 	</target>
 	<target name="error.log">
-		<ssh host="${remote}" command="tail -f /var/log/nginx/${ant.project.name}.error.log" />
+		<ssh host="${remote}" command="tail -f /var/log/nginx/${project.name}.error.log" />
 	</target>
 	
 	<target name="run" depends="">
