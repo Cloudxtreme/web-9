@@ -30,7 +30,7 @@ import cn.netkiller.web.IndexController;
 
 @RestController
 @RequestMapping("/v1/deploy")
-public class DeployRestController {
+public class DeployRestController extends CommonRestController {
 
 	@Autowired
 	private SimpMessagingTemplate template;
@@ -138,9 +138,9 @@ public class DeployRestController {
 			// System.out.println(buildfile);
 		}
 
-		String path = String.format("/www/config/%s/%s/%s/build.properties", group, envionment, project);
-		String command = String.format("ant -propertyfile %s -buildfile=%s", path, buildfile);
-		Properties properties = this.config(path);
+		String propertyfile = String.format("%s/%s/%s/%s/build.properties", this.workspace, group, envionment, project);
+		String command = String.format("ant -propertyfile %s -buildfile=%s", propertyfile, buildfile);
+		Properties properties = this.config(propertyfile);
 		if (properties != null) {
 			for (Entry<Object, Object> entry : properties.entrySet()) {
 				System.out.println(entry.getKey() + " => " + entry.getValue());

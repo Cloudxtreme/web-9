@@ -1,5 +1,6 @@
 package cn.netkiller.rest;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -9,22 +10,22 @@ import java.util.Properties;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/v1/config")
-public class ConfigRestController extends CommonRestController{
+public class ConfigRestController extends CommonRestController {
 
 	public ConfigRestController() {
 		// TODO Auto-generated constructor stub
 	}
-	
-//	@Autowired
-//	private WithdrawRepository repository;
+
+	// @Autowired
+	// private WithdrawRepository repository;
 
 	@RequestMapping("version")
 	@ResponseStatus(HttpStatus.OK)
@@ -39,23 +40,27 @@ public class ConfigRestController extends CommonRestController{
 	}
 
 	@RequestMapping("/group")
-	public  List<String> group() throws IOException {
+	public List<String> group() throws IOException {
 		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "config")));
 		return Arrays.asList(String.valueOf(properties.get("group")).concat(",").split(","));
-	}	
+	}
+
 	@RequestMapping("/envionment")
-	public  List<String> envionment() throws IOException {
+	public List<String> envionment() throws IOException {
 		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "config")));
 		return Arrays.asList(String.valueOf(properties.get("envionment")).concat(",").split(","));
-	}	
-	
-/*	@RequestMapping(value = "create", method = RequestMethod.POST, produces = { "application/xml", "application/json" })
-	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Withdraw> create(@RequestBody Withdraw withdraw) throws ParseException {
-		// withdraw.setCreatedDate(TimeUtils.getCurrentGmtDate());
-		repository.save(withdraw);
-		return new ResponseEntity<Withdraw>(withdraw, HttpStatus.OK);
 	}
-*/
+
+	@RequestMapping("/build/{group}/{envionment}/{project}/")
+	public ResponseEntity<Properties> build(@PathVariable String group, @PathVariable String envionment, @PathVariable String project) throws IOException {
+		Properties properties = null;
+		String workspace = String.format("%s/%s/%s/%s/build.properties", this.workspace, group, envionment, project);
+		File file = new File(workspace);
+		if (file.exists()) {
+			properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s/%s.properties", group, envionment)));
+		}
+
+		return new ResponseEntity<Properties>(properties, HttpStatus.OK);
+	}
 
 }

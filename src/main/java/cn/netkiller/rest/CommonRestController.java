@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class CommonRestController {
 
+	public String workspace = "/www/workspace";
+	
 	@RequestMapping("ping")
 	@ResponseStatus(HttpStatus.OK)
 	public String welcome() {
