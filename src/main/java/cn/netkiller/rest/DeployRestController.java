@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -127,7 +129,9 @@ public class DeployRestController extends CommonRestController {
 	}
 
 	@RequestMapping("/ant")
-	public String ant() throws IOException {
+	public ResponseEntity<Protocol> ant() throws IOException {
+		Protocol protocol = new Protocol();
+		protocol.setStatus(true);
 		String group = "cf88.com", envionment = "development", project = "admin.cf88.com";
 		String buildfile = "";
 		ClassPathResource classPathResource = new ClassPathResource("build.xml");
@@ -148,9 +152,13 @@ public class DeployRestController extends CommonRestController {
 
 			ScreenOutput r = new ScreenOutput(this.template, this.exec(command, "/tmp/test"));
 			new Thread(r).start();
+			protocol.setRequest(command);
+		}else {
+			//protocol.setRequest(command);
+			protocol.setStatus(false);
 		}
 
-		return "OK";
+		return new ResponseEntity<Protocol> (protocol, HttpStatus.OK);
 	}
 
 	@RequestMapping("/config/{group}/{envionment}/{project}/")
@@ -183,7 +191,7 @@ public class DeployRestController extends CommonRestController {
 	 * http://user:password@172.30.9.11:7000/v1/deploy/manual.json
 	 */
 	@RequestMapping(value = "/manual", method = RequestMethod.POST, produces = { "application/xml", "application/json" })
-	public Protocol test(@RequestBody Deploy deploy) {
+	public Protocol manual(@RequestBody Deploy deploy) {
 		System.out.println(deploy.toString());
 		Protocol protocol = new Protocol();
 		protocol.setStatus(true);
