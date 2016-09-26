@@ -10,8 +10,8 @@ jQuery(document).ready(
 		   var stompClient = Stomp.over(socket);
 		    stompClient.connect({}, function (frame) {
 		        console.log('Connected: ' + frame);
-		        stompClient.subscribe('/topic/log', function (greeting) {
-		            $("#output").append("<li>" + JSON.parse(greeting.body).content + "</li>");
+		        stompClient.subscribe('/topic/log', function (proto) {
+		            $("#output").append("<li>" + JSON.parse(proto.response).content + "</li>");
 		        });
 		    });
 

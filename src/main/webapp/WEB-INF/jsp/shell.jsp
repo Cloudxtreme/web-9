@@ -24,7 +24,7 @@
 		</select> 
 
         <label for="command">Command</label>
-        <input type="text" id="command" list="logs" class="form-control" placeholder="Your command here...">
+        <input type="text" id="command" list="logs" size="128" class="form-control" placeholder="Your command here...">
 
     <button id="run" class="btn btn-default" type="button">Run</button>
 </form>
@@ -48,8 +48,8 @@ ${output}
 		   
 		   stompClient.connect({}, function (frame) {
 		        console.log('Connected: ' + frame);
-		        stompClient.subscribe('/topic/shell', function (greeting) {
-		            $("#output").append("<li>" + JSON.parse(greeting.body).content + "</li>");
+		        stompClient.subscribe('/topic/shell', function (proto) {
+		            $("#output").append("<li>" + JSON.parse(proto.response).content + "</li>");
 		        });
 		    });
 		    
@@ -65,7 +65,6 @@ ${output}
 			var protocol = {
 					'request': command
 			};
-			
 
 			console.log('json: ' + JSON.stringify(protocol));
 			$("#output").html("");

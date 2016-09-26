@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.netkiller.pojo.Greeting;
 import cn.netkiller.pojo.Protocol;
 
 @RestController
@@ -125,7 +124,7 @@ public class ShellRestController  extends CommonRestController{
 				BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 				while ((line = bufferedReader.readLine()) != null) {
 					stringBuilder.append(line + "\n");
-					this.simpMessagingTemplate.convertAndSend(this.destination, new Greeting(line));
+					this.simpMessagingTemplate.convertAndSend(this.destination, new Protocol(null, line));
 					log.info("{}", line);
 				}
 				bufferedReader.close();

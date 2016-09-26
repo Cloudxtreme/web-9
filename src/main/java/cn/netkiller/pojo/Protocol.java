@@ -5,32 +5,44 @@ public class Protocol {
 	private String response;
 	private boolean status;
 	private String error;
-	
+
 	public Protocol() {
 		super();
 	}
-	
+
+	public Protocol(String request, String response) {
+		this.request = request;
+		this.response = response;
+	}
+
 	public String getRequest() {
 		return request;
 	}
+
 	public void setRequest(String request) {
 		this.request = request;
 	}
+
 	public String getResponse() {
 		return response;
 	}
+
 	public void setResponse(String response) {
 		this.response = response;
 	}
+
 	public boolean getStatus() {
 		return status;
 	}
+
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
+
 	public String getError() {
 		return error;
 	}
+
 	public void setError(String error) {
 		this.error = error;
 	}
@@ -39,6 +51,5 @@ public class Protocol {
 	public String toString() {
 		return "Protocol [request=" + request + ", response=" + response + ", status=" + status + ", error=" + error + "]";
 	}
-
 
 }
