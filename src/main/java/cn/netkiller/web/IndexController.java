@@ -60,12 +60,7 @@ public class IndexController extends CommonController{
 		String project = "www.netkiller.cn";		
 		return new ModelAndView("index").addObject("project", project);
 	}
-	@RequestMapping("/manual")
-	public ModelAndView manual() {
-		
-		return new ModelAndView("manual");
 
-	}
 	@RequestMapping(value = "/deploy/{group}/{envionment}/{project}", method = RequestMethod.GET)
 	public ModelAndView deployEnvionment(@PathVariable String group, @PathVariable String envionment, @PathVariable String project) {
 
