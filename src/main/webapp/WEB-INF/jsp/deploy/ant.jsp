@@ -42,6 +42,7 @@
 		<input type="checkbox" name="arguments" value="clean" />Clean
 		<input type="checkbox" name="arguments" value="pull" />Pull
 		<input type="checkbox" name="arguments" value="push" />Merge
+		<input type="checkbox" name="arguments" value="compile" />Compile
 		<input type="checkbox" name="arguments" value="install" />Install
 		<input type="checkbox" name="arguments" value="package" />Package
 		<input type="checkbox" name="arguments" value="trial" />Trial

@@ -4,7 +4,7 @@ Homepage: http://www.netkiller.cn
 Author: neo <netkiller@msn.com>
 Date: 2016-09-26
 -->
-<project name="www.example.com" default="compile" basedir="~/workspace">
+<project name="www.example.com" default="compile" basedir="/www/workspace">
 
 	<property file="build.properties" />
 
@@ -23,7 +23,7 @@ Date: 2016-09-26
 	<property name="project.name" value="${project.name}" />
 	<property name="project.dir" value="${basedir}/${project.group}/${project.name}/${git.branch}/repository" />
 	<property name="project.src" value="${project.dir}/src" />
-	<property name="project.build" value="${basedir}/build/${project.name}/${git.branch}" />
+	<property name="project.build" value="${basedir}/${project.group}/${project.name}/${git.branch}/dist" />
 	<property name="project.resource" value="${basedir}/${project.group}/${project.name}/${git.branch}/resource" />
 	<property name="project.exclude" value="/dev/null" />
 	<property name="project.log" value="${basedir}/log" />
