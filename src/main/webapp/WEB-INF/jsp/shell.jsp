@@ -26,7 +26,7 @@
         <label for="command">Command</label>
         <input type="text" id="command" list="logs" class="form-control" placeholder="Your command here...">
 
-    <button id="send" class="btn btn-default" type="submit">Run</button>
+    <button id="run" class="btn btn-default" type="button">Run</button>
 </form>
 
 
@@ -40,8 +40,6 @@
 <pre>
 ${output}
 </pre>
-
-
 	<script>
 	jQuery(document).ready(function() {
 		
@@ -59,6 +57,33 @@ ${output}
 			$.each(data,function(key, val) {
 				$("#host").append('<option value="' + val + '">' + val	+ "</option>");
 			});
+		});
+		
+		jQuery("#run").click(function() {
+			var command = $("#command").val();
+			var host = $("#host").val();
+			var protocol = {
+					'request': command
+			};
+			
+
+			console.log('json: ' + JSON.stringify(protocol));
+			$("#output").html("");
+
+			$.ajax({
+		           type: "POST",
+		           url: "/v1/shell/run/"+host+".json",
+		           dataType: "json",
+		           contentType: 'application/json',
+		           data: JSON.stringify(protocol),
+		           success: function (msg) {
+		               if (msg.status) {
+		            	   $('#error').html( "Sent" );
+		               } else {
+		                   alert("Cannot add to list !");
+		               }
+		           }
+		       });
 		});
 	});
 	</script>
