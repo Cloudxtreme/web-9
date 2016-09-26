@@ -67,20 +67,28 @@ jQuery(document).ready(function() {
 		var group = $("#group").val();
 		var env = $("#envionment").val();
 		var prj = $("#project").val();
-		var url = "/v1/config/project/" + group + ".json";
-		var color = "";
-		if (envionment == "testing") {
-			color = "blue";
-		}
-		if (envionment == "production") {
-			color = "red";
-		}
-		
+		var url = "/v1/config/project/" + group + ".json";	
 		$.getJSON(url,function(data) {
 
 			$.each(data, function(key, val) {
 				$("#projectList").append(
 						'<option value="' + val + '"/>');
+			});
+
+		});
+
+	});
+	
+	$("#project").change(function() {
+
+		var group = $("#group").val();
+		var envionment = $("#envionment").val();
+		var project = $("#project").val();
+		var url = "/v1/config/envionment/" + group + "/"+project+".json";
+		$.getJSON(url,function(data) {
+
+			$.each(data, function(key, val) {
+				$("#envionment").append('<option value="' + val + '"/>');
 			});
 
 		});
