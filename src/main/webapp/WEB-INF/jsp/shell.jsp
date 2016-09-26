@@ -48,8 +48,8 @@ ${output}
 		   
 		   stompClient.connect({}, function (frame) {
 		        console.log('Connected: ' + frame);
-		        stompClient.subscribe('/topic/shell', function (proto) {
-		            $("#output").append("<li>" + JSON.parse(proto.response).content + "</li>");
+		        stompClient.subscribe('/topic/shell', function (protocol) {
+		            $("#output").append("<li>" + JSON.parse(protocol.response).content + "</li>");
 		        });
 		    });
 		    

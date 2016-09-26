@@ -12,7 +12,7 @@ public class ShellController {
 		// TODO Auto-generated constructor stub
 	}
 	
-	@RequestMapping("/run")
+	@RequestMapping("/")
 	public ModelAndView manual() {
 		
 		return new ModelAndView("shell");
