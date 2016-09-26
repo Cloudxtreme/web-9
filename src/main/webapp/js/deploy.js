@@ -4,8 +4,6 @@
 
 jQuery(document).ready(
 		function() {
-
-			
 		   var socket = new SockJS('/logging');
 		   var stompClient = Stomp.over(socket);
 		    stompClient.connect({}, function (frame) {
