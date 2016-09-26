@@ -164,10 +164,6 @@ jQuery(document).ready(
 				var win = window.open(url, 'logging');
 				  win.focus();
 			});
-			
-			
-		    
-			
 		});
 jQuery.readyException = function(error) {
 	// "error" is thrown from any ready handler

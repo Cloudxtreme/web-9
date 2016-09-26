@@ -22,12 +22,15 @@
 		<select id="group" name="group">
 			<option value="">-- Group --</option>
 		</select>
-		<select id="envionment" name="envionment">
-			<option value="">-- Envionment --</option>
-		</select> <input id="project" list="projectList" name="project" value="${project}" />
+		<input id="project" list="projectList" name="project" value="${project}" />
 		<datalist id="projectList">
 			<!-- <option value="www.example.com"> -->
 		</datalist>
+		
+		<select id="envionment" name="envionment">
+			<option value="">-- Envionment --</option>
+		</select>
+		
 		<!-- <input type="submit" id="submit" value="Deploy" /> -->
 		<input type="button" id="deploy" value="Deploy" />
 		<input type="reset" id="reset" value="Cancel" />			
@@ -58,6 +61,32 @@
 
 <script>
 jQuery(document).ready(function() {
+	
+	$("#group").change(function() {
+
+		var group = $("#group").val();
+		var env = $("#envionment").val();
+		var prj = $("#project").val();
+		var url = "/v1/config/project/" + group + ".json";
+		var color = "";
+		if (envionment == "testing") {
+			color = "blue";
+		}
+		if (envionment == "production") {
+			color = "red";
+		}
+		
+		$.getJSON(url,function(data) {
+
+			$.each(data, function(key, val) {
+				$("#projectList").append(
+						'<option value="' + val + '"/>');
+			});
+
+		});
+
+	});
+	
 	jQuery("#deploy").click(function() {
 		var group = $("#group").val();
 		var envionment = $("#envionment").val();

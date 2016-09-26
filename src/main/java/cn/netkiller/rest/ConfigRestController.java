@@ -2,10 +2,15 @@ package cn.netkiller.rest;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Stream;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -44,7 +49,18 @@ public class ConfigRestController extends CommonRestController {
 		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "config")));
 		return Arrays.asList(String.valueOf(properties.get("group")).concat(",").split(","));
 	}
-
+	@RequestMapping("/project/{group}")
+	public List<String> project(@PathVariable String group) throws IOException {
+		List<String> dir= new ArrayList<String>();
+ 		try(Stream<Path> paths = Files.walk(Paths.get(String.format("%s/%s", this.workspace, group)))) {
+		    paths.forEach(filePath -> {
+		        if (Files.isDirectory(filePath)) {
+		            dir.add(filePath.toString());
+		        }
+		    });
+		}
+		return dir;
+	}
 	@RequestMapping("/envionment")
 	public List<String> envionment() throws IOException {
 		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "config")));
