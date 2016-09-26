@@ -15,7 +15,7 @@ public class DeployController {
 	@RequestMapping("/ant")
 	public ModelAndView manual() {
 		
-		return new ModelAndView("ant");
+		return new ModelAndView("deploy/ant");
 
 	}
 }
