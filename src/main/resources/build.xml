@@ -17,16 +17,16 @@ Date: 2016-09-26
 	<property name="remote.destination" value="/www/${project.group}/${project.name}" />
 
 	
-	<property name="project.basedir" value="" />
+	<!-- <property name="project.basedir" value="" /> -->
 	<property name="project.group" value="example.com" />
 	<property name="project.envionment" value="development" />
 	<property name="project.name" value="${project.name}" />
-	<property name="project.dir" value="${project.basedir}/${project.name}/${git.branch}" />
+	<property name="project.dir" value="${basedir}/${project.name}/${git.branch}" />
 	<property name="project.src" value="${project.dir}/src" />
-	<property name="project.build" value="${project.basedir}/build/${project.name}/${git.branch}" />
-	<property name="project.config" value="config" />
+	<property name="project.build" value="${basedir}/build/${project.name}/${git.branch}" />
+	<property name="project.resource" value="${basedir}/${project.name}/${git.branch}/resource" />
 	<property name="project.exclude" value="/dev/null" />
-	<property name="project.log" value="${project.basedir}/log" />
+	<property name="project.log" value="${basedir}/log" />
 	<property name="project.package" value="${project.name}" />
 	<property name="project.version" value="0.0.1" />
 
@@ -244,7 +244,7 @@ Date: 2016-09-26
 
 	<target name="config" depends="init">
 		<copy todir="${project.build}" overwrite="true">
-			<fileset dir="${project.config}" includes="**/*" />
+			<fileset dir="${project.resource}" includes="**/*" />
 		</copy>
 	</target>
 
