@@ -56,7 +56,7 @@ public class ConfigRestController extends CommonRestController {
  		try(Stream<Path> paths = Files.walk(Paths.get(path),1)) {
 		    paths.forEach(filePath -> {
 		        if (Files.isDirectory(filePath)) {
-		        	String project = filePath.toString().replace(path, "");
+		        	String project = filePath.toString().replace(path, "").replace(path.substring(-1), "");
 		        	if(! project.equals("")){
 		        		dir.add(project);
 		        	}
@@ -79,7 +79,7 @@ public class ConfigRestController extends CommonRestController {
  		try(Stream<Path> paths = Files.walk(Paths.get(path),1)) {
 		    paths.forEach(filePath -> {
 		        if (Files.isDirectory(filePath)) {
-		        	String envionment = filePath.toString().replace(path, "");
+		        	String envionment = filePath.toString().replace(path, "").replace(path, "").replace(path.substring(-1), "");
 		        	if(! envionment.equals("")){
 		        		dir.add(envionment);
 		        	}
