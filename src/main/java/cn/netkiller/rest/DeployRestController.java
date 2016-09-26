@@ -150,7 +150,7 @@ public class DeployRestController extends CommonRestController {
 			// System.out.println(buildfile);
 		}
 
-		String propertyfile = String.format("%s/%s/%s/%s/build.properties", this.workspace, group, envionment, project);
+		String propertyfile = String.format("%s/%s/%s/%s/build.properties", this.workspace, group, project, envionment);
 		String command = String.format("ant -propertyfile %s -buildfile %s %s", propertyfile, buildfile, arguments);
 		Properties properties = this.config(propertyfile);
 		if (properties != null) {
@@ -158,7 +158,7 @@ public class DeployRestController extends CommonRestController {
 				System.out.println(entry.getKey() + " => " + entry.getValue());
 			}
 
-			ScreenOutput r = new ScreenOutput(this.template, this.exec(command, "/tmp/test"));
+			ScreenOutput r = new ScreenOutput(this.template, this.exec(command, "/tmp"));
 			new Thread(r).start();
 			protocol.setRequest(command);
 		}else {
