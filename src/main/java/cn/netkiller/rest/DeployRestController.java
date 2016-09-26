@@ -47,6 +47,11 @@ public class DeployRestController extends CommonRestController {
 		Process process = null;
 		String[] cmd = null;
 		try {
+			File file = new File(path);
+			if (!file.exists()) {
+				path = "/tmp";
+			}
+			
 			if (System.getProperty("os.name").equals("Windows 10")) {
 				cmd = new String[] { "cmd", "/C", command };
 			} else {
@@ -82,7 +87,6 @@ public class DeployRestController extends CommonRestController {
 			try {
 
 				InputStream inputStream = process.getInputStream();
-
 				InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
 				BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 				while ((line = bufferedReader.readLine()) != null) {
@@ -128,11 +132,13 @@ public class DeployRestController extends CommonRestController {
 		return "OK";
 	}
 
-	@RequestMapping("/ant")
-	public ResponseEntity<Protocol> ant() throws IOException {
+	
+	@RequestMapping(value = "/ant", method = RequestMethod.POST, produces = { "application/xml", "application/json" })
+	public ResponseEntity<Protocol> ant(@RequestBody Deploy deploy) throws IOException {
 		Protocol protocol = new Protocol();
 		protocol.setStatus(true);
-		String group = "cf88.com", envionment = "development", project = "admin.cf88.com";
+		String group =deploy.getGroup(), envionment = deploy.getEnvionment(), project = deploy.getProject();
+		String arguments = String.join(" ", deploy.getArguments());
 		String buildfile = "";
 		ClassPathResource classPathResource = new ClassPathResource("build.xml");
 		if (classPathResource.exists()) {
@@ -143,7 +149,7 @@ public class DeployRestController extends CommonRestController {
 		}
 
 		String propertyfile = String.format("%s/%s/%s/%s/build.properties", this.workspace, group, envionment, project);
-		String command = String.format("ant -propertyfile %s -buildfile=%s", propertyfile, buildfile);
+		String command = String.format("ant -propertyfile %s -buildfile=%s %s", propertyfile, buildfile, arguments);
 		Properties properties = this.config(propertyfile);
 		if (properties != null) {
 			for (Entry<Object, Object> entry : properties.entrySet()) {
@@ -154,7 +160,8 @@ public class DeployRestController extends CommonRestController {
 			new Thread(r).start();
 			protocol.setRequest(command);
 		}else {
-			//protocol.setRequest(command);
+			protocol.setRequest(command);
+			protocol.setResponse(String.format("Cannot open file (%s)", propertyfile));
 			protocol.setStatus(false);
 		}
 
