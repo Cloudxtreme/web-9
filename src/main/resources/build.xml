@@ -4,7 +4,7 @@ Homepage: http://www.netkiller.cn
 Author: neo <netkiller@msn.com>
 Date: 2016-09-26
 -->
-<project name="www.example.com" default="compile" basedir=".">
+<project name="www.example.com" default="compile" basedir="~/workspace">
 
 	<property file="build.properties" />
 
@@ -21,14 +21,15 @@ Date: 2016-09-26
 	<property name="project.group" value="example.com" />
 	<property name="project.envionment" value="development" />
 	<property name="project.name" value="${project.name}" />
-	<property name="project.dir" value="${basedir}/${project.name}/${git.branch}" />
+	<property name="project.dir" value="${basedir}/${project.group}/${project.name}/${git.branch}/repository" />
 	<property name="project.src" value="${project.dir}/src" />
 	<property name="project.build" value="${basedir}/build/${project.name}/${git.branch}" />
-	<property name="project.resource" value="${basedir}/${project.name}/${git.branch}/resource" />
+	<property name="project.resource" value="${basedir}/${project.group}/${project.name}/${git.branch}/resource" />
 	<property name="project.exclude" value="/dev/null" />
 	<property name="project.log" value="${basedir}/log" />
-	<property name="project.package" value="${project.name}" />
 	<property name="project.version" value="0.0.1" />
+	<property name="project.package" value="${project.name}-${git.branch}-${project.version}" />
+	
 
 	<property name="backup.dir" value="backup" />
 	<property name="receive.timepoint" value="2015-12-04.17:46:35" />

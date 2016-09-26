@@ -85,7 +85,7 @@ public class DeployRestController extends ShellRestController {
 				System.out.println(entry.getKey() + " => " + entry.getValue());
 			}
 
-			ScreenOutput r = new ScreenOutput(this.template, "/topic/log", this.exec(command, "/tmp"));
+			ScreenOutput r = new ScreenOutput(this.template, "/topic/log", this.exec(command, "~"));
 			new Thread(r).start();
 			protocol.setRequest(command);
 		}else {
