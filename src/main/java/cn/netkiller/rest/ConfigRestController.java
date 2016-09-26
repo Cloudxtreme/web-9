@@ -62,5 +62,10 @@ public class ConfigRestController extends CommonRestController {
 
 		return new ResponseEntity<Properties>(properties, HttpStatus.OK);
 	}
+	@RequestMapping("/host")
+	public Enumeration<Object> host() throws IOException {
+		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "host")));
+		return properties.keys();
+	}
 
 }

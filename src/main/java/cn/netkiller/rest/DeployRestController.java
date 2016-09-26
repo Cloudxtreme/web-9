@@ -1,12 +1,8 @@
 package cn.netkiller.rest;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.Map.Entry;
 import java.util.Properties;
 
@@ -17,7 +13,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,86 +21,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.netkiller.pojo.Deploy;
-import cn.netkiller.pojo.Greeting;
 import cn.netkiller.pojo.Protocol;
-import cn.netkiller.web.IndexController;
 
 @RestController
 @RequestMapping("/v1/deploy")
-public class DeployRestController extends CommonRestController {
+public class DeployRestController extends ShellRestController {
 
 	@Autowired
 	private SimpMessagingTemplate template;
-	private static final Logger log = LoggerFactory.getLogger(IndexController.class);
+	private static final Logger log = LoggerFactory.getLogger(DeployRestController.class);
 
 	public DeployRestController() {
 		// TODO Auto-generated constructor stub
-	}
-
-	private Process exec(String command, String path) {
-
-		Process process = null;
-		String[] cmd = null;
-		try {
-			File file = new File(path);
-			if (!file.exists()) {
-				path = "/tmp";
-			}
-			
-			if (System.getProperty("os.name").equals("Windows 10")) {
-				cmd = new String[] { "cmd", "/C", command };
-			} else {
-				cmd = new String[] { "/bin/bash", "-c", command };
-			}
-
-			log.info("The command is {}", Arrays.toString(cmd));
-
-			Runtime runtime = Runtime.getRuntime();
-			process = runtime.exec(cmd, null, new File(path));
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return process;
-	}
-
-	public class ScreenOutput implements Runnable {
-
-		private SimpMessagingTemplate simpMessagingTemplate;
-		private Process process = null;
-
-		public ScreenOutput(SimpMessagingTemplate simpMessagingTemplate, Process process) {
-			this.simpMessagingTemplate = simpMessagingTemplate;
-			this.process = process;
-		}
-
-		@Override
-		public void run() {
-			StringBuilder stringBuilder = new StringBuilder();
-			String line = null;
-			try {
-
-				InputStream inputStream = process.getInputStream();
-				InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-				BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-				while ((line = bufferedReader.readLine()) != null) {
-					stringBuilder.append(line + "\n");
-					this.simpMessagingTemplate.convertAndSend("/topic/log", new Greeting(line));
-				}
-				bufferedReader.close();
-				inputStream.close();
-				inputStreamReader.close();
-			} catch (MessagingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			log.info("The output is {}", stringBuilder.toString());
-		}
-
 	}
 
 	private Properties config(String path) {
@@ -128,7 +55,7 @@ public class DeployRestController extends CommonRestController {
 
 	@RequestMapping("/test")
 	public String test() throws IOException {
-		ScreenOutput r = new ScreenOutput(this.template, this.exec("dir", "."));
+		ScreenOutput r = new ScreenOutput(this.template, "/topic/log", super.exec("dir", "."));
 		new Thread(r).start();
 		System.out.println("===========os.name:" + System.getProperties().getProperty("os.name"));
 		return "OK";
@@ -158,7 +85,7 @@ public class DeployRestController extends CommonRestController {
 				System.out.println(entry.getKey() + " => " + entry.getValue());
 			}
 
-			ScreenOutput r = new ScreenOutput(this.template, this.exec(command, "/tmp"));
+			ScreenOutput r = new ScreenOutput(this.template, "/topic/log", this.exec(command, "/tmp"));
 			new Thread(r).start();
 			protocol.setRequest(command);
 		}else {
@@ -183,7 +110,7 @@ public class DeployRestController extends CommonRestController {
 		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s/%s.properties", group, envionment)));
 		if (properties.containsKey(project)) {
 			String command = properties.getProperty(project);
-			ScreenOutput r = new ScreenOutput(this.template, this.exec(command, workspace));
+			ScreenOutput r = new ScreenOutput(this.template, "/topic/log", this.exec(command, workspace));
 			new Thread(r).start();
 			protocol.setRequest(command);
 		} else {
@@ -211,11 +138,11 @@ public class DeployRestController extends CommonRestController {
 
 			if (deploy.getArguments().contains("deployment")) {
 				command = String.format("deployment %s %s", deploy.getEnvionment(), deploy.getProject());
-				screenOutput = new ScreenOutput(this.template, this.exec(command, "/www"));
+				screenOutput = new ScreenOutput(this.template, "/topic/log", this.exec(command, "/www"));
 			} else {
 				command = String.join(" ", deploy.getArguments());
 				String workspace = String.format("/www/%s/%s/%s", deploy.getGroup(), deploy.getEnvionment(), deploy.getProject());
-				screenOutput = new ScreenOutput(this.template, this.exec(command, workspace));
+				screenOutput = new ScreenOutput(this.template, "/topic/log", this.exec(command, workspace));
 			}
 			new Thread(screenOutput).start();
 			protocol.setRequest(command);
