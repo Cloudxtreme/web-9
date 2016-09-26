@@ -111,11 +111,13 @@ public class DeployRestController extends CommonRestController {
 	private Properties config(String path) {
 		log.info("The config is {}", path);
 		Properties properties = new java.util.Properties();
-		;
+
 		try {
 			File file = new File(path);
 			if (file.exists()) {
 				properties.load(new FileInputStream(file));
+			}else{
+				properties = null;
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -149,7 +151,7 @@ public class DeployRestController extends CommonRestController {
 		}
 
 		String propertyfile = String.format("%s/%s/%s/%s/build.properties", this.workspace, group, envionment, project);
-		String command = String.format("ant -propertyfile %s -buildfile=%s %s", propertyfile, buildfile, arguments);
+		String command = String.format("ant -propertyfile %s -buildfile %s %s", propertyfile, buildfile, arguments);
 		Properties properties = this.config(propertyfile);
 		if (properties != null) {
 			for (Entry<Object, Object> entry : properties.entrySet()) {
