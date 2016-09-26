@@ -52,7 +52,7 @@ public class ConfigRestController extends CommonRestController {
 	@RequestMapping("/project/{group}")
 	public List<String> project(@PathVariable String group) throws IOException {
 		List<String> dir= new ArrayList<String>();
- 		try(Stream<Path> paths = Files.walk(Paths.get(String.format("%s/%s", this.workspace, group)))) {
+ 		try(Stream<Path> paths = Files.walk(Paths.get(String.format("%s/%s", this.workspace, group)),1)) {
 		    paths.forEach(filePath -> {
 		        if (Files.isDirectory(filePath)) {
 		            dir.add(filePath.toString());
