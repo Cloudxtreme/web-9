@@ -18,8 +18,8 @@ function connect() {
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/log', function (proto) {
-            showGreeting(JSON.parse(proto.response).content);
+        stompClient.subscribe('/topic/log', function (protocol) {
+            showGreeting(JSON.parse(protocol.body).response);
         });
     });
 }

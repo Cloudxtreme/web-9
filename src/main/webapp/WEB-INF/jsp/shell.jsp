@@ -18,7 +18,7 @@
 	<%@ include file="header.jsp" %>
 	<br />
 
-<form class="form-inline">
+
     	<select id="host" name="host">
 			<option value="">-- Host --</option>
 		</select> 
@@ -27,8 +27,6 @@
         <input type="text" id="command" list="logs" size="128" class="form-control" placeholder="Your command here...">
 
     <button id="run" class="btn btn-default" type="button">Run</button>
-</form>
-
 
 	<fieldset>
 		<legend>Screen output</legend>
@@ -43,15 +41,15 @@ ${output}
 	<script>
 	jQuery(document).ready(function() {
 		
-		   var socket = new SockJS('/screen');
-		   var stompClient = Stomp.over(socket);
-		   
-		   stompClient.connect({}, function (frame) {
-		        console.log('Connected: ' + frame);
-		        stompClient.subscribe('/topic/shell', function (protocol) {
-		            $("#output").append("<li>" + JSON.parse(protocol.body).response + "</li>");
-		        });
-		    });
+	   var socket = new SockJS('/screen');
+	   var stompClient = Stomp.over(socket);
+	   
+	   stompClient.connect({}, function (frame) {
+	        console.log('Connected: ' + frame);
+	        stompClient.subscribe('/topic/shell', function (protocol) {
+	            $("#output").append("<li>" + JSON.parse(protocol.body).response + "</li>");
+	        });
+	    });
 		    
 		$.getJSON('/v1/config/host.json',function(data) {
 			$.each(data,function(key, val) {
