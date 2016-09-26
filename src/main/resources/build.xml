@@ -305,7 +305,7 @@ Date: 2016-09-26
 		</tstamp>
 		<echo>the backup directory is ${TIMEPOINT}.</echo>
 		<mkdir dir="${backup.dir}/${TIMEPOINT}" />
-		<rsync option="-auzv" src="${remote}:${destination}" dest="${backup.dir}/${TIMEPOINT}">
+		<rsync option="-auzv" src="${remote.host}:${destination}" dest="${backup.dir}/${TIMEPOINT}">
 		</rsync>
 	</target>
 	<target name="tgz" depends="">
@@ -313,35 +313,35 @@ Date: 2016-09-26
 			<format property="TIMEPOINT" pattern="yyyy-MM-dd.HH:mm:ss" locale="cn,CN" />
 		</tstamp>
 		<echo>the backup directory is ${TIMEPOINT}.</echo>
-		<ssh host="${remote}" command="tar zcvf ~/${backup.dir}/${project.name}.${TIMEPOINT}.tgz ${destination}" />
+		<ssh host="${remote.host}" command="tar zcvf ~/${backup.dir}/${project.name}.${TIMEPOINT}.tgz ${destination}" />
 	</target>
 	<target name="snapshot" depends="">
 		<tstamp>
 			<format property="TIMEPOINT" pattern="yyyy-MM-dd.HH:mm:ss" locale="cn,CN" />
 		</tstamp>
 		<echo>the backup directory is ${TIMEPOINT}.</echo>
-		<ssh host="${remote}" command="btrfs subvolume snapshot /www /www/${project.name}.${TIMEPOINT}" />
+		<ssh host="${remote.host}" command="btrfs subvolume snapshot /www /www/${project.name}.${TIMEPOINT}" />
 	</target>
 	<target name="history" depends="">
-		<ssh host="${remote}" command="ls -1 ${backup.dir}" />
+		<ssh host="${remote.host}" command="ls -1 ${backup.dir}" />
 	</target>
 	<target name="receive" depends="clean">
 		<echo>the receive directory is ${receive.timepoint}.</echo>
-		<rsync option="-auzv" src="${backup.dir}/${receive.timepoint}" dest="${remote}:${destination}" />
+		<rsync option="-auzv" src="${backup.dir}/${receive.timepoint}" dest="${remote.host}:${destination}" />
 	</target>
 
 	<target name="stop" depends="">
-		<!-- ssh host="${remote}" command="${catalina.home}/bin/catalina.sh stop -force" keyfile="~/.ssh/id_rsa" / -->
-		<ssh host="${remote}" command="${catalina.home}/bin/shutdown.sh" />
+		<!-- ssh host="${remote.host}" command="${catalina.home}/bin/catalina.sh stop -force" keyfile="~/.ssh/id_rsa" / -->
+		<ssh host="${remote.host}" command="${catalina.home}/bin/shutdown.sh" />
 	</target>
 	<target name="security" depends="">
-        <ssh host="${remote}" command="rm -rf ${catalina.home}/conf/Catalina//*" />
-        <ssh host="${remote}" command="rm -rf ${catalina.home}/webapps/*" />
-        <ssh host="${remote}" command="rm -rf ${catalina.home}/work/Catalina/*" />
+        <ssh host="${remote.host}" command="rm -rf ${catalina.home}/conf/Catalina//*" />
+        <ssh host="${remote.host}" command="rm -rf ${catalina.home}/webapps/*" />
+        <ssh host="${remote.host}" command="rm -rf ${catalina.home}/work/Catalina/*" />
     </target>
 
 	<target name="start" depends="security">
-		<ssh host="${remote}" command="${catalina.home}/bin/startup.sh" keyfile="~/.ssh/id_rsa" />
+		<ssh host="${remote.host}" command="${catalina.home}/bin/startup.sh" keyfile="~/.ssh/id_rsa" />
 	</target>
 	
 	<target name="restart">
@@ -350,23 +350,23 @@ Date: 2016-09-26
 		<ant target="start" />
 	</target>
 	<target name="status" depends="">
-		<ssh host="${remote}" command="ps ax | grep ${catalina.home} | grep -v grep" />
+		<ssh host="${remote.host}" command="ps ax | grep ${catalina.home} | grep -v grep" />
 	</target>
 	<target name="kill" depends="">
-		<ssh host="${remote}" command="pkill -9 -f ${catalina.home}" />
+		<ssh host="${remote.host}" command="pkill -9 -f ${catalina.home}" />
 		<ant target="status" />
 	</target>
 	<target name="catalina">
-		<ssh host="${remote}" command="tail -f ${catalina.home}/logs/catalina.out" />
+		<ssh host="${remote.host}" command="tail -f ${catalina.home}/logs/catalina.out" />
 	</target>
 	<target name="access.log">
 		<tstamp>
 			<format property="datetime" pattern="yyyy-MM-dd" locale="cn,CN" />
 		</tstamp>
-		<ssh host="${remote}" command="tail -f ${catalina.home}/logs/*.${datetime}.*" />
+		<ssh host="${remote.host}" command="tail -f ${catalina.home}/logs/*.${datetime}.*" />
 	</target>
 	<target name="error.log">
-		<ssh host="${remote}" command="tail -f /var/log/nginx/${project.name}.error.log" />
+		<ssh host="${remote.host}" command="tail -f /var/log/nginx/${project.name}.error.log" />
 	</target>
 	
 	<target name="run" depends="">
