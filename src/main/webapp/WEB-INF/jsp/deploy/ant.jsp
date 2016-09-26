@@ -15,7 +15,7 @@
 <script src="/js/deploy.js"></script>
 </head>
 <body>
-	<%@ include file="header.jsp" %>
+	<%@ include file="../header.jsp" %>
 
 	<fieldset>
 		<legend>Tools</legend>
@@ -100,6 +100,6 @@ jQuery(document).ready(function() {
 });
 </script>
 
-	<%@ include file="footer.jsp" %>
+	<%@ include file="../footer.jsp" %>
 </body>
 </html>

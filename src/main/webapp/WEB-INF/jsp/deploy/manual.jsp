@@ -15,12 +15,12 @@
 <script src="/js/deploy.js"></script>
 </head>
 <body>
-	<%@ include file="header.jsp" %>
+	<%@ include file="../header.jsp" %>
 	<%@ include file="deploy.jsp" %>
 	
 <pre>
 ${output}
 </pre>
-	<%@ include file="footer.jsp" %>
+	<%@ include file="../footer.jsp" %>
 </body>
 </html>
