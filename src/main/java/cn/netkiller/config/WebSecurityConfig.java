@@ -24,7 +24,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/ping","/v1/*/ping","/v1/public/**" ).permitAll()
 		.anyRequest().authenticated()
-		.and().rememberMe().and().httpBasic();
+		.and().rememberMe().and().httpBasic()
+		.and().csrf().disable();
 	}
 	
 /*	@Autowired

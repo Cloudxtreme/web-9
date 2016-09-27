@@ -13,6 +13,11 @@
 <%-- <%@ include file="head.jsp" %> --%>
 
 <script src="/js/deploy.js"></script>
+
+	<meta name="${_csrf.parameterName}" content="${_csrf.token}"/>
+	<!-- default header name is X-CSRF-TOKEN -->
+	<meta name="_csrf_header" content="${_csrf.headerName}"/>
+
 </head>
 <body>
 	<%@ include file="../header.jsp" %>
