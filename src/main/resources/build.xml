@@ -16,14 +16,15 @@ Date: 2016-09-26
 	<property name="remote.host" value="www@23.25.22.72" />
 	<property name="remote.destination" value="/www/${project.group}/${project.name}" />
 
-	
-	<!-- <property name="project.basedir" value="" /> -->
 	<property name="project.group" value="example.com" />
 	<property name="project.envionment" value="development" />
 	<property name="project.name" value="${project.name}" />
+	<property name="project.web" value="WebContent" />
+	
 	<property name="project.dir" value="${basedir}/${project.group}/${project.name}/${git.branch}/repository" />
 	<property name="project.src" value="${project.dir}/src" />
 	<property name="project.build" value="${basedir}/${project.group}/${project.name}/${git.branch}/dist" />
+	<property name="project.webcontent" value="${project.dir}/${project.web}" />
 	<property name="project.resource" value="${basedir}/${project.group}/${project.name}/${git.branch}/resource" />
 	<property name="project.exclude" value="/dev/null" />
 	<property name="project.log" value="${basedir}/log" />
@@ -225,7 +226,7 @@ Date: 2016-09-26
 			<fileset dir="${project.dir}/WebRoot" includes="**/*" />
 		</copy>
 		
-		<rsync option="-av" src="${project.dir}/WebContent/" dest="${project.build}/">
+		<rsync option="-av" src="${project.webcontent}/" dest="${project.build}/">
 			<args>
 				<arg value="--delete" />
 				<arg value="--exclude=.git" />

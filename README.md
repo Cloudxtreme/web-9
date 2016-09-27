@@ -6,6 +6,8 @@ Web Tools
  
  	git clone https://github.com/oscm/web.git
  	
+ 	mkdir -p workspace/netkiller.cn/{www,news,bbs}.netkiller.cn/{development,testing,production}
+ 	
  	
 	$ cat run.sh 
 	cd web
