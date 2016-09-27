@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -38,7 +39,7 @@ public class ShellRestController  extends CommonRestController{
 		// TODO Auto-generated constructor stub
 	}
 	
-	@RequestMapping(value = "/run/{host}", method = RequestMethod.POST, produces = { "application/xml", "application/json" })
+	@RequestMapping(value = "/run/{host}", method = RequestMethod.POST, produces = { "application/xml", MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<Protocol> ant(@PathVariable String host, @RequestBody Protocol proto) throws IOException {
 		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "host")));
 		String rhost = (String) properties.get(host); 

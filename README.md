@@ -4,6 +4,9 @@ Web Tools
 
 ## Startup
  
+ 	git clone https://github.com/oscm/web.git
+ 	
+ 	
 	$ cat run.sh 
 	cd web
 	git reset --hard && git pull 
