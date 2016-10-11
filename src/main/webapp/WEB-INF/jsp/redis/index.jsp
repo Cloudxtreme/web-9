@@ -12,29 +12,29 @@
 	<%@ include file="../header.jsp" %>
 	<br />
 
-		<input id="host" list="hostList" name="host" value="192.168.4.1" size="16" />
+		<input id="host" list="hostList" name="host" size="16" />
     	<datalist id="hostList">
-			<option value="">-- Host --</option>
+			<option value="127.0.0.1">localhost</option>
 		</datalist> 
 
-		<input id="db" list="dbList" name="db" value="0" size="2" />
+		<input id="db" list="dbList" name="db" size="2" />
 		<datalist id="dbList">
-			<option value="0">
-			<option value="1">
-			<option value="2">
-			<option value="4">
-			<option value="5">
-			<option value="6">
-			<option value="7">
-			<option value="8">
-			<option value="9">
-			<option value="10">
-			<option value="11">
-			<option value="12">
-			<option value="13">
-			<option value="14">
-			<option value="15">
-			<option value="16">
+			<option value="0"/>
+			<option value="1"/>
+			<option value="2"/>
+			<option value="4"/>
+			<option value="5"/>
+			<option value="6"/>
+			<option value="7"/>
+			<option value="8"/>
+			<option value="9"/>
+			<option value="10"/>
+			<option value="11"/>
+			<option value="12"/>
+			<option value="13"/>
+			<option value="14"/>
+			<option value="15"/>
+			<option value="16"/>
 		</datalist>
 
         <label for="keys">Keys</label>
