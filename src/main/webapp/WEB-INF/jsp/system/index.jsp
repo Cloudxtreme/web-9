@@ -4,9 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Redis</title>
-<script src="/webjars/jquery/jquery.min.js"></script>
-<%-- <%@ include file="head.jsp" %> --%>
+	<title>System</title>
+	<%@ include file="../head.jsp" %>
 </head>
 <body>
 	<%@ include file="../header.jsp" %>
