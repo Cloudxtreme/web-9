@@ -40,7 +40,21 @@
         <label for="keys">Keys</label>
         <input type="text" id="keys" list="keyList" size="64" class="form-control" value="*" placeholder="Your command here...">
  -->
-    <button id="run" class="btn btn-default" type="button">Run</button>
+    <button id="version" class="btn btn-default" type="button">Version</button>
+    <button id="date" class="btn btn-default" type="button">Date</button>
+    <button id="last" class="btn btn-default" type="button">Last</button>
+    <button id="who" class="btn btn-default" type="button">Who</button>
+    <button id="df" class="btn btn-default" type="button">df</button>
+    <button id="ps" class="btn btn-default" type="button">ps</button>
+    <button id="free" class="btn btn-default" type="button">free</button>
+    
+
+
+	<fieldset>
+		<legend>Screen output</legend>
+    	<button id="init" class="btn btn-default" type="button">Init</button>
+    	<button id="ssh" class="btn btn-default" type="button">SSH</button>
+	</fieldset>
 
 	<fieldset>
 		<legend>Screen output</legend>
@@ -56,78 +70,70 @@
 	<script>
 	jQuery(document).ready(function() {
 		
-	  	    
+	   var socket = new SockJS('/screen');
+	   var stompClient = Stomp.over(socket);
+	   
+	   stompClient.connect({}, function (frame) {
+	        console.log('Connected: ' + frame);
+	        stompClient.subscribe('/topic/shell', function (protocol) {
+	            $("#output").append("<li>" + JSON.parse(protocol.body).response + "</li>");
+	        });
+	    });
+		    
 		$.getJSON('/v1/config/host.json',function(data) {
 			$.each(data,function(key, val) {
-				$("#hostList").append('<option value="' + val + '">' + val	+ "</option>");
+				$("#host").append('<option value="' + val + '">' + val	+ "</option>");
 			});
 		});
 		
-		jQuery("#run").click(function() {
-			
+		version
+		
+		jQuery("#version").click(function() {
+			shell("cat /etc/issue /etc/centos-release");
+		});
+		jQuery("#date").click(function() {
+			shell("date");
+		});
+		jQuery("#last").click(function() {
+			shell("last");
+		});
+		jQuery("#who").click(function() {
+			shell("who");
+		});
+		jQuery("#df").click(function() {
+			shell("df -h");
+		});
+		jQuery("#ps").click(function() {
+			shell("ps");
+		});
+		jQuery("#free").click(function() {
+			shell("free -m");
+		});
+		
+		function shell(command){
+			var command = $("#command").val();
 			var host = $("#host").val();
-			var db = $("#db").val();
-			var keys = $("#keys").val();
 			var protocol = {
-					'host': host,
-					'db': db,
-					'keys': keys
+					'request': command
 			};
-
 			console.log('json: ' + JSON.stringify(protocol));
 			$("#output").html("");
-
 			$.ajax({
 		           type: "POST",
-		           url: "/v1/redis/keys.json",
+		           url: "/v1/system/shell/"+host+".json",
 		           dataType: "json",
 		           contentType: 'application/json',
 		           data: JSON.stringify(protocol),
-		           success: function (data) {
-		               if (data) {
-		            	   	$.each(data,function(key, val) {
-		       					$("#output").append("<li><a href=\"javascript:del('"+ val +"\')\">" + val + '</a></li>');
-		       				});
+		           success: function (msg) {
+		               if (msg.status) {
+		            	   $('#error').html( "Sent" );
 		               } else {
-		            	   $('#error').html( "没有数据" );
+		                   alert("Cannot add to list !");
 		               }
 		           }
-		       });
-		});
-				
+		       });			
+		}
 	});
-
-	function del(key) {
-		
-		var result = confirm('是否删除 Key:'+key);  
-		if(!result){
-			return;
-		}  
-		
-		var host = $("#host").val();
-		var db = $("#db").val();
-		var protocol = {
-				'host': host,
-				'db': db,
-				'keys': key
-		};
-
-		console.log('json: ' + JSON.stringify(protocol));
-		$("#output").html("");
-
-		$.ajax({
-	           type: "POST",
-	           url: "/v1/redis/del.json",
-	           dataType: "json",
-	           contentType: 'application/json',
-	           data: JSON.stringify(protocol),
-	           success: function (data) {
-	               if (data) {
-	            	   $('#error').html( data );
-	               }
-	           }
-	       });
-	}	
 	</script>
 	<%@ include file="../footer.jsp" %>
 </body>

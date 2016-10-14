@@ -70,7 +70,7 @@ ${output}
 
 			$.ajax({
 		           type: "POST",
-		           url: "/v1/shell/run/"+host+".json",
+		           url: "/v1/system/shell/"+host+".json",
 		           dataType: "json",
 		           contentType: 'application/json',
 		           data: JSON.stringify(protocol),

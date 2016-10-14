@@ -5,18 +5,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/shell")
-public class ShellController {
+@RequestMapping("/web")
+public class WebController {
 
-	public ShellController() {
+	public WebController() {
 		// TODO Auto-generated constructor stub
 	}
-	
 	@RequestMapping("/")
 	public ModelAndView manual() {
 		
-		return new ModelAndView("shell");
+		return new ModelAndView("web/index");
 
 	}
-
 }

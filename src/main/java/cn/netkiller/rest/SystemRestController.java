@@ -27,19 +27,19 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.netkiller.pojo.Protocol;
 
 @RestController
-@RequestMapping("/v1/shell")
-public class ShellRestController  extends CommonRestController{
+@RequestMapping("/v1/system")
+public class SystemRestController  extends CommonRestController{
 
 	@Autowired
 	private SimpMessagingTemplate template;
 	
-	private static final Logger log = LoggerFactory.getLogger(ShellRestController.class);
+	private static final Logger log = LoggerFactory.getLogger(SystemRestController.class);
 	
-	public ShellRestController() {
+	public SystemRestController() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	@RequestMapping(value = "/run/{host}", method = RequestMethod.POST, produces = { "application/xml", MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/shell/{host}", method = RequestMethod.POST, produces = { "application/xml", MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<Protocol> ant(@PathVariable String host, @RequestBody Protocol proto) throws IOException {
 		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "host")));
 		String rhost = (String) properties.get(host); 

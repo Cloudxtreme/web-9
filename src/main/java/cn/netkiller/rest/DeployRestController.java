@@ -25,7 +25,7 @@ import cn.netkiller.pojo.Protocol;
 
 @RestController
 @RequestMapping("/v1/deploy")
-public class DeployRestController extends ShellRestController {
+public class DeployRestController extends SystemRestController {
 
 	@Autowired
 	private SimpMessagingTemplate template;
