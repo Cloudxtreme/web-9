@@ -46,13 +46,17 @@
     <button id="df" class="btn btn-default" type="button">df</button>
     <button id="ps" class="btn btn-default" type="button">ps</button>
     <button id="free" class="btn btn-default" type="button">free</button>
+    <button id="ipaddr" class="btn btn-default" type="button">ip address</button>
+    <button id="route" class="btn btn-default" type="button">route</button>
+    <button id="ss" class="btn btn-default" type="button">listen</button>
+    <button id="iptables" class="btn btn-default" type="button">iptables</button>
     
 	<fieldset>
 		<legend>System setup</legend>
     	<button id="personalise" class="btn btn-default" type="button">Personalise</button>
     	<button id="epel" class="btn btn-default" type="button">epel-release</button>
     	<button id="selinux" class="btn btn-default" type="button">Disable selinux</button>
-    	<button id="iptables" class="btn btn-default" type="button">Iptable</button>
+    	<button id="firewall" class="btn btn-default" type="button">Iptables</button>
     	<button id="ntp" class="btn btn-default" type="button">ntpd</button>
     	<button id="ssh" class="btn btn-default" type="button">SSH</button>
     	<button id="zmodem" class="btn btn-default" type="button">Zmodem</button>
@@ -110,6 +114,20 @@
 			shell("free -m");
 		});
 		
+		jQuery("#ipaddr").click(function() {
+			shell("ip addr");
+		});
+		
+		jQuery("#route").click(function() {
+			shell("ip route");
+		});
+		jQuery("#ss").click(function() {
+			shell("ss -ntlp");
+		});
+		jQuery("#iptables").click(function() {
+			shell("iptables-save");
+		});
+		
 		jQuery("#personalise").click(function() {
 			shell("curl -s https://raw.githubusercontent.com/oscm/shell/master/os/personalise.sh | bash");
 		});
@@ -119,7 +137,7 @@
 		jQuery("#selinux").click(function() {
 			shell("curl -s https://raw.githubusercontent.com/oscm/shell/master/os/selinux.sh | bash");
 		});
-		jQuery("#iptables").click(function() {
+		jQuery("#firewall").click(function() {
 			shell("curl -s https://raw.githubusercontent.com/oscm/shell/master/os/iptables/iptables.sh | bash");
 		});
 		jQuery("#ntpd").click(function() {
