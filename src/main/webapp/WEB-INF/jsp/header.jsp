@@ -6,5 +6,5 @@
 <a href="/deploy/manual">手工操作</a> |  
 <a href="/deploy/ant.html">新功能</a> | 
 <a href="/redis/">Redis</a> | 
-<a href="/system/">System</a>
+<a href="/system/">System</a> | 
 <a href="/system/shell/">Shell</a> |
