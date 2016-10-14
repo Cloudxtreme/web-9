@@ -72,19 +72,15 @@
 
 			});
 
-			$.getJSON('/v1/config/envionment.json',
+    		$("#envionment").change(function() {
+				
+				$.getJSON('/v1/config/envionment.json',	function(data) {
+					$.each(data, function(key, val) {
+						$("#envionment").append('<option value="' + val + '">' + val + "</option>");
+					});
 
-			function(data) {
-
-				$.each(data,
-						function(key, val) {
-							$("#envionment").append(
-									'<option value="' + val + '">' + val
-											+ "</option>");
-						});
-
-			});
-
+				});
+			}); 
 			$("#envionment").change(
 					function() {
 

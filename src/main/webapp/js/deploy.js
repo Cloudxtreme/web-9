@@ -135,9 +135,9 @@ jQuery(document).ready(
 				$("input[value=mvn]").prop("checked", false);
 				$("input[value=deployment]").prop("checked", false);
 
-				$("input[value=tgz]").prop("checked", true);
-				$("input[value=deploy]").attr("checked", "checked");
-				$("input[value=deployment]").prop("checked", false);
+				$("input[value=tgz]").prop("checked", false);
+				//$("input[value=deploy]").attr("checked", "checked");
+				$("input[value=restart]").prop("checked", true);
 			});
 			jQuery("#mvn").click(function() {
 				$("input[value=ant]").prop("checked", false);

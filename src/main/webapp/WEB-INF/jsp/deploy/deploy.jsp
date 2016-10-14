@@ -50,7 +50,7 @@
 	
 	<fieldset>
 		<legend>Screen output</legend>
-		<ol id="output">
+		<ol id="output" class="screen">
 	
 		</ol>
 	</fieldset>
