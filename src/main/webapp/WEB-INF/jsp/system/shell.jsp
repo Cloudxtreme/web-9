@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 	<title>Log output</title>
-	<%@ include file="head.jsp" %>
+	<%@ include file="../head.jsp" %>
 
 <script src="/js/deploy.js"></script>
 </head>
