@@ -50,9 +50,11 @@
 	
 	<fieldset>
 		<legend>Screen output</legend>
-		<ol id="output" class="screen">
+		<div class="screen">
+		<ol id="output">
 	
 		</ol>
+		</div>
 	</fieldset>
 	
 	<script>
