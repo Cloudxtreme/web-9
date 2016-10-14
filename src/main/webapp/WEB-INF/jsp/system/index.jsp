@@ -110,7 +110,6 @@
 		});
 		
 		function shell(command){
-			var command = $("#command").val();
 			var host = $("#host").val();
 			var protocol = {
 					'request': command
