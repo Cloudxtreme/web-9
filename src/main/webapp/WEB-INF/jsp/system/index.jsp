@@ -47,12 +47,15 @@
     <button id="ps" class="btn btn-default" type="button">ps</button>
     <button id="free" class="btn btn-default" type="button">free</button>
     
-
-
 	<fieldset>
-		<legend>Screen output</legend>
-    	<button id="init" class="btn btn-default" type="button">Init</button>
+		<legend>System setup</legend>
+    	<button id="personalise" class="btn btn-default" type="button">Personalise</button>
+    	<button id="epel" class="btn btn-default" type="button">epel-release</button>
+    	<button id="selinux" class="btn btn-default" type="button">Disable selinux</button>
+    	<button id="iptables" class="btn btn-default" type="button">Iptable</button>
+    	<button id="ntp" class="btn btn-default" type="button">ntpd</button>
     	<button id="ssh" class="btn btn-default" type="button">SSH</button>
+    	<button id="zmodem" class="btn btn-default" type="button">Zmodem</button>
 	</fieldset>
 
 	<fieldset>
@@ -75,7 +78,7 @@
 	   stompClient.connect({}, function (frame) {
 	        console.log('Connected: ' + frame);
 	        stompClient.subscribe('/topic/shell', function (protocol) {
-	            $("#output").append(JSON.parse(protocol.body).response);
+	            $("#output").append(JSON.parse(protocol.body).response + "\r\n");
 	        });
 	    });
 		    
@@ -84,8 +87,6 @@
 				$("#hostList").append('<option value="' + val + '">' + val	+ "</option>");
 			});
 		});
-		
-		version
 		
 		jQuery("#version").click(function() {
 			shell("cat /etc/issue /etc/centos-release");
@@ -107,6 +108,28 @@
 		});
 		jQuery("#free").click(function() {
 			shell("free -m");
+		});
+		
+		jQuery("#personalise").click(function() {
+			shell("curl -s https://raw.githubusercontent.com/oscm/shell/master/os/personalise.sh | bash");
+		});
+		jQuery("#epel").click(function() {
+			shell("curl -s https://raw.githubusercontent.com/oscm/shell/master/os/epel-release.sh | bash");
+		});
+		jQuery("#selinux").click(function() {
+			shell("curl -s https://raw.githubusercontent.com/oscm/shell/master/os/selinux.sh | bash");
+		});
+		jQuery("#iptables").click(function() {
+			shell("curl -s https://raw.githubusercontent.com/oscm/shell/master/os/iptables/iptables.sh | bash");
+		});
+		jQuery("#ntpd").click(function() {
+			shell("curl -s https://raw.githubusercontent.com/oscm/shell/master/os/ntpd/ntp.sh | bash");
+		});
+		jQuery("#ssh").click(function() {
+			shell("curl -s https://raw.githubusercontent.com/oscm/shell/master/os/ssh/sshd_config.sh | bash");
+		});
+		jQuery("#zmodem").click(function() {
+			shell("curl -s https://raw.githubusercontent.com/oscm/shell/master/os/zmodem.sh | bash");
 		});
 		
 		function shell(command){
