@@ -108,24 +108,24 @@
 			shell("df -h");
 		});
 		jQuery("#ps").click(function() {
-			shell("ps");
+			shell("ps aux");
 		});
 		jQuery("#free").click(function() {
 			shell("free -m");
 		});
 		
 		jQuery("#ipaddr").click(function() {
-			shell("ip addr");
+			shell("/usr/sbin/ip addr");
 		});
 		
 		jQuery("#route").click(function() {
-			shell("ip route");
+			shell("/usr/sbin/ip route");
 		});
 		jQuery("#ss").click(function() {
-			shell("ss -ntlp");
+			shell("/usr/sbin/ss -ntlp");
 		});
 		jQuery("#iptables").click(function() {
-			shell("iptables-save");
+			shell("/usr/sbin/iptables-save");
 		});
 		
 		jQuery("#personalise").click(function() {
