@@ -42,7 +42,12 @@ public class EmailRestController extends CommonRestController {
 		message.setTo(email.getTo());
 		message.setSubject(email.getSubject());
 		message.setText(email.getText());
-		javaMailSender.send(message);
+		try{
+			javaMailSender.send(message);
+		}catch(Exception e){
+			email.setText(e.getMessage());
+		}
+		
 		email.setStatus(true);
 
 		return new ResponseEntity<Email>(email, HttpStatus.OK);
