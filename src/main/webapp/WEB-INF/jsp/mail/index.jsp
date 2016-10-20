@@ -66,7 +66,7 @@
 		               if (json.status) {
 		            	   $('#status').html( "发送成功" );
 		               } else {
-		            	   $('#status').html( "没有数据" );
+		            	   $('#status').html( json.text );
 		               }
 		           }
 		       });

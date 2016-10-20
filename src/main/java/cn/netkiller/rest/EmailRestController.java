@@ -44,11 +44,13 @@ public class EmailRestController extends CommonRestController {
 		message.setText(email.getText());
 		try{
 			javaMailSender.send(message);
+			email.setStatus(true);
 		}catch(Exception e){
 			email.setText(e.getMessage());
+			email.setStatus(false);
 		}
 		
-		email.setStatus(true);
+		
 
 		return new ResponseEntity<Email>(email, HttpStatus.OK);
 	}
