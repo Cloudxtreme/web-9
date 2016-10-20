@@ -54,7 +54,7 @@
 			};
 
 			console.log('json: ' + JSON.stringify(protocol));
-			$("#output").html("");
+			$("#status").html("");
 
 			$.ajax({
 		           type: "POST",
