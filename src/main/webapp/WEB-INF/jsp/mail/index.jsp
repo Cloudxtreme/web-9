@@ -27,7 +27,7 @@
 		这里是文本域中的文本 ... ... ... ...
 		</textarea>
 		<br />
-    <button id="send" class="btn btn-default" type="button">Run</button>
+    <button id="send" class="btn btn-default" type="button">Send</button>
 
 	<fieldset>
 		<legend>Screen output</legend>
