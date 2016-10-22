@@ -80,7 +80,7 @@ jQuery(document).ready(
 			});
 */
 			
-			jQuery("#test").click(function() {
+			jQuery("#deploy").click(function() {
 				var group = $("#group").val();
 				var envionment = $("#envionment").val();
 				var project = $("#project").val();

@@ -12,6 +12,13 @@ public class DeployController {
 		// TODO Auto-generated constructor stub
 	}
 	
+	@RequestMapping("/config")
+	public ModelAndView config() {
+		
+		return new ModelAndView("deploy/config");
+
+	}
+	
 	@RequestMapping("/ant")
 	public ModelAndView ant() {
 		

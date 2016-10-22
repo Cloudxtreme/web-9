@@ -11,7 +11,7 @@
 			<!-- <option value="www.example.com"> -->
 		</datalist>
 		<!-- <input type="submit" id="submit" value="Deploy" /> -->
-		<input type="button" id="test" value="Deploy" />
+		<input type="button" id="deploy" value="Deploy" />
 		<input type="reset" id="reset" value="Cancel" />
 		<table width="100%">
 			<tr>
