@@ -81,7 +81,7 @@
 		});
 
    		$("#group").change(function() {
-   			$("#envionment").html('<option value="">-- Envionment --</option>'');
+   			$("#envionment").html('<option value="">-- Envionment --</option>');
 			$.getJSON('/v1/config/envionment.json',	function(data) {
 				$.each(data, function(key, val) {
 					$("#envionment").append('<option value="' + val + '">' + val + "</option>");
