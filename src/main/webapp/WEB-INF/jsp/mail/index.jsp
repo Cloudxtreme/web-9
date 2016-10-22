@@ -23,9 +23,7 @@
 		<input id="to" list="dbList" name="to" size="32" type="email" required placeholder="Enter a valid email address"/> <br />
 		<label for="subject">Subject</label> 
         <input type="text" id="subject" list="keyList" size="60" class="form-control" value="Hello" placeholder="Your subject here..." required/> <br />
-		<textarea id="text" name="text" rows="10" cols="50">
-		这里是文本域中的文本 ... ... ... ...
-		</textarea>
+		<textarea id="text" name="text" rows="10" cols="50">Helloworld!!!</textarea>
 		<br />
     <button id="send" class="btn btn-default" type="button">Send</button>
 

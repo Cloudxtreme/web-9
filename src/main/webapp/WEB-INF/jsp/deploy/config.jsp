@@ -60,9 +60,11 @@
     </div>
     <div class="row">
         <div class="col-md-12">
+        <div id="status"></div>
         <dl id="output">
 		   <dt>Screen output</dt>
 		</dl>
+		
         </div>
     </div>
     </form>
@@ -100,18 +102,14 @@
 			var prj = $("#project").val();
 			var url = "/deploy/" + group + "/" + env;
 
-			$("#project").html("");
+			$("#project").html('<option value="">-- Project --</option>');
 
-			$.getJSON('/v1/config/project/' + group + '/'
-					+ envionment + '.json',
+			$.getJSON('/v1/config/project/' + group + '/' + envionment + '.json',
 
 			function(data) {
 
 				$.each(data, function(key, val) {
-					$("#project").append('<option value="' + val + '">' + val
-							+ "</option>");
-					
-
+					$("#project").append('<option value="' + val + '">' + val + "</option>");
 				});
 
 			});
@@ -119,7 +117,7 @@
 		});    
 		
 		jQuery("#deploy").click(function() {
-			jQuery("#greetings").html("");
+			jQuery("#output").html();
 			
 			var group = $("#group").val();
 			var envionment = $("#envionment").val();
@@ -129,7 +127,7 @@
 			var data = $.getJSON(url,
 				function(data) {
 					if(data.status){
-						alert("Success")
+						jQuery("#status").html("Starting...")
 					}
 				});
 

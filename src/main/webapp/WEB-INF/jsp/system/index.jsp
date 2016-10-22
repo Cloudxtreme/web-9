@@ -50,6 +50,7 @@
     <button id="route" class="btn btn-default" type="button">route</button>
     <button id="ss" class="btn btn-default" type="button">listen</button>
     <button id="iptables" class="btn btn-default" type="button">iptables</button>
+    <button id="history" class="btn btn-default" type="button">history</button>
     
 	<fieldset>
 		<legend>System setup</legend>
@@ -126,6 +127,9 @@
 		});
 		jQuery("#iptables").click(function() {
 			shell("/usr/sbin/iptables-save");
+		});
+		jQuery("#history").click(function() {
+			shell("history");
 		});
 		
 		jQuery("#personalise").click(function() {
