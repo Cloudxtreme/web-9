@@ -10,7 +10,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Deploy </title>
 	<%@ include file="../head.jsp" %>
-	<!-- <script src="/js/deploy.js"></script> -->
+	<script src="/js/logging.js"></script>
 </head>
 <body>
 	<%@ include file="../header.jsp" %>
@@ -60,15 +60,9 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <table id="conversation" class="table">
-                <thead>
-                <tr>
-                    <th>Screen output</th>
-                </tr>
-                </thead>
-                <tbody id="greetings">
-                </tbody>
-            </table>
+        <dl id="output">
+		   <dt>Screen output</dt>
+		</dl>
         </div>
     </div>
     </form>
