@@ -47,9 +47,13 @@
 		<button id="any" class="btn btn-default" type="button">ANY</button>
 	    <button id="a" class="btn btn-default" type="button">A</button>
 	    <button id="cname" class="btn btn-default" type="button">CNAME</button>
-	    <button id="MX" class="btn btn-default" type="button">MX</button>
-	    <button id="NS" class="btn btn-default" type="button">NS</button>
-	    <button id="TXT" class="btn btn-default" type="button">TXT</button>
+	    <button id="mx" class="btn btn-default" type="button">MX</button>
+	    <button id="ns" class="btn btn-default" type="button">NS</button>
+	    <button id="txt" class="btn btn-default" type="button">TXT</button>
+	    <button id="ptr" class="btn btn-default" type="button">PTR</button>
+	    <button id="soa" class="btn btn-default" type="button">SOA</button>
+	    <button id="srv" class="btn btn-default" type="button">SRV</button>
+	    <button id="aaaa" class="btn btn-default" type="button">AAAA</button>
 	</fieldset>
 
 	<fieldset>
@@ -88,37 +92,31 @@
 		jQuery("#a").click(function() {
 			shell("a");
 		});
-		jQuery("#mx").click(function() {
-			shell("mx");
-		});
 		jQuery("#cname").click(function() {
 			shell("cname");
 		});
+		jQuery("#mx").click(function() {
+			shell("mx");
+		});		
 		jQuery("#ns").click(function() {
 			shell("ns");
 		});
 		jQuery("#txt").click(function() {
 			shell("txt");
 		});
-		jQuery("#free").click(function() {
-			shell("free -m");
+		jQuery("#ptr").click(function() {
+			shell("ptr");
 		});
 		
-		jQuery("#ipaddr").click(function() {
-			shell("/usr/sbin/ip addr");
+		jQuery("#soa").click(function() {
+			shell("soa");
 		});
 		
-		jQuery("#route").click(function() {
-			shell("/usr/sbin/ip route");
+		jQuery("#srv").click(function() {
+			shell("srv");
 		});
-		jQuery("#ss").click(function() {
-			shell("/usr/sbin/ss -ntlp");
-		});
-		jQuery("#iptables").click(function() {
-			shell("/usr/sbin/iptables-save");
-		});
-		jQuery("#history").click(function() {
-			shell("history");
+		jQuery("#aaaa").click(function() {
+			shell("aaaa");
 		});
 		
 		function shell(type){
@@ -142,7 +140,7 @@
 	           data: JSON.stringify(protocol),
 	           success: function (msg) {
 	               if (msg.status) {
-	            	   $('#error').html( "Sent" );
+	            	   $('#error').html( type );
 	               } else {
 	                   alert("Cannot add to list !");
 	               }
