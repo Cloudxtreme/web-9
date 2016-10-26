@@ -30,7 +30,12 @@ public class LoggingController extends CommonController{
 	public LoggingController() {
 
 	}
+	@RequestMapping("/")
+	public ModelAndView ant() {
+		
+		return new ModelAndView("logging/index");
 
+	}
 	@RequestMapping(value = "/watch/{group}/{envionment}/{project}", method = RequestMethod.GET)
 	public ModelAndView deployEnvionment(@PathVariable String group, @PathVariable String envionment, @PathVariable String project) throws IOException {
 		properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s/%s/%s.properties", group, envionment, project)));

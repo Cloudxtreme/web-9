@@ -57,6 +57,7 @@
 		<button id="deploy" class="" type="button">Deploy</button>
 		<button id="backup" class="" type="button">Backup</button>
 		<button id="restart" class="" type="button">Restart</button>
+		<button id="merge" class="" type="button">merge</button>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -139,7 +140,9 @@
 		jQuery("#restart").click(function() {
 			manual(["ant","restart"]);
 		});
-			
+		jQuery("#merge").click(function() {
+			manual(["ant","push"]);
+		});
 		function manual(argv){
 			
 			var group = $("#group").val();
