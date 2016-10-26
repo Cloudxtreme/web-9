@@ -4,14 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Redis</title>
+<title>Mail</title>
 <script src="/webjars/jquery/jquery.min.js"></script>
 <%-- <%@ include file="head.jsp" %> --%>
 </head>
 <body>
 	<%@ include file="../header.jsp" %>
 	<br />
-
+		<label for="host">SMTP</label>
 		<input id="host" list="hostList" name="host" size="16" />
     	<datalist id="hostList">
 			<option value="127.0.0.1">localhost</option>
