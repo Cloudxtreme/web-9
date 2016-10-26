@@ -57,7 +57,7 @@
 		<button id="deploy" class="" type="button">Deploy</button>
 		<button id="backup" class="" type="button">Backup</button>
 		<button id="restart" class="" type="button">Restart</button>
-		<button id="merge" class="" type="button">merge</button>
+		<button id="merge" class="" type="button">Merge</button>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -144,6 +144,7 @@
 			manual(["ant","push"]);
 		});
 		function manual(argv){
+			jQuery("#output").html();
 			
 			var group = $("#group").val();
 			var envionment = $("#envionment").val();
