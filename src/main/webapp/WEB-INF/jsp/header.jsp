@@ -8,4 +8,5 @@
 <a href="/redis/">Redis</a> | 
 <a href="/system/">System</a> | 
 <a href="/system/shell/">Shell</a> |
-<a href="/mail/">Email</a>
+<a href="/mail/">Email</a> | 
+<a href="/domain/">Domain</a>
