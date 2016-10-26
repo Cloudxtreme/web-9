@@ -51,6 +51,7 @@
 			var subject = $("#subject").val();
 			var text = $("#text").val();
 			var protocol = {
+					'host': host,
 					'from': from,
 					'to': to,
 					'subject': subject,
