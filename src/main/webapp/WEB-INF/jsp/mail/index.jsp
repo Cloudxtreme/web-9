@@ -37,6 +37,12 @@
 	<script>
 	jQuery(document).ready(function() {
 		
+		$.getJSON('/v1/config/mail.json',function(data) {
+			$.each(data,function(key, val) {
+				$("#hostList").append('<option value="' + val + '">' + val	+ "</option>");
+			});
+		});
+		
 		jQuery("#send").click(function() {
 			
 			var host = $("#host").val();

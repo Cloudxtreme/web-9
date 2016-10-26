@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +37,27 @@ public class EmailRestController extends CommonRestController {
 	}
 
 	@RequestMapping(value = "sendmail", method = RequestMethod.POST, produces = { "application/xml", "application/json" })
-	public ResponseEntity<Email> sendSimpleMail(@RequestBody Email email) {
+	public ResponseEntity<Email> sendmail(@RequestBody Email email) {
+		JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+		javaMailSender.setHost(email.getHost());
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setFrom(email.getFrom());
+		message.setTo(email.getTo());
+		message.setSubject(email.getSubject());
+		message.setText(email.getText());
+		try{
+			javaMailSender.send(message);
+			email.setStatus(true);
+		}catch(Exception e){
+			email.setText(e.getMessage());
+			email.setStatus(false);
+		}
+
+		return new ResponseEntity<Email>(email, HttpStatus.OK);
+	}	
+	
+	@RequestMapping(value = "mail", method = RequestMethod.POST, produces = { "application/xml", "application/json" })
+	public ResponseEntity<Email> mail(@RequestBody Email email) {
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setFrom(email.getFrom());
 		message.setTo(email.getTo());
@@ -50,8 +71,6 @@ public class EmailRestController extends CommonRestController {
 			email.setStatus(false);
 		}
 		
-		
-
 		return new ResponseEntity<Email>(email, HttpStatus.OK);
 	}
 

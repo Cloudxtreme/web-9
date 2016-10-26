@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
@@ -106,4 +107,9 @@ public class ConfigRestController extends CommonRestController {
 		return properties.keys();
 	}
 
+	@RequestMapping("/mail")
+	public Collection<Object> mail() throws IOException {
+		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "mail")));
+		return properties.values();
+	}
 }
