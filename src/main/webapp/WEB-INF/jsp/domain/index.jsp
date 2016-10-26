@@ -122,8 +122,12 @@
 		
 		function shell(type){
 			var host = $("#host").val();
+			if(host != ""){
+				host = "@"+host
+								
+			}
 			var domain = $("#domain").val();
-			var command = "dig "+ domain + " " + type
+			var command = "dig "+ host +" "+ domain + " " + type
 			var protocol = {
 					'request': command
 			};
@@ -131,7 +135,7 @@
 			$("#output").html("");
 			$.ajax({
 	           type: "POST",
-	           url: "/v1/system/shell/"+host+".json",
+	           url: "/v1/system/shell/localhost.json",
 	           dataType: "json",
 	           contentType: 'application/json',
 	           data: JSON.stringify(protocol),

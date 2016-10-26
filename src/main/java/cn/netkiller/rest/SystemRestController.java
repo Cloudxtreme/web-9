@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -41,8 +43,17 @@ public class SystemRestController  extends CommonRestController{
 	
 	@RequestMapping(value = "/shell/{host}", method = RequestMethod.POST, produces = { "application/xml", MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<Protocol> ant(@PathVariable String host, @RequestBody Protocol proto) throws IOException {
-		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "host")));
-		String rhost = (String) properties.get(host); 
+		String rhost = "localhost";
+		List<String> exclude = new ArrayList<String>();
+		exclude.add("localhost");
+		exclude.add("127.0.0.1");
+		if(host != null){
+			if(!exclude.contains(host)){
+				Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "host")));
+				rhost = (String) properties.get(host);	
+			}
+		}
+		
 		proto.setStatus(true);
 		ScreenOutput screenOutput = new ScreenOutput(this.template, "/topic/shell", this.rexec(rhost, proto.getRequest(), "/tmp"));
 		new Thread(screenOutput).start();
