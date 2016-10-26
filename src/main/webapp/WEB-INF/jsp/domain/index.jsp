@@ -41,7 +41,7 @@
         
  -->
  		<label for="domain">Domain</label>
-    	<input type="text" id="domain" size="16" class="form-control" value="*" placeholder="Your domain here...">
+    	<input type="text" id="domain" size="16" class="form-control" value="" placeholder="Your domain here...">
     		
 		<br />
 		<button id="any" class="btn btn-default" type="button">ANY</button>
