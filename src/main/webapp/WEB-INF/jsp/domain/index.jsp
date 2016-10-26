@@ -4,12 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-	<title>System</title>
+	<title>DNS lookup</title>
 	<%@ include file="../head.jsp" %>
 </head>
 <body>
 	<%@ include file="../header.jsp" %>
-	<br />
+	<fieldset>
+		<legend>DNS lookup</legend>
+		
 		<label for="host">Name server</label>
 		<input id="host" list="hostList" name="host" size="16" />
     	<datalist id="hostList">
@@ -38,11 +40,10 @@
 
         
  -->
- 	<label for="domain">Domain</label>
-    <input type="text" id="domain" size="16" class="form-control" value="*" placeholder="Your domain here...">
-    
-	<fieldset>
-		<legend>System setup</legend>
+ 		<label for="domain">Domain</label>
+    	<input type="text" id="domain" size="16" class="form-control" value="*" placeholder="Your domain here...">
+    		
+		<br />
 		<button id="any" class="btn btn-default" type="button">ANY</button>
 	    <button id="a" class="btn btn-default" type="button">A</button>
 	    <button id="cname" class="btn btn-default" type="button">CNAME</button>

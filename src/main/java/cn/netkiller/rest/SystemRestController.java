@@ -37,28 +37,29 @@ public class SystemRestController  extends CommonRestController{
 	
 	private static final Logger log = LoggerFactory.getLogger(SystemRestController.class);
 	
+	List<String> exclude = new ArrayList<String>();
+	
 	public SystemRestController() {
-		// TODO Auto-generated constructor stub
+		exclude.add("localhost");
+		exclude.add("127.0.0.1");
 	}
 	
 	@RequestMapping(value = "/shell/{host}", method = RequestMethod.POST, produces = { "application/xml", MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<Protocol> ant(@PathVariable String host, @RequestBody Protocol proto) throws IOException {
 		String rhost = "localhost";
-		List<String> exclude = new ArrayList<String>();
-		exclude.add("localhost");
-		exclude.add("127.0.0.1");
 		if(host != null){
-			if(!exclude.contains(host)){
+			if(exclude.contains(host)){
+				new Thread(new ScreenOutput(this.template, "/topic/shell", this.exec(proto.getRequest(), "/tmp"))).start();
+			}else{
 				Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "host")));
-				rhost = (String) properties.get(host);	
+				rhost = (String) properties.get(host);
+				new Thread(new ScreenOutput(this.template, "/topic/shell", this.rexec(rhost, proto.getRequest(), "/tmp"))).start();
 			}
+			proto.setStatus(true);
+			
+			
 		}
-		
-		proto.setStatus(true);
-		ScreenOutput screenOutput = new ScreenOutput(this.template, "/topic/shell", this.rexec(rhost, proto.getRequest(), "/tmp"));
-		new Thread(screenOutput).start();
 		proto.setResponse("Done");
-		
 		return new ResponseEntity<Protocol> (proto, HttpStatus.OK);
 	}
 	
