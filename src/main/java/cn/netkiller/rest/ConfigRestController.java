@@ -113,8 +113,8 @@ public class ConfigRestController extends CommonRestController {
 		return properties.values();
 	}
 	@RequestMapping("/dns")
-	public Collection<Object> dns() throws IOException {
+	public Properties dns() throws IOException {
 		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "dns")));
-		return properties.values();
+		return properties;
 	}
 }
