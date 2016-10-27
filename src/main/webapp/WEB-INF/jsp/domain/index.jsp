@@ -80,9 +80,9 @@
 	        });
 	    });
 		    
-		$.getJSON('/v1/config/host.json',function(data) {
+		$.getJSON('/v1/config/dns.json',function(data) {
 			$.each(data,function(key, val) {
-				$("#hostList").append('<option value="' + val + '">' + val	+ "</option>");
+				$("#hostList").append('<option value="' + val + '">' + key	+ "</option>");
 			});
 		});
 		
