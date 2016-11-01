@@ -147,7 +147,8 @@
 	                   alert("Cannot add to list !");
 	               }
 	           }
-		});	
+			});
+		}
 				
 	});
 	</script>
