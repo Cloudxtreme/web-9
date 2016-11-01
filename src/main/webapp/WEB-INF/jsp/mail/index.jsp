@@ -4,8 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Mail</title>
-	<%@ include file="。。/head.jsp" %>
+	<title>Mail</title>
+	<%@ include file="../head.jsp" %>
 </head>
 <body>
 	<%@ include file="../header.jsp" %>
@@ -126,6 +126,7 @@
 		jQuery("#exception").click(function() {
 			shell("curl -s https://raw.githubusercontent.com/oscm/shell/master/mail/postfix/queue.exception.sh | bash");
 		});
+		
 		function shell(command){
 			var host = $("#host").val();
 			var protocol = {
