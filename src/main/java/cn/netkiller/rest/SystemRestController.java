@@ -50,14 +50,16 @@ public class SystemRestController  extends CommonRestController{
 		if(host != null){
 			if(exclude.contains(host)){
 				new Thread(new ScreenOutput(this.template, "/topic/shell", this.exec(proto.getRequest(), "/tmp"))).start();
-			}else{
+			}if(host.contains("@")){
+				new Thread(new ScreenOutput(this.template, "/topic/shell", this.rexec(rhost, proto.getRequest(), "/tmp"))).start();
+			}
+			else{
 				Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "host")));
 				rhost = (String) properties.get(host);
 				new Thread(new ScreenOutput(this.template, "/topic/shell", this.rexec(rhost, proto.getRequest(), "/tmp"))).start();
 			}
 			proto.setStatus(true);
-			
-			
+
 		}
 		proto.setResponse("Done");
 		return new ResponseEntity<Protocol> (proto, HttpStatus.OK);
