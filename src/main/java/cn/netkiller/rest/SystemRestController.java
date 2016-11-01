@@ -69,6 +69,7 @@ public class SystemRestController  extends CommonRestController{
 				host = user.concat("@").concat(host);
 			}
 			new Thread(new ScreenOutput(this.template, "/topic/shell", this.rexec(host, proto.getRequest(), "/tmp"))).start();
+			proto.setStatus(true);
 		}
 		proto.setResponse("Done");
 		return new ResponseEntity<Protocol> (proto, HttpStatus.OK);
