@@ -59,16 +59,17 @@
 		<button id="restart" class="" type="button">Restart</button>
 		<button id="merge" class="" type="button">Merge</button>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-        <div id="status"></div>
-        <dl id="output">
-		   <dt>Screen output</dt>
-		</dl>
-		
-        </div>
-    </div>
     </form>
+    
+    <fieldset>
+		<legend>Screen output</legend>
+		<div class="screen">
+		<ol id="output">
+	
+		</ol>
+		</div>
+	</fieldset>
+    
     <script>
 
     jQuery(document).ready(function() {

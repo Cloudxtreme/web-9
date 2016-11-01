@@ -37,7 +37,7 @@ function sendName() {
 }
 
 function show(message) {
-    $("#output").append("<dd>" + message + "</dd>");
+    $("#output").append("<li>" + message + "</li>");
 }
 
 $(function () {
