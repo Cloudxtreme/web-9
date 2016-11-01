@@ -129,6 +129,9 @@
 		
 		function shell(command){
 			var host = $("#host").val();
+			if(host == ""){
+				$('#status').html( "请选择 SMTP 主机！" );
+			}
 			var protocol = {
 					'request': command
 			};

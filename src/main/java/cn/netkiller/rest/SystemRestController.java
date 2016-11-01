@@ -44,7 +44,7 @@ public class SystemRestController  extends CommonRestController{
 		exclude.add("127.0.0.1");
 	}
 	
-	@RequestMapping(value = "/shell/{host}", method = RequestMethod.POST, produces = { "application/xml", MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/shell/{host:[a-zA-Z0-9\\.\\@]+}", method = RequestMethod.POST, produces = { "application/xml", MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<Protocol> ant(@PathVariable String host, @RequestBody Protocol proto) throws IOException {
 		String rhost = "localhost";
 		if(host != null){
