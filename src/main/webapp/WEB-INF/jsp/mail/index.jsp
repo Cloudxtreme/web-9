@@ -42,9 +42,9 @@
 		<div id="status">
 	
 		</div>
-		<div id="output">
+		<pre id="output">
 	
-		</div>
+		</pre>
 	</fieldset>
 
 	<script>
