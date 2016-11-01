@@ -44,22 +44,31 @@ public class SystemRestController  extends CommonRestController{
 		exclude.add("127.0.0.1");
 	}
 	
-	@RequestMapping(value = "/shell/{host:[a-zA-Z0-9\\.\\@]+}", method = RequestMethod.POST, produces = { "application/xml", MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<Protocol> ant(@PathVariable String host, @RequestBody Protocol proto) throws IOException {
+	@RequestMapping(value = "/shell/{host}", method = RequestMethod.POST, produces = { "application/xml", MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<Protocol> host(@PathVariable String host, @RequestBody Protocol proto) throws IOException {
 		String rhost = "localhost";
 		if(host != null){
 			if(exclude.contains(host)){
 				new Thread(new ScreenOutput(this.template, "/topic/shell", this.exec(proto.getRequest(), "/tmp"))).start();
-			}if(host.contains("@")){
-				new Thread(new ScreenOutput(this.template, "/topic/shell", this.rexec(rhost, proto.getRequest(), "/tmp"))).start();
-			}
-			else{
+			}else{
 				Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "host")));
 				rhost = (String) properties.get(host);
 				new Thread(new ScreenOutput(this.template, "/topic/shell", this.rexec(rhost, proto.getRequest(), "/tmp"))).start();
 			}
 			proto.setStatus(true);
 
+		}
+		proto.setResponse("Done");
+		return new ResponseEntity<Protocol> (proto, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/shell/remote/{user}/{host}", method = RequestMethod.POST, produces = { "application/xml", MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<Protocol> remote(@PathVariable String user, @PathVariable String host, @RequestBody Protocol proto) throws IOException {
+		if(host != null){
+			if(user != null){
+				host = user.concat("@").concat(host);
+			}
+			new Thread(new ScreenOutput(this.template, "/topic/shell", this.rexec(host, proto.getRequest(), "/tmp"))).start();
 		}
 		proto.setResponse("Done");
 		return new ResponseEntity<Protocol> (proto, HttpStatus.OK);

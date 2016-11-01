@@ -139,7 +139,7 @@
 			$("#output").html("");
 			$.ajax({
 	           type: "POST",
-	           url: "/v1/system/shell/root@"+host+".json",
+	           url: "/v1/system/shell/root/"+host+".json",
 	           dataType: "json",
 	           contentType: 'application/json',
 	           data: JSON.stringify(protocol),
