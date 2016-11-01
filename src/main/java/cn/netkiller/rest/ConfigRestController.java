@@ -108,9 +108,9 @@ public class ConfigRestController extends CommonRestController {
 	}
 
 	@RequestMapping("/mail")
-	public Collection<Object> mail() throws IOException {
+	public ResponseEntity<Properties> mail() throws IOException {
 		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "mail")));
-		return properties.values();
+		return new ResponseEntity<Properties>(properties, HttpStatus.OK);
 	}
 	@RequestMapping("/dns")
 	public Properties dns() throws IOException {
