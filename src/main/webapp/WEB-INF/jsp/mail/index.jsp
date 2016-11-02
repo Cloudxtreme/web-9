@@ -36,6 +36,9 @@
     	<button id="all" class="btn btn-default" type="button">Queue Clean All</button>
     	<button id="deferred" class="btn btn-default" type="button">Queue Clean Deferred</button>
     	<button id="exception" class="btn btn-default" type="button">Queue Clean Exception</button>
+    	<button id="maillog" class="btn btn-default" type="button">Maillog tail(500 line)</button>
+    	<button id="proc" class="btn btn-default" type="button">Process</button>
+    	<button id="listen" class="btn btn-default" type="button">Listen</button>
 	</fieldset>	
 	<fieldset>
 		<legend>Screen output</legend>
@@ -125,6 +128,15 @@
 		});
 		jQuery("#exception").click(function() {
 			shell("curl -s https://raw.githubusercontent.com/oscm/shell/master/mail/postfix/queue.exception.sh | bash");
+		});
+		jQuery("#maillog").click(function() {
+			shell("tail -n 500 /var/log/maillog");
+		});
+		jQuery("#proc").click(function() {
+			shell("ps ax | egrep \"(smtp|qmgr)\" | grep -v grep");
+		});
+		jQuery("#listen").click(function() {
+			shell("ss -lnt | grep 25");
 		});
 		
 		function shell(command){
