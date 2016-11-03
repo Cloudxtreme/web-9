@@ -142,7 +142,7 @@
 		});
 		
 		jQuery("#opendkim").click(function() {
-			shell("tail -n 1000 -f /var/log/maillog | grep opendkim");
+			shell("tail -n 500 /var/log/maillog | grep opendkim");
 		});
 		
 		

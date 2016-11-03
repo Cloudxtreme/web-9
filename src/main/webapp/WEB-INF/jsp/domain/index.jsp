@@ -121,7 +121,7 @@
 		});
 		jQuery("#spf").click(function() {
 			var domain = $("#domain").val();
-			shell("domain="+domain+"; cmd=spf.sh;if [ -f $cmd ]; then bash $cmd $domain; else curl -s https://raw.githubusercontent.com/oscm/shell/master/mail/spf.sh > $cmd; fi");
+			shell("domain="+domain+"; cmd=spf.sh; if [ -f $cmd ]; then bash $cmd $domain; else curl -s https://raw.githubusercontent.com/oscm/shell/master/mail/spf.sh > $cmd; fi");
 		});
 		
 		function shell(type){
