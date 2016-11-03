@@ -54,6 +54,7 @@
 	    <button id="soa" class="btn btn-default" type="button">SOA</button>
 	    <button id="srv" class="btn btn-default" type="button">SRV</button>
 	    <button id="aaaa" class="btn btn-default" type="button">AAAA</button>
+	    <button id="spf" class="btn btn-default" type="button">SPF</button>
 	</fieldset>
 
 	<fieldset>
@@ -117,6 +118,10 @@
 		});
 		jQuery("#aaaa").click(function() {
 			shell("aaaa");
+		});
+		jQuery("#spf").click(function() {
+			var domain = $("#domain").val();
+			shell("domain="+domain+"; cmd=spf.sh;if [ -f $cmd ]; then bash $cmd $domain; else curl -s https://raw.githubusercontent.com/oscm/shell/master/mail/spf.sh > $cmd; fi");
 		});
 		
 		function shell(type){

@@ -41,10 +41,12 @@
     	<button id="listen" class="btn btn-default" type="button">Listen</button>
 	</fieldset>	
 	<fieldset>
+		<legend>DKIM</legend>
+		<button id="opendkim" class="btn btn-default" type="button">DKIM log</button>
+	</fieldset>
+	<fieldset>
 		<legend>Screen output</legend>
-		<div id="status">
-	
-		</div>
+		<div id="status"></div>
 		<pre id="output">
 	
 		</pre>
@@ -138,6 +140,11 @@
 		jQuery("#listen").click(function() {
 			shell("ss -lnt | grep 25");
 		});
+		
+		jQuery("#opendkim").click(function() {
+			shell("tail -n 1000 -f /var/log/maillog | grep opendkim");
+		});
+		
 		
 		function shell(command){
 			var host = $("#host").val();
