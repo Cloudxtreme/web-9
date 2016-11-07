@@ -4,16 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-    <!-- <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
-    <!-- <link href="/main.css" rel="stylesheet"> -->
-    <script src="/webjars/jquery/jquery.min.js"></script>
-    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
-    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-<title>Ant deployment</title>
-<%-- <%@ include file="head.jsp" %> --%>
-
-<script src="/js/deploy.js"></script>
-
+	<title>Ant deployment</title>
+	<%@ include file="../head.jsp" %>
 	<meta name="${_csrf.parameterName}" content="${_csrf.token}"/>
 	<!-- default header name is X-CSRF-TOKEN -->
 	<meta name="_csrf_header" content="${_csrf.headerName}"/>
@@ -67,6 +59,13 @@
 
 <script>
 jQuery(document).ready(function() {
+	
+	$.getJSON('/v1/config/ant/group.json', function(data) {
+		$.each(data,function(key, val) {
+			$("#group").append('<option value="' + val + '">' + val + "</option>");
+		});
+
+	});
 	
 	$("#group").change(function() {
 

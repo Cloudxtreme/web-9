@@ -50,6 +50,29 @@ public class ConfigRestController extends CommonRestController {
 		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "config")));
 		return Arrays.asList(String.valueOf(properties.get("group")).concat(",").split(","));
 	}
+	@RequestMapping("/envionment")
+	public List<String> envionment() throws IOException {
+		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "config")));
+		return Arrays.asList(String.valueOf(properties.get("envionment")).concat(",").split(","));
+	}
+	
+	@RequestMapping("/ant/group")
+	public List<String> antGroup() throws IOException {
+		List<String> dir= new ArrayList<String>();
+		String path = String.format("%s/", this.workspace);
+ 		try(Stream<Path> paths = Files.walk(Paths.get(path),1)) {
+		    paths.forEach(filePath -> {
+		        if (Files.isDirectory(filePath)) {
+		        	String project = filePath.toString().replace(path, "").replace(path.substring(0, path.length()-1), "");
+		        	if(! project.equals("")){
+		        		dir.add(project);
+		        	}
+		            
+		        }
+		    });
+		}
+		return dir;
+	}
 	@RequestMapping("/project/{group}")
 	public List<String> project(@PathVariable String group) throws IOException {
 		List<String> dir= new ArrayList<String>();
@@ -67,12 +90,7 @@ public class ConfigRestController extends CommonRestController {
 		}
 		return dir;
 	}
-	@RequestMapping("/envionment")
-	public List<String> envionment() throws IOException {
-		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "config")));
-		return Arrays.asList(String.valueOf(properties.get("envionment")).concat(",").split(","));
-	}
-	
+
 	@RequestMapping("/envionment/{group}/{project}")
 	public List<String> envionment(@PathVariable String group, @PathVariable String project) throws IOException {
 		List<String> dir= new ArrayList<String>();
