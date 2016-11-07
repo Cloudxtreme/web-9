@@ -19,11 +19,15 @@
 		<select id="group" name="group">
 			<option value="">-- Group --</option>
 		</select>
+		<%--
 		<input id="project" list="projectList" name="project" value="${project}" />
 		<datalist id="projectList">
 			<!-- <option value="www.example.com"> -->
 		</datalist>
-		
+		--%>
+		<select id="project" name="project">
+			<option value="">-- Group --</option>
+		</select>
 		<select id="envionment" name="envionment">
 			<option value="">-- Envionment --</option>
 		</select>
@@ -72,12 +76,11 @@ jQuery(document).ready(function() {
 		var group = $("#group").val();
 		var env = $("#envionment").val();
 		var prj = $("#project").val();
-		var url = "/v1/config/project/" + group + ".json";	
+		var url = "/v1/config/ant/project/" + group + ".json";	
 		$.getJSON(url,function(data) {
 
 			$.each(data, function(key, val) {
-				$("#projectList").append(
-						'<option value="' + val + '"/>');
+				$("#project").append('<option value="' + val + '">' + val + "</option>");
 			});
 
 		});
@@ -89,13 +92,11 @@ jQuery(document).ready(function() {
 		var group = $("#group").val();
 		var envionment = $("#envionment").val();
 		var project = $("#project").val();
-		var url = "/v1/config/envionment/" + group + "/"+project+".json";
+		var url = "/v1/config/ant/envionment/" + group + "/"+project+".json";
 		$.getJSON(url,function(data) {
-
 			$.each(data, function(key, val) {
-				$("#envionment").append('<option value="' + val + '"/>');
+				$("#envionment").append('<option value="' + val + '">' + val + "</option>");
 			});
-
 		});
 
 	});

@@ -73,7 +73,7 @@ public class ConfigRestController extends CommonRestController {
 		}
 		return dir;
 	}
-	@RequestMapping("/project/{group}")
+	@RequestMapping("/ant/project/{group}")
 	public List<String> project(@PathVariable String group) throws IOException {
 		List<String> dir= new ArrayList<String>();
 		String path = String.format("%s/%s/", this.workspace, group);
@@ -91,7 +91,7 @@ public class ConfigRestController extends CommonRestController {
 		return dir;
 	}
 
-	@RequestMapping("/envionment/{group}/{project}")
+	@RequestMapping("/ant/envionment/{group}/{project}")
 	public List<String> envionment(@PathVariable String group, @PathVariable String project) throws IOException {
 		List<String> dir= new ArrayList<String>();
 		String path = String.format("%s/%s/%s/", this.workspace, group, project);
