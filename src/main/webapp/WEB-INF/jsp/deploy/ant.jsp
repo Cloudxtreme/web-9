@@ -64,6 +64,15 @@
 <script>
 jQuery(document).ready(function() {
 	
+	var socket = new SockJS('/logging');
+	var stompClient = Stomp.over(socket);
+	stompClient.connect({}, function (frame) {
+		//console.log('Connected: ' + frame);
+		stompClient.subscribe('/topic/log', function (protocol) {
+		    $("#output").append("<li>" + JSON.parse(protocol.body).response + "</li>");
+		});
+	});
+	
 	$.getJSON('/v1/config/ant/group.json', function(data) {
 		$.each(data,function(key, val) {
 			$("#group").append('<option value="' + val + '">' + val + "</option>");
