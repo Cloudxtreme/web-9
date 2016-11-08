@@ -189,7 +189,7 @@ Date: 2016-09-26
 		</git>
 
 		<!--
-		     		<git command="fetch" dir="${project.dir}">
+		<git command="fetch" dir="${project.dir}">
 			<args>
 				<arg value="-v" />
 				<arg value="origin" />
@@ -221,11 +221,11 @@ Date: 2016-09-26
 
 		<mkdir dir="${project.build}" />
 		<mkdir dir="${project.log}" />
-
+		<!--
 		<copy todir="${project.build}">
 			<fileset dir="${project.dir}/WebRoot" includes="**/*" />
 		</copy>
-
+		-->
 		<rsync option="-av" src="${project.webcontent}/" dest="${project.build}/">
 			<args>
 				<arg value="--delete" />
@@ -235,19 +235,23 @@ Date: 2016-09-26
 			</args>
 		</rsync>
 
+	</target>
+
+	<target name="config" depends="init">
+		
 		<copy todir="${project.build}/WEB-INF/classes" overwrite="true">
 			<fileset dir="${project.src}">
 				<include name="**/*.xml" />
 				<include name="**/*.properties" />
+				<include name="**/*.lst" />
+				<include name="**/*.BIN" />
 			</fileset>
 		</copy>
-
-	</target>
-
-	<target name="config" depends="init">
+		
 		<copy todir="${project.build}" overwrite="true">
 			<fileset dir="${project.resource}" includes="**/*" />
 		</copy>
+		
 	</target>
 
 	<target name="compile" depends="config">
