@@ -1,19 +1,20 @@
 package cn.netkiller.rest;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Stream;
 
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ConfigRestController extends CommonRestController {
 
 	public ConfigRestController() {
-		// TODO Auto-generated constructor stub
 	}
 
 	// @Autowired
@@ -111,7 +111,7 @@ public class ConfigRestController extends CommonRestController {
 	@RequestMapping("/ant/build/{group}/{project}/{envionment}")
 	public ResponseEntity<Properties> buildfile(@PathVariable String group, @PathVariable String project, @PathVariable String envionment) throws IOException {
 		String path = String.format("%s/%s/%s/%s/build.properties", this.workspace, group, project, envionment);
-		Properties properties = PropertiesLoaderUtils.loadAllProperties(path);
+		Properties properties = PropertiesLoaderUtils.loadProperties((Resource) new FileInputStream(path));
 		return new ResponseEntity<Properties>(properties, HttpStatus.OK);
 	}
 	

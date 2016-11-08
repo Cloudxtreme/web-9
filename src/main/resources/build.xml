@@ -355,7 +355,7 @@ Date: 2016-09-26
 		<ssh host="${remote.host}" command="ps ax | grep ${catalina.home} | grep -v grep" />
 	</target>
 	<target name="kill" depends="">
-		<ssh host="${remote.host}" command="pkill -9 -f ${catalina.home}" />
+		<ssh host="${remote.host}" command="pkill -9 -f ${catalina.home}/" />
 		<ant target="status" />
 	</target>
 	<target name="catalina">
