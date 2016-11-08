@@ -65,14 +65,26 @@
 <script>
 jQuery(document).ready(function() {
 	
-	var socket = new SockJS('/logging');
-	var stompClient = Stomp.over(socket);
-	stompClient.connect({}, function (frame) {
-		//console.log('Connected: ' + frame);
-		stompClient.subscribe('/topic/log', function (protocol) {
-		    $("#output").append("<li>" + JSON.parse(protocol.body).response + "</li>");
-		});
-	});
+	var stompClient = null;
+	
+	function connect() {
+	    var socket = new SockJS('/logging');
+	    stompClient = Stomp.over(socket);
+	    stompClient.connect({}, function (frame) {
+	        //console.log('Connected: ' + frame);
+	        stompClient.subscribe('/topic/log', function (protocol) {
+	        	 $("#output").append("<li>" + JSON.parse(protocol.body).response + "</li>");
+	        });
+	    });
+	}
+
+	function disconnect() {
+	    if (stompClient != null) {
+	        stompClient.disconnect();
+	    }
+	    //console.log("Disconnected");
+	}
+	
 	
 	$.getJSON('/v1/config/ant/group.json', function(data) {
 		$.each(data,function(key, val) {
@@ -125,6 +137,9 @@ jQuery(document).ready(function() {
 		});
 	});
 	jQuery("#deploy").click(function() {
+		disconnect();
+		connect();
+		
 		var group = $("#group").val();
 		var envionment = $("#envionment").val();
 		var project = $("#project").val();
