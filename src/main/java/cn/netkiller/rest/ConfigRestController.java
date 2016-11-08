@@ -108,6 +108,13 @@ public class ConfigRestController extends CommonRestController {
 		}
 		return dir;
 	}
+	@RequestMapping("/ant/build/{group}/{project}/{envionment}")
+	public ResponseEntity<Properties> buildfile(@PathVariable String group, @PathVariable String project, @PathVariable String envionment) throws IOException {
+		String path = String.format("%s/%s/%s/%s/build.properties", this.workspace, group, project, envionment);
+		Properties properties = PropertiesLoaderUtils.loadAllProperties(path);
+		return new ResponseEntity<Properties>(properties, HttpStatus.OK);
+	}
+	
 	@RequestMapping("/build/{group}/{envionment}/{project}/")
 	public ResponseEntity<Properties> build(@PathVariable String group, @PathVariable String envionment, @PathVariable String project) throws IOException {
 		Properties properties = null;

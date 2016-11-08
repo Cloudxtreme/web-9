@@ -33,8 +33,9 @@
 		</select>
 		
 		<!-- <input type="submit" id="submit" value="Deploy" /> -->
-		<input type="button" id="deploy" value="Deploy" />
-		<input type="reset" id="reset" value="Cancel" />			
+		<input type="button" id="deploy" value="Run" />
+		<input type="reset" id="reset" value="Cancel" />
+		<input id="button" id="config" value="Show config" />		
 	</fieldset>
 
 	<fieldset>
@@ -110,6 +111,19 @@ jQuery(document).ready(function() {
 
 	});
 	
+	jQuery("#config").click(function() {
+		$("#output").html("");
+		
+		var group = $("#group").val();
+		var project = $("#project").val();
+		var envionment = $("#envionment").val();
+		var url = "/v1/config/ant/build/" + group + "/"+project+ "/"+envionment+".json";
+		$.getJSON(url,function(data) {
+			$.each(data, function(key, val) {
+				$("#output").append("<li>" + key +"="+ val + "</li>");
+			});
+		});
+	});
 	jQuery("#deploy").click(function() {
 		var group = $("#group").val();
 		var envionment = $("#envionment").val();
