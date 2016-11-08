@@ -35,7 +35,7 @@
 		<!-- <input type="submit" id="submit" value="Deploy" /> -->
 		<input type="button" id="deploy" value="Run" />
 		<input type="reset" id="reset" value="Cancel" />
-		<input id="button" id="config" value="Show config" />		
+		<input type="button" id="config" value="Show config" />		
 	</fieldset>
 
 	<fieldset>
