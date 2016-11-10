@@ -221,6 +221,7 @@ Date: 2016-09-26
 
 		<mkdir dir="${project.build}" />
 		<mkdir dir="${project.log}" />
+		<mkdir dir="${project.resource}" />
 		<!--
 		<copy todir="${project.build}">
 			<fileset dir="${project.dir}/WebRoot" includes="**/*" />
