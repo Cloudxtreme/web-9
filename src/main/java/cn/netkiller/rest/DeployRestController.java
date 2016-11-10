@@ -2,7 +2,10 @@ package cn.netkiller.rest;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Map.Entry;
 import java.util.Properties;
 
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.netkiller.pojo.Deploy;
@@ -43,7 +47,7 @@ public class DeployRestController extends SystemRestController {
 			File file = new File(path);
 			if (file.exists()) {
 				properties.load(new FileInputStream(file));
-			}else{
+			} else {
 				properties = null;
 			}
 		} catch (IOException e) {
@@ -61,19 +65,23 @@ public class DeployRestController extends SystemRestController {
 		return "OK";
 	}
 
-	
 	@RequestMapping(value = "/ant", method = RequestMethod.POST, produces = { "application/xml", "application/json" })
-	public ResponseEntity<Protocol> ant(@RequestBody Deploy deploy) throws IOException {
+	public @ResponseBody ResponseEntity<Protocol> ant(@RequestBody Deploy deploy) throws IOException {
 		Protocol protocol = new Protocol();
 		protocol.setStatus(true);
-		String group =deploy.getGroup(), envionment = deploy.getEnvionment(), project = deploy.getProject();
+		String group = deploy.getGroup(), envionment = deploy.getEnvionment(), project = deploy.getProject();
 		String arguments = String.join(" ", deploy.getArguments());
-		String buildfile = "";
+		String buildfile = String.format("%s/%s/%s/%s/build.xml", this.workspace, group, project, envionment);
 		ClassPathResource classPathResource = new ClassPathResource("build.xml");
 		if (classPathResource.exists()) {
-			// properties =
-			// PropertiesLoaderUtils.loadProperties(classPathResource);
-			buildfile = classPathResource.getFile().getAbsolutePath();
+			// buildfile = classPathResource.getFile().getAbsolutePath();
+			InputStream inputStream = classPathResource.getInputStream();
+			byte[] buffer = new byte[inputStream.available()];
+			inputStream.read(buffer);
+			OutputStream outputStream = new FileOutputStream(new File(buildfile));
+			outputStream.write(buffer);
+			outputStream.close();
+			inputStream.close();
 			// System.out.println(buildfile);
 		}
 
@@ -88,13 +96,13 @@ public class DeployRestController extends SystemRestController {
 			ScreenOutput r = new ScreenOutput(this.template, "/topic/log", this.exec(command, "~"));
 			new Thread(r).start();
 			protocol.setRequest(command);
-		}else {
+		} else {
 			protocol.setRequest(command);
 			protocol.setResponse(String.format("Cannot open file (%s)", propertyfile));
 			protocol.setStatus(false);
 		}
 
-		return new ResponseEntity<Protocol> (protocol, HttpStatus.OK);
+		return new ResponseEntity<Protocol>(protocol, HttpStatus.OK);
 	}
 
 	@RequestMapping("/config/{group}/{envionment}/{project}/")
