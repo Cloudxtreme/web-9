@@ -217,7 +217,7 @@ Date: 2016-09-26
 
 	</target>
 
-	<target name="init" depends="">
+	<target name="init" depends="pull">
 
 		<mkdir dir="${project.build}" />
 		<mkdir dir="${project.log}" />
