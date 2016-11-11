@@ -56,6 +56,8 @@
 		</select> 
 		<button id="deploy" class="" type="button">Deploy</button>
 		<button id="backup" class="" type="button">Backup</button>
+		<button id="start" class="" type="button">Start</button>
+		<button id="stop" class="" type="button">Stop</button>
 		<button id="restart" class="" type="button">Restart</button>
 		<button id="merge" class="" type="button">Merge</button>
     </div>
@@ -140,6 +142,12 @@
 		});
 		jQuery("#restart").click(function() {
 			manual(["ant","restart"]);
+		});
+		jQuery("#start").click(function() {
+			manual(["ant","start"]);
+		});
+		jQuery("#stop").click(function() {
+			manual(["ant","stop"]);
 		});
 		jQuery("#merge").click(function() {
 			manual(["ant","push"]);
