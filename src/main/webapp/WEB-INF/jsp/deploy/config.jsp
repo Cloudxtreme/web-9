@@ -119,7 +119,7 @@
 		});    
 		
 		jQuery("#deploy").click(function() {
-			jQuery("#output").html();
+			jQuery("#output").html("");
 			
 			var group = $("#group").val();
 			var envionment = $("#envionment").val();
@@ -145,7 +145,7 @@
 			manual(["ant","push"]);
 		});
 		function manual(argv){
-			jQuery("#output").html();
+			jQuery("#output").html("");
 			
 			var group = $("#group").val();
 			var envionment = $("#envionment").val();
@@ -181,7 +181,6 @@
     });
     </script>
 </div>
-
 
 	<%@ include file="../footer.jsp" %>
 </body>
