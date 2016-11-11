@@ -11,26 +11,22 @@
 	<title>Deploy </title>
 	<%@ include file="../head.jsp" %>
 	<script src="/js/logging.js"></script>
+	<script src="/js/deploy.js"></script>
 </head>
 <body>
 	<%@ include file="../header.jsp" %>
 
-<noscript>
-<h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
-    enabled. Please enable
-    Javascript and reload this page!</h2>
-    </noscript>
+<form class="form-inline">
+
+<fieldset>
+	<legend>Automation</legend>
 <div id="main-content" class="container">
     <div class="row">
         <div class="col-md-6">
-            <form class="form-inline">
-                <div class="form-group">
-                    <label for="connect">Console:</label>
-                    <button id="connect" class="btn btn-default" type="submit">Connect</button>
-                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
-                    </button>
-                </div>
-            </form>
+             <div class="form-group">
+                 
+             </div>
+            
         </div>
         <div class="col-md-6">
         <!-- 
@@ -55,16 +51,51 @@
 			<option value="">-- Project --</option>
 		</select> 
 		<button id="deploy" class="" type="button">Deploy</button>
+		<input id="reset" type="reset" value="Cancel" />
 		<button id="backup" class="" type="button">Backup</button>
-		<button id="start" class="" type="button">Start</button>
-		<button id="stop" class="" type="button">Stop</button>
 		<button id="restart" class="" type="button">Restart</button>
 		<button id="merge" class="" type="button">Merge</button>
+		<button id="start" class="" type="button">Start</button>
+		<button id="stop" class="" type="button">Stop</button>
     </div>
-    </form>
+</div>
+</fieldset>
+   	<table width="100%">
+		<tr>
+			<td>
+			<fieldset>
+				<legend>Manual</legend>
+				<input type="checkbox" name="arguments" value="ant" id="ant" />Ant
+				<input type="checkbox" name="arguments" value="mvn" id="mvn" />Maven  
+				<input type="checkbox" name="arguments" value="deployment" id="deployment"/>Deployment
+				<button id="run" class="" type="button">Run</button>
+			</fieldset>
+			</td>
+			<td>
+			<fieldset>
+				<legend>Arguments</legend>
+				<input type="checkbox" name="arguments" value="tgz" />Backup
+				<input type="checkbox" name="arguments" value="clean" />Clean 
+				<input type="checkbox" name="arguments" value="pull" />Pull 
+				<input type="checkbox" name="arguments" value="push" />Merge 
+				<input type="checkbox" name="arguments" value="install" />Install 
+				<input type="checkbox" name="arguments" value="package" />Package
+				<input type="checkbox" name="arguments" value="trial" />Trial  
+				<input type="checkbox" name="arguments" value="deploy" />Deploy 
+				<input type="checkbox" name="arguments" value="restart" />Restart
+			</fieldset>
+			</td>
+		</tr>
+	</table>
+	
+</form>
     
     <fieldset>
 		<legend>Screen output</legend>
+		<label for="connect">Console:</label>
+        <button id="connect" class="btn btn-default" type="submit">Connect</button>
+        <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect</button>
+        <button id="clean">Clean</button>
 		<div class="screen">
 		<ol id="output">
 	
@@ -73,122 +104,7 @@
 	</fieldset>
     
     <script>
-
-    jQuery(document).ready(function() {
-
-	    connect();
-	    
-	 	$.getJSON('/v1/config/group.json',function(data) {
-	
-			$.each(data,function(key, val) {
-				$("#group").append('<option value="' + val + '">' + val	+ "</option>");
-			});
-	
-		});
-
-   		$("#group").change(function() {
-   			$("#envionment").html('<option value="">-- Envionment --</option>');
-			$.getJSON('/v1/config/envionment.json',	function(data) {
-				$.each(data, function(key, val) {
-					$("#envionment").append('<option value="' + val + '">' + val + "</option>");
-				});
-
-			});
-		}); 
-		
-   		$("#envionment").change(function() {
-
-			var envionment = $("#envionment option:selected")
-					.text();
-
-			var group = $("#group").val();
-			var env = $("#envionment").val();
-			var prj = $("#project").val();
-			var url = "/deploy/" + group + "/" + env;
-
-			$("#project").html('<option value="">-- Project --</option>');
-
-			$.getJSON('/v1/config/project/' + group + '/' + envionment + '.json',
-
-			function(data) {
-
-				$.each(data, function(key, val) {
-					$("#project").append('<option value="' + val + '">' + val + "</option>");
-				});
-
-			});
-
-		});    
-		
-		jQuery("#deploy").click(function() {
-			jQuery("#output").html("");
-			
-			var group = $("#group").val();
-			var envionment = $("#envionment").val();
-			var project = $("#project").val();
-			var url = "/v1/deploy/config/" + group + "/" + envionment+"/"+project+"/";
-			
-			var data = $.getJSON(url,
-				function(data) {
-					if(data.status){
-						jQuery("#status").html("Starting...")
-					}
-				});
-
-		});
-		
-		jQuery("#backup").click(function() {
-			manual(["ant","tgz"]);
-		});
-		jQuery("#restart").click(function() {
-			manual(["ant","restart"]);
-		});
-		jQuery("#start").click(function() {
-			manual(["ant","start"]);
-		});
-		jQuery("#stop").click(function() {
-			manual(["ant","stop"]);
-		});
-		jQuery("#merge").click(function() {
-			manual(["ant","push"]);
-		});
-		function manual(argv){
-			jQuery("#output").html("");
-			
-			var group = $("#group").val();
-			var envionment = $("#envionment").val();
-			var project = $("#project").val();
-			
-			var protocol = {
-					'group': group,
-					'envionment': envionment,
-					'project': project,
-					'arguments': argv
-					
-			};
-			
-			console.log('json: ' + JSON.stringify(protocol));
-			$("#output").html("");
-
-			$.ajax({
-	           type: "POST",
-	           url: "/v1/deploy/manual.json",
-	           dataType: "json",
-	           contentType: 'application/json',
-	           data: JSON.stringify(protocol),
-	           success: function (msg) {
-	               if (msg.status) {
-	            	   $('#error').html( "Sent" );
-	               } else {
-	                   alert("Cannot add to list !");
-	               }
-	           }
-	       });				
-			
-		}
-    });
     </script>
-</div>
 
 	<%@ include file="../footer.jsp" %>
 </body>

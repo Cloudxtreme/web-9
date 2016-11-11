@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-	<title>Manual deploy</title>
+	<title>Web server</title>
 	<%@ include file="../head.jsp" %>
 <script src="/js/deploy.js"></script>
 </head>
