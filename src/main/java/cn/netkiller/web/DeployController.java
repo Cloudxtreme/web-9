@@ -14,7 +14,7 @@ public class DeployController {
 	
 	@RequestMapping("/config")
 	public ModelAndView config() {
-		
+
 		return new ModelAndView("deploy/config");
 
 	}
