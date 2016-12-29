@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>SSL</title>
-	<%@ include file="head.jsp" %>
+	<%@ include file="../head.jsp" %>
 </head>
 <body>
 	<%@ include file="../header.jsp" %>
