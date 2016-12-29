@@ -4,9 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Redis</title>
-<script src="/webjars/jquery/jquery.min.js"></script>
-<%-- <%@ include file="head.jsp" %> --%>
+<title>SSL</title>
+	<%@ include file="head.jsp" %>
 </head>
 <body>
 	<%@ include file="../header.jsp" %>
@@ -20,9 +19,9 @@
     </fieldset>
 	<fieldset>
 		<legend>Screen output</legend>
-		<ol id="output">
+		<pre id="output">
 	
-		</ol>
+		</pre>
 	</fieldset>
 	
 <pre id="error">
@@ -32,17 +31,28 @@
 	<script>
 	jQuery(document).ready(function() {
 		
+		var socket = new SockJS('/screen');
+		var stompClient = Stomp.over(socket);
+	   
+		stompClient.connect({}, function (frame) {
+	        console.log('Connected: ' + frame);
+	        stompClient.subscribe('/topic/shell', function (protocol) {
+	            $("#output").append("<li>" + JSON.parse(protocol.body).response + "</li>");
+	        });
+	    });
+
+		
 		jQuery("#check").click(function() {
 			
 			var host = $("#host").val();
 			var port = $("#port").val();
-			var command = "openssl s_client -servername "+ host +" -connect " +host+ ":"+ port;
+			var command = "echo \"\r\n\" | openssl s_client -servername "+ host +" -connect " +host+ ":"+ port;
 			
 			var protocol = {
 					'request': command
 			};
 
-			console.log('json: ' + JSON.stringify(protocol));
+			//console.log('json: ' + JSON.stringify(protocol));
 			$("#output").html("");
 			$.ajax({
 		           type: "POST",
@@ -51,10 +61,8 @@
 		           contentType: 'application/json',
 		           data: JSON.stringify(protocol),
 		           success: function (data) {
-		               if (data) {
-		            	   	$.each(data,function(key, val) {
-		       					$("#output").append("<li>"+ val +"</li>");
-		       				});
+		               if (data.true) {
+		            	   $('#error').html( "OK" );
 		               } else {
 		            	   $('#error').html( "没有数据" );
 		               }
