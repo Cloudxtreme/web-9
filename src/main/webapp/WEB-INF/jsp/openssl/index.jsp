@@ -24,9 +24,9 @@
 		</pre>
 	</fieldset>
 	
-<pre id="error">
-
-</pre>
+	<pre id="error">
+	
+	</pre>
 
 	<script>
 	jQuery(document).ready(function() {
@@ -35,9 +35,9 @@
 		var stompClient = Stomp.over(socket);
 	   
 		stompClient.connect({}, function (frame) {
-	        console.log('Connected: ' + frame);
+	        //console.log('Connected: ' + frame);
 	        stompClient.subscribe('/topic/shell', function (protocol) {
-	            $("#output").append("" + JSON.parse(protocol.body).response + "");
+	            $("#output").append("" + JSON.parse(protocol.body).response + "\r\n");
 	        });
 	    });
 
