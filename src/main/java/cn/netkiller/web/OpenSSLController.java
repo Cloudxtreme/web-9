@@ -13,9 +13,15 @@ public class OpenSSLController {
 	}
 
 	@RequestMapping("/index")
-	public ModelAndView config() {
+	public ModelAndView index() {
 		
 		return new ModelAndView("openssl/index");
+
+	}
+	@RequestMapping("/http2")
+	public ModelAndView https() {
+		
+		return new ModelAndView("openssl/http2");
 
 	}
 }
