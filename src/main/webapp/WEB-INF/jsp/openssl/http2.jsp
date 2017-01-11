@@ -15,6 +15,7 @@
 		<input id="host" name="host" size="16" placeholder="Your host here..."/>
 		<input id="port" name="port" size="2" value="443" />
     	<button id="alpn" name="alpn" type="button">ALPN</button>
+    	<button id="alpn" name="alpn" type="button">NPN</button>
     	<button id="dns" name="dns" type="button">DNS</button>
     
     </fieldset>
@@ -74,6 +75,32 @@
 			var host = $("#host").val();
 			var port = $("#port").val();
 			var command =  String.format("openssl s_client -servername %s -connect %s:%d | openssl x509 -noout -text | grep DNS", host, host, port) ;
+			var protocol = {
+					'request': command
+			};
+
+			//console.log('json: ' + JSON.stringify(protocol));
+			$("#output").html("");
+			$.ajax({
+		           type: "POST",
+		           url: "/v1/system/shell/localhost.json",
+		           dataType: "json",
+		           contentType: 'application/json',
+		           data: JSON.stringify(protocol),
+		           success: function (data) {
+		               if (data.true) {
+		            	   $('#error').html( "OK" );
+		               } else {
+		            	   $('#error').html( "没有数据" );
+		               }
+		           }
+		       });
+		});
+		jQuery("#npn").click(function() {
+			
+			var host = $("#host").val();
+			var port = $("#port").val();
+			var command =  String.format("openssl s_client -nextprotoneg h2 -servername %s -connect %s:%d | openssl x509 -noout -text | grep DNS", host, host, port) ;
 			var protocol = {
 					'request': command
 			};
