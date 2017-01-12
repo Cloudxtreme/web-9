@@ -61,154 +61,154 @@ public class IndexController extends CommonController{
 		return new ModelAndView("index").addObject("project", project);
 	}
 
-	@RequestMapping(value = "/deploy/{group}/{envionment}/{project}", method = RequestMethod.GET)
-	public ModelAndView deployEnvionment(@PathVariable String group, @PathVariable String envionment, @PathVariable String project) {
+//	@RequestMapping(value = "/deploy/{group}/{envionment}/{project}", method = RequestMethod.GET)
+//	public ModelAndView deployEnvionment(@PathVariable String group, @PathVariable String envionment, @PathVariable String project) {
+//
+//		String output = this.deploy(group, envionment, project, null);
+//		log.info("The output is {}", output);
+//		return new ModelAndView("output").addObject("output", output);
+//	}
+//
+//	@RequestMapping("/config")
+//	@ResponseBody
+//	public void config() {
+//		try {
+//			Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource("/config.properties"));
+//			for (String key : properties.stringPropertyNames()) {
+//				String value = properties.getProperty(key);
+//				System.out.println(key + " => " + value);
+//			}
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//	}
 
-		String output = this.deploy(group, envionment, project, null);
-		log.info("The output is {}", output);
-		return new ModelAndView("output").addObject("output", output);
-	}
+//	@RequestMapping(value = "/deploy/post", method = RequestMethod.POST)
+//	public ModelAndView post(@ModelAttribute("deploy") Deploy deploy, BindingResult result) {
+//		String output = "";
+//		if (result.hasErrors()) {
+//			System.out.println(">>>" + result.toString());
+//		}
+//		if (deploy.getArguments() != null) {
+//
+//			if (deploy.getArguments().contains("deployment")) {
+//				output = this.deployment(deploy.getGroup(), deploy.getEnvionment(), deploy.getProject());
+//			} else {
+//				output = this.deploy(deploy.getGroup(), deploy.getEnvionment(), deploy.getProject(), deploy.getArguments());
+//			}
+//		} else {
+//			output = this.deploy(deploy.getGroup(), deploy.getEnvionment(), deploy.getProject(), null);
+//		}
+//		System.out.println(deploy.toString());
+//		return new ModelAndView("output").addObject("output", output);
+//	}
 
-	@RequestMapping("/config")
-	@ResponseBody
-	public void config() {
-		try {
-			Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource("/config.properties"));
-			for (String key : properties.stringPropertyNames()) {
-				String value = properties.getProperty(key);
-				System.out.println(key + " => " + value);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-	@RequestMapping(value = "/deploy/post", method = RequestMethod.POST)
-	public ModelAndView post(@ModelAttribute("deploy") Deploy deploy, BindingResult result) {
-		String output = "";
-		if (result.hasErrors()) {
-			System.out.println(">>>" + result.toString());
-		}
-		if (deploy.getArguments() != null) {
-
-			if (deploy.getArguments().contains("deployment")) {
-				output = this.deployment(deploy.getGroup(), deploy.getEnvionment(), deploy.getProject());
-			} else {
-				output = this.deploy(deploy.getGroup(), deploy.getEnvionment(), deploy.getProject(), deploy.getArguments());
-			}
-		} else {
-			output = this.deploy(deploy.getGroup(), deploy.getEnvionment(), deploy.getProject(), null);
-		}
-		System.out.println(deploy.toString());
-		return new ModelAndView("output").addObject("output", output);
-	}
-
-	private String deployment(String group, String envionment, String project) {
-		StringBuilder stringBuilder = new StringBuilder();
-		try {
-			String command = String.format("deployment %s %s", envionment, project);
-
-			String[] cmd = new String[] { "/bin/bash", "-c", command };
-
-			log.info("The deployment command is {}", Arrays.toString(cmd));
-
-			Runtime runtime = Runtime.getRuntime();
-			Process process = runtime.exec(cmd, null, new File("/www"));
-
-			InputStream inputStream = process.getInputStream();
-
-			InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-
-			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-			String line = null;
-			while ((line = bufferedReader.readLine()) != null) {
-				stringBuilder.append(line + "\n");
-			}
-
-			inputStream.close();
-			inputStreamReader.close();
-			bufferedReader.close();
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		log.info("The output is {}", stringBuilder.toString());
-		return stringBuilder.toString();
-	}
-
-	private String deploy(String group, String envionment, String project, List<String> arguments) {
-		String output = "";
-
-		try {
-			String command = null;
-
-			if (arguments == null) {
-				Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s/%s.properties", group, envionment)));
-				if (properties.containsKey(project)) {
-					command = properties.getProperty(project);
-				}
-			} else {
-				command = String.join(" ", arguments);
-			}
-
-			String[] cmd = new String[] { "/bin/bash", "-c", command };
-
-			if (command == null) {
-				return "";
-			}
-
-			log.info("The ant command is {}", Arrays.toString(cmd));
-			String workspace = String.format("/www/%s/%s/%s", group, envionment, project);
-			File file = new File(workspace);
-			if (!file.exists()) {
-				//if (!file.isDirectory()) {
-					workspace = "/www";
-				//}
-			}
-			log.info("The workspace is {}", workspace);
-			Runtime runtime = Runtime.getRuntime();
-			Process process = runtime.exec(cmd, null, new File(workspace));
-
-			InputStream is = process.getInputStream();
-
-			InputStreamReader isr = new InputStreamReader(is);
-
-			BufferedReader br = new BufferedReader(isr);
-
-			StringBuilder sb = new StringBuilder();
-			String line = null;
-			while ((line = br.readLine()) != null) {
-				sb.append(line + "\n");
-			}
-			output = sb.toString();
-
-			is.close();
-			isr.close();
-			br.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		log.info("The output is {}", output);
-		return output;
-	}
+//	private String deployment(String group, String envionment, String project) {
+//		StringBuilder stringBuilder = new StringBuilder();
+//		try {
+//			String command = String.format("deployment %s %s", envionment, project);
+//
+//			String[] cmd = new String[] { "/bin/bash", "-c", command };
+//
+//			log.info("The deployment command is {}", Arrays.toString(cmd));
+//
+//			Runtime runtime = Runtime.getRuntime();
+//			Process process = runtime.exec(cmd, null, new File("/www"));
+//
+//			InputStream inputStream = process.getInputStream();
+//
+//			InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+//
+//			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+//
+//			String line = null;
+//			while ((line = bufferedReader.readLine()) != null) {
+//				stringBuilder.append(line + "\n");
+//			}
+//
+//			inputStream.close();
+//			inputStreamReader.close();
+//			bufferedReader.close();
+//
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		log.info("The output is {}", stringBuilder.toString());
+//		return stringBuilder.toString();
+//	}
+//
+//	private String deploy(String group, String envionment, String project, List<String> arguments) {
+//		String output = "";
+//
+//		try {
+//			String command = null;
+//
+//			if (arguments == null) {
+//				Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s/%s.properties", group, envionment)));
+//				if (properties.containsKey(project)) {
+//					command = properties.getProperty(project);
+//				}
+//			} else {
+//				command = String.join(" ", arguments);
+//			}
+//
+//			String[] cmd = new String[] { "/bin/bash", "-c", command };
+//
+//			if (command == null) {
+//				return "";
+//			}
+//
+//			log.info("The ant command is {}", Arrays.toString(cmd));
+//			String workspace = String.format("/www/%s/%s/%s", group, envionment, project);
+//			File file = new File(workspace);
+//			if (!file.exists()) {
+//				//if (!file.isDirectory()) {
+//					workspace = "/www";
+//				//}
+//			}
+//			log.info("The workspace is {}", workspace);
+//			Runtime runtime = Runtime.getRuntime();
+//			Process process = runtime.exec(cmd, null, new File(workspace));
+//
+//			InputStream is = process.getInputStream();
+//
+//			InputStreamReader isr = new InputStreamReader(is);
+//
+//			BufferedReader br = new BufferedReader(isr);
+//
+//			StringBuilder sb = new StringBuilder();
+//			String line = null;
+//			while ((line = br.readLine()) != null) {
+//				sb.append(line + "\n");
+//			}
+//			output = sb.toString();
+//
+//			is.close();
+//			isr.close();
+//			br.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		log.info("The output is {}", output);
+//		return output;
+//	}
 
 
 	
-	@MessageMapping("/screen")
-	@SendTo("/topic/screen")
-	public Greeting log(HelloMessage message) throws Exception {
-		 Thread.sleep(1000); // simulated delay
-		//FireGreeting r = new FireGreeting(this.template, message.getName());
-		//new Thread(r).start();
-		
-		//return new Greeting("Hello, " + properties.getProperty(message.getName()) + "!");
-		return new Greeting("Hello, " + message.getName() + "!");
-	}
+//	@MessageMapping("/screen")
+//	@SendTo("/topic/screen")
+//	public Greeting log(HelloMessage message) throws Exception {
+//		 Thread.sleep(1000); // simulated delay
+//		//FireGreeting r = new FireGreeting(this.template, message.getName());
+//		//new Thread(r).start();
+//		
+//		//return new Greeting("Hello, " + properties.getProperty(message.getName()) + "!");
+//		return new Greeting("Hello, " + message.getName() + "!");
+//	}
 
 	/*
 	 * 
