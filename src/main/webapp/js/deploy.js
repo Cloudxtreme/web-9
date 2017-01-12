@@ -1,7 +1,7 @@
 jQuery(document).ready(function() {
 
     connect();
-	    
+	/*    
  	$.getJSON('/v1/config/group.json',function(data) {
 
 		$.each(data,function(key, val) {
@@ -11,7 +11,7 @@ jQuery(document).ready(function() {
 	});
 
   	$("#group").change(function() {
-  		$("#envionment").html('<option value="">-- Envionment --</option>');
+  		$("#project").html('<option value="">-- Project --</option>');
 		$.getJSON('/v1/config/envionment.json',	function(data) {
 			$.each(data, function(key, val) {
 				$("#envionment").append('<option value="' + val + '">' + val + "</option>");
@@ -27,7 +27,7 @@ jQuery(document).ready(function() {
 		var prj = $("#project").val();
 		var url = "/deploy/" + group + "/" + env;
 
-		$("#project").html('<option value="">-- Project --</option>');
+		$("#envionment").html('<option value="">-- Envionment --</option>');
 
 		$.getJSON('/v1/config/project/' + group + '/' + envionment + '.json',
 
@@ -40,14 +40,52 @@ jQuery(document).ready(function() {
 		});
 
 	});    
-		
+	*/
+    
+    $.getJSON('/v1/config/group.json', function(data) {
+		$.each(data,function(key, val) {
+			$("#group").append('<option value="' + val + '">' + val + "</option>");
+		});
+
+	});
+	
+	$("#group").change(function() {
+
+		var group = $("#group").val();
+		var env = $("#branch").val();
+		var prj = $("#project").val();
+		var url = "/v1/config/project/" + group + ".json";	
+		$.getJSON(url,function(data) {
+
+			$.each(data, function(key, val) {
+				$("#project").append('<option value="' + val + '">' + val + "</option>");
+			});
+
+		});
+
+	});
+	
+	$("#project").change(function() {
+
+		var group = $("#group").val();
+		var branch = $("#branch").val();
+		var project = $("#project").val();
+		var url = "/v1/config/branch/" + group + "/"+project+".json";
+		$.getJSON(url,function(data) {
+			$.each(data, function(key, val) {
+				$("#branch").append('<option value="' + val + '">' + val + "</option>");
+			});
+		});
+
+	});
+    
 	jQuery("#deploy").click(function() {
 		jQuery("#output").html("");
 		
 		var group = $("#group").val();
-		var envionment = $("#envionment").val();
+		var branch = $("#branch").val();
 		var project = $("#project").val();
-		var url = "/v1/deploy/config/" + group + "/" + envionment+"/"+project+"/";
+		var url = "/v1/deploy/config/" + group + "/" + branch+"/"+project+"/";
 		
 		var data = $.getJSON(url,
 			function(data) {
@@ -87,13 +125,13 @@ jQuery(document).ready(function() {
 	
 	function manual(argv){
 		var group = $("#group").val();
-		var envionment = $("#envionment").val();
+		var branch = $("#branch").val();
 		var project = $("#project").val();
 		
 		var protocol = {
 				'group': group,
-				'envionment': envionment,
 				'project': project,
+				'branch': branch,
 				'arguments': argv
 				
 		};

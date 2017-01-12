@@ -9,7 +9,8 @@
 	<meta name="${_csrf.parameterName}" content="${_csrf.token}"/>
 	<!-- default header name is X-CSRF-TOKEN -->
 	<meta name="_csrf_header" content="${_csrf.headerName}"/>
-
+<!-- 	<script src="/js/logging.js"></script>
+	<script src="/js/deploy.js"></script> -->
 </head>
 <body>
 	<%@ include file="../header.jsp" %>
@@ -28,8 +29,8 @@
 		<select id="project" name="project">
 			<option value="">-- Group --</option>
 		</select>
-		<select id="envionment" name="envionment">
-			<option value="">-- Envionment --</option>
+		<select id="branch" name="branch">
+			<option value="">-- Branch --</option>
 		</select>
 		
 		<!-- <input type="submit" id="submit" value="Deploy" /> -->
@@ -85,8 +86,7 @@ jQuery(document).ready(function() {
 	    //console.log("Disconnected");
 	}
 	
-	
-	$.getJSON('/v1/config/ant/group.json', function(data) {
+    $.getJSON('/v1/config/group.json', function(data) {
 		$.each(data,function(key, val) {
 			$("#group").append('<option value="' + val + '">' + val + "</option>");
 		});
@@ -96,9 +96,9 @@ jQuery(document).ready(function() {
 	$("#group").change(function() {
 
 		var group = $("#group").val();
-		var env = $("#envionment").val();
+		var env = $("#branch").val();
 		var prj = $("#project").val();
-		var url = "/v1/config/ant/project/" + group + ".json";	
+		var url = "/v1/config/project/" + group + ".json";	
 		$.getJSON(url,function(data) {
 
 			$.each(data, function(key, val) {
@@ -112,12 +112,12 @@ jQuery(document).ready(function() {
 	$("#project").change(function() {
 
 		var group = $("#group").val();
-		var envionment = $("#envionment").val();
+		var branch = $("#branch").val();
 		var project = $("#project").val();
-		var url = "/v1/config/ant/envionment/" + group + "/"+project+".json";
+		var url = "/v1/config/branch/" + group + "/"+project+".json";
 		$.getJSON(url,function(data) {
 			$.each(data, function(key, val) {
-				$("#envionment").append('<option value="' + val + '">' + val + "</option>");
+				$("#branch").append('<option value="' + val + '">' + val + "</option>");
 			});
 		});
 
@@ -128,8 +128,8 @@ jQuery(document).ready(function() {
 		
 		var group = $("#group").val();
 		var project = $("#project").val();
-		var envionment = $("#envionment").val();
-		var url = "/v1/config/ant/build/" + group + "/"+project+ "/"+envionment+".json";
+		var branch = $("#branch").val();
+		var url = "/v1/config/ant/build/" + group + "/"+project+ "/"+branch+".json";
 		$.getJSON(url,function(data) {
 			$.each(data, function(key, val) {
 				$("#output").append("<li>" + key +"="+ val + "</li>");
@@ -141,7 +141,7 @@ jQuery(document).ready(function() {
 		connect();
 		
 		var group = $("#group").val();
-		var envionment = $("#envionment").val();
+		var branch = $("#branch").val();
 		var project = $("#project").val();
 		
 		var arguments = (function() {
@@ -154,8 +154,8 @@ jQuery(document).ready(function() {
 		
 		var protocol = {
 				'group': group,
-				'envionment': envionment,
 				'project': project,
+				'branch': branch,
 				'arguments': arguments
 				
 		};

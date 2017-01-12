@@ -44,12 +44,12 @@
     	<select id="group" name="group">
 			<option value="">-- Group --</option>
 		</select> 
-		<select id="envionment" name="envionment">
-			<option value="">-- Envionment --</option>
-		</select> 
 		<select id="project" name="project">
 			<option value="">-- Project --</option>
-		</select> 
+		</select>		
+		<select id="branch" name="branch">
+			<option value="">-- Branch --</option>
+		</select>
 		<button id="deploy" class="" type="button">Deploy</button>
 		<input id="reset" type="reset" value="Cancel" />
 		<button id="backup" class="" type="button">Backup</button>

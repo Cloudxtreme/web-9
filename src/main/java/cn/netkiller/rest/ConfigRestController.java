@@ -38,24 +38,24 @@ public class ConfigRestController extends CommonRestController {
 		return "[OK] Welcome to withdraw Restful version 1.0";
 	}
 
-	@RequestMapping("/project/{group}/{envionment}")
-	public Enumeration<Object> project(@PathVariable String group, @PathVariable String envionment) throws IOException {
-		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s/%s.properties", group, envionment)));
-		return properties.keys();
-	}
-
-	@RequestMapping("/group")
-	public List<String> group() throws IOException {
-		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "config")));
-		return Arrays.asList(String.valueOf(properties.get("group")).concat(",").split(","));
-	}
-	@RequestMapping("/envionment")
-	public List<String> envionment() throws IOException {
-		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "config")));
-		return Arrays.asList(String.valueOf(properties.get("envionment")).concat(",").split(","));
-	}
+//	@RequestMapping("/project/{group}/{envionment}")
+//	public Enumeration<Object> project(@PathVariable String group, @PathVariable String envionment) throws IOException {
+//		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s/%s.properties", group, envionment)));
+//		return properties.keys();
+//	}
+//
+//	@RequestMapping("/group")
+//	public List<String> group() throws IOException {
+//		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "config")));
+//		return Arrays.asList(String.valueOf(properties.get("group")).concat(",").split(","));
+//	}
+//	@RequestMapping("/envionment")
+//	public List<String> envionment() throws IOException {
+//		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s.properties", "config")));
+//		return Arrays.asList(String.valueOf(properties.get("envionment")).concat(",").split(","));
+//	}
 	
-	@RequestMapping("/ant/group")
+	@RequestMapping("/group")
 	public List<String> antGroup() throws IOException {
 		List<String> dir= new ArrayList<String>();
 		String path = String.format("%s/", this.workspace);
@@ -72,7 +72,7 @@ public class ConfigRestController extends CommonRestController {
 		}
 		return dir;
 	}
-	@RequestMapping("/ant/project/{group}")
+	@RequestMapping("/project/{group}")
 	public List<String> project(@PathVariable String group) throws IOException {
 		List<String> dir= new ArrayList<String>();
 		String path = String.format("%s/%s/", this.workspace, group);
@@ -90,16 +90,16 @@ public class ConfigRestController extends CommonRestController {
 		return dir;
 	}
 
-	@RequestMapping("/ant/envionment/{group}/{project}")
-	public List<String> envionment(@PathVariable String group, @PathVariable String project) throws IOException {
+	@RequestMapping("/branch/{group}/{project}")
+	public List<String> branch(@PathVariable String group, @PathVariable String project) throws IOException {
 		List<String> dir= new ArrayList<String>();
 		String path = String.format("%s/%s/%s/", this.workspace, group, project);
  		try(Stream<Path> paths = Files.walk(Paths.get(path),1)) {
 		    paths.forEach(filePath -> {
 		        if (Files.isDirectory(filePath)) {
-		        	String envionment = filePath.toString().replace(path, "").replace(path, "").replace(path.substring(0, path.length()-1), "");
-		        	if(! envionment.equals("")){
-		        		dir.add(envionment);
+		        	String branch = filePath.toString().replace(path, "").replace(path, "").replace(path.substring(0, path.length()-1), "");
+		        	if(! branch.equals("")){
+		        		dir.add(branch);
 		        	}
 		            
 		        }
@@ -107,21 +107,21 @@ public class ConfigRestController extends CommonRestController {
 		}
 		return dir;
 	}
-	@RequestMapping("/ant/build/{group}/{project}/{envionment}")
-	public ResponseEntity<Properties> buildfile(@PathVariable String group, @PathVariable String project, @PathVariable String envionment) throws IOException {
-		String path = String.format("%s/%s/%s/%s/build.properties", this.workspace, group, project, envionment);
+	@RequestMapping("/ant/build/{group}/{project}/{branch}")
+	public ResponseEntity<Properties> buildfile(@PathVariable String group, @PathVariable String project, @PathVariable String branch) throws IOException {
+		String path = String.format("%s/%s/%s/%s/build.properties", this.workspace, group, project, branch);
 		Properties properties = new Properties();
 		properties.load(new FileInputStream(path));
 		return new ResponseEntity<Properties>(properties, HttpStatus.OK);
 	}
 	
-	@RequestMapping("/build/{group}/{envionment}/{project}/")
-	public ResponseEntity<Properties> build(@PathVariable String group, @PathVariable String envionment, @PathVariable String project) throws IOException {
+	@RequestMapping("/build/{group}/{branch}/{project}/")
+	public ResponseEntity<Properties> build(@PathVariable String group, @PathVariable String branch, @PathVariable String project) throws IOException {
 		Properties properties = null;
-		String workspace = String.format("%s/%s/%s/%s/build.properties", this.workspace, group, envionment, project);
+		String workspace = String.format("%s/%s/%s/%s/build.properties", this.workspace, group, branch, project);
 		File file = new File(workspace);
 		if (file.exists()) {
-			properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s/%s.properties", group, envionment)));
+			properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s/%s.properties", group, branch)));
 		}
 
 		return new ResponseEntity<Properties>(properties, HttpStatus.OK);

@@ -105,17 +105,17 @@ public class DeployRestController extends SystemRestController {
 		return new ResponseEntity<Protocol>(protocol, HttpStatus.OK);
 	}
 
-	@RequestMapping("/config/{group}/{envionment}/{project}/")
-	public Protocol config(@PathVariable String group, @PathVariable String envionment, @PathVariable String project) throws IOException {
+	@RequestMapping("/config/{group}/{project}/{branch}/")
+	public Protocol config(@PathVariable String group, @PathVariable String project, @PathVariable String branch) throws IOException {
 		Protocol protocol = new Protocol();
 		protocol.setStatus(true);
-		String workspace = String.format("/www/%s/%s/%s", group, envionment, project);
+		String workspace = String.format("/www/%s/%s/%s", group, project, branch);
 		File file = new File(workspace);
 		if (!file.exists()) {
 			workspace = "/www";
 		}
 
-		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s/%s.properties", group, envionment)));
+		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s/%s.properties", group, branch)));
 		if (properties.containsKey(project)) {
 			String command = properties.getProperty(project);
 			ScreenOutput r = new ScreenOutput(this.template, "/topic/log", this.exec(command, workspace));
