@@ -146,11 +146,11 @@ public class DeployRestController extends SystemRestController {
 		if (deploy.getArguments() != null) {
 
 			if (deploy.getArguments().contains("deployment")) {
-				command = String.format("deployment %s %s", deploy.getEnvionment(), deploy.getProject());
+				command = String.format("deployment %s %s", deploy.getBranch(), deploy.getProject());
 				screenOutput = new ScreenOutput(this.template, "/topic/log", this.exec(command, "/www"));
 			} else {
 				command = String.join(" ", deploy.getArguments());
-				String workspace = String.format("/www/%s/%s/%s", deploy.getGroup(), deploy.getEnvionment(), deploy.getProject());
+				String workspace = String.format("/www/%s/%s/%s", deploy.getGroup(), deploy.getBranch(), deploy.getProject());
 				screenOutput = new ScreenOutput(this.template, "/topic/log", this.exec(command, workspace));
 			}
 			new Thread(screenOutput).start();
