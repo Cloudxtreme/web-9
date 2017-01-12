@@ -111,13 +111,14 @@ public class DeployRestController extends SystemRestController {
 		protocol.setStatus(true);
 		String workspace = String.format("/www/%s/%s/%s", group, project, branch);
 		File file = new File(workspace);
-		if (!file.exists()) {
-			workspace = "/www";
-		}
-
-		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s/%s.properties", group, branch)));
-		if (properties.containsKey(project)) {
-			String command = properties.getProperty(project);
+		if (file.exists()) {
+//			workspace = "/www";
+//		}
+//
+//		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s/%s.properties", group, branch)));
+//		if (properties.containsKey(project)) {
+//			String command = properties.getProperty(project);
+			String command = "ant deploy"
 			ScreenOutput r = new ScreenOutput(this.template, "/topic/log", this.exec(command, workspace));
 			new Thread(r).start();
 			protocol.setRequest(command);

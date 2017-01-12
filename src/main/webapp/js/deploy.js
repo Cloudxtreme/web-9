@@ -83,9 +83,9 @@ jQuery(document).ready(function() {
 		jQuery("#output").html("");
 		
 		var group = $("#group").val();
-		var branch = $("#branch").val();
 		var project = $("#project").val();
-		var url = "/v1/deploy/config/" + group + "/" + branch+"/"+project+"/";
+		var branch = $("#branch").val();
+		var url = "/v1/deploy/config/" + group +"/"+project+"/"+ branch +"/";
 		
 		var data = $.getJSON(url,
 			function(data) {
@@ -93,7 +93,6 @@ jQuery(document).ready(function() {
 					jQuery("#status").html("Starting...")
 				}
 			});
-
 	});
 		
 	jQuery("#backup").click(function() {
@@ -125,8 +124,8 @@ jQuery(document).ready(function() {
 	
 	function manual(argv){
 		var group = $("#group").val();
-		var branch = $("#branch").val();
 		var project = $("#project").val();
+		var branch = $("#branch").val();
 		
 		var protocol = {
 				'group': group,
