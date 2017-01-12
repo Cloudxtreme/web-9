@@ -5,8 +5,8 @@ import java.util.List;
 public class Deploy {
 
 	private String group;
-	private String envionment;
 	private String project;
+	private String branch;
 	private List<String> arguments;
 	public Deploy() {
 		// TODO Auto-generated constructor stub
@@ -17,11 +17,12 @@ public class Deploy {
 	public void setGroup(String group) {
 		this.group = group;
 	}
-	public String getEnvionment() {
-		return envionment;
+	
+	public String getBranch() {
+		return branch;
 	}
-	public void setEnvionment(String envionment) {
-		this.envionment = envionment;
+	public void setBranch(String branch) {
+		this.branch = branch;
 	}
 	public String getProject() {
 		return project;
@@ -37,7 +38,6 @@ public class Deploy {
 	}
 	@Override
 	public String toString() {
-		return "Deploy [group=" + group + ", envionment=" + envionment + ", project=" + project + ", arguments=" + arguments + "]";
+		return "Deploy [group=" + group + ", project=" + project + ", branch=" + branch + ", arguments=" + arguments + "]";
 	}
-	
 }

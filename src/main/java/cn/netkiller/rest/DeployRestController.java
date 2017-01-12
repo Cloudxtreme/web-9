@@ -69,9 +69,9 @@ public class DeployRestController extends SystemRestController {
 	public @ResponseBody ResponseEntity<Protocol> ant(@RequestBody Deploy deploy) throws IOException {
 		Protocol protocol = new Protocol();
 		protocol.setStatus(true);
-		String group = deploy.getGroup(), envionment = deploy.getEnvionment(), project = deploy.getProject();
+		String group = deploy.getGroup(), branch = deploy.getBranch(), project = deploy.getProject();
 		String arguments = String.join(" ", deploy.getArguments());
-		String buildfile = String.format("%s/%s/%s/%s/build.xml", this.workspace, group, project, envionment);
+		String buildfile = String.format("%s/%s/%s/%s/build.xml", this.workspace, group, project, branch);
 		ClassPathResource classPathResource = new ClassPathResource("build.xml");
 		if (classPathResource.exists()) {
 			// buildfile = classPathResource.getFile().getAbsolutePath();
@@ -85,7 +85,7 @@ public class DeployRestController extends SystemRestController {
 			// System.out.println(buildfile);
 		}
 
-		String propertyfile = String.format("%s/%s/%s/%s/build.properties", this.workspace, group, project, envionment);
+		String propertyfile = String.format("%s/%s/%s/%s/build.properties", this.workspace, group, project, branch);
 		String command = String.format("ant -propertyfile %s -buildfile %s %s", propertyfile, buildfile, arguments);
 		Properties properties = this.config(propertyfile);
 		if (properties != null) {

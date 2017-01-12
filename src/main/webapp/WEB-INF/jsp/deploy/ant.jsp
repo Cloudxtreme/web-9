@@ -20,12 +20,6 @@
 		<select id="group" name="group">
 			<option value="">-- Group --</option>
 		</select>
-		<%--
-		<input id="project" list="projectList" name="project" value="${project}" />
-		<datalist id="projectList">
-			<!-- <option value="www.example.com"> -->
-		</datalist>
-		--%>
 		<select id="project" name="project">
 			<option value="">-- Group --</option>
 		</select>
@@ -111,9 +105,9 @@ jQuery(document).ready(function() {
 	
 	$("#project").change(function() {
 
-		var group = $("#group").val();
-		var branch = $("#branch").val();
+		var group = $("#group").val();		
 		var project = $("#project").val();
+		var branch = $("#branch").val();
 		var url = "/v1/config/branch/" + group + "/"+project+".json";
 		$.getJSON(url,function(data) {
 			$.each(data, function(key, val) {
@@ -141,8 +135,8 @@ jQuery(document).ready(function() {
 		connect();
 		
 		var group = $("#group").val();
-		var branch = $("#branch").val();
 		var project = $("#project").val();
+		var branch = $("#branch").val();
 		
 		var arguments = (function() {
             var a = [];
