@@ -118,7 +118,7 @@ public class DeployRestController extends SystemRestController {
 //		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s/%s.properties", group, branch)));
 //		if (properties.containsKey(project)) {
 //			String command = properties.getProperty(project);
-			String command = "ant deploy"
+			String command = "ant deploy";
 			ScreenOutput r = new ScreenOutput(this.template, "/topic/log", this.exec(command, workspace));
 			new Thread(r).start();
 			protocol.setRequest(command);
