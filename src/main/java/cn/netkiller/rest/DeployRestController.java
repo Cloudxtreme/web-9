@@ -152,7 +152,7 @@ public class DeployRestController extends SystemRestController {
 				screenOutput = new ScreenOutput(this.template, "/topic/log", this.exec(command, "/www"));
 			} else {
 				command = String.join(" ", deploy.getArguments());
-				String workspace = String.format("/www/%s/%s/%s", deploy.getGroup(), deploy.getBranch(), deploy.getProject());
+				String workspace = String.format("%s/%s/%s/%s",  this.workspace, deploy.getGroup(), deploy.getBranch(), deploy.getProject());
 				screenOutput = new ScreenOutput(this.template, "/topic/log", this.exec(command, workspace));
 			}
 			new Thread(screenOutput).start();
