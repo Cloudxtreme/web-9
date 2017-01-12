@@ -109,15 +109,17 @@ public class DeployRestController extends SystemRestController {
 	public Protocol config(@PathVariable String group, @PathVariable String project, @PathVariable String branch) throws IOException {
 		Protocol protocol = new Protocol();
 		protocol.setStatus(true);
-		String workspace = String.format("/www/%s/%s/%s", group, project, branch);
+		String workspace = String.format("%s/%s/%s/%s", this.workspace, group, project, branch);
 		File file = new File(workspace);
 		if (file.exists()) {
-//			workspace = "/www";
-//		}
-//
-//		Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource(String.format("/%s/%s.properties", group, branch)));
-//		if (properties.containsKey(project)) {
-//			String command = properties.getProperty(project);
+			// workspace = "/www";
+			// }
+			//
+			// Properties properties = PropertiesLoaderUtils.loadProperties(new
+			// ClassPathResource(String.format("/%s/%s.properties", group,
+			// branch)));
+			// if (properties.containsKey(project)) {
+			// String command = properties.getProperty(project);
 			String command = "ant deploy";
 			ScreenOutput r = new ScreenOutput(this.template, "/topic/log", this.exec(command, workspace));
 			new Thread(r).start();
