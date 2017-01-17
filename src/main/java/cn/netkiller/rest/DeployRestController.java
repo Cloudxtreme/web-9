@@ -139,7 +139,7 @@ public class DeployRestController extends SystemRestController {
 	 */
 	@RequestMapping(value = "/manual", method = RequestMethod.POST, produces = { "application/xml", "application/json" })
 	public Protocol manual(@RequestBody Deploy deploy) {
-		System.out.println(deploy.toString());
+		// System.out.println(deploy.toString());
 		Protocol protocol = new Protocol();
 		protocol.setStatus(true);
 		String command = "";
@@ -152,10 +152,12 @@ public class DeployRestController extends SystemRestController {
 				screenOutput = new ScreenOutput(this.template, "/topic/log", this.exec(command, "/www"));
 			} else {
 				command = String.join(" ", deploy.getArguments());
-				String workspace = String.format("%s/%s/%s/%s",  this.workspace, deploy.getGroup(), deploy.getBranch(), deploy.getProject());
+				String workspace = String.format("%s/%s/%s/%s", this.workspace, deploy.getGroup(), deploy.getProject(), deploy.getBranch());
 				screenOutput = new ScreenOutput(this.template, "/topic/log", this.exec(command, workspace));
+				log.debug("The workspace path is {}", workspace);
 			}
-			log.info("The manual command is {}", command);
+			log.debug("The manual command is {}", command);
+
 			new Thread(screenOutput).start();
 			protocol.setRequest(command);
 			protocol.setResponse(deploy.toString());
