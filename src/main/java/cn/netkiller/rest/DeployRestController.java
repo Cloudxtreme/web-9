@@ -155,6 +155,7 @@ public class DeployRestController extends SystemRestController {
 				String workspace = String.format("%s/%s/%s/%s",  this.workspace, deploy.getGroup(), deploy.getBranch(), deploy.getProject());
 				screenOutput = new ScreenOutput(this.template, "/topic/log", this.exec(command, workspace));
 			}
+			log.info("The manual command is {}", command);
 			new Thread(screenOutput).start();
 			protocol.setRequest(command);
 			protocol.setResponse(deploy.toString());
