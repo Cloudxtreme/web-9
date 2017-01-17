@@ -50,7 +50,7 @@ jQuery(document).ready(function() {
 	});
 	
 	$("#group").change(function() {
-
+		$("#project").html('<option value="">-- Project --</option>');
 		var group = $("#group").val();
 		var env = $("#branch").val();
 		var prj = $("#project").val();
@@ -66,7 +66,7 @@ jQuery(document).ready(function() {
 	});
 	
 	$("#project").change(function() {
-
+		$("#branch").html('<option value="">-- Branch --</option>');
 		var group = $("#group").val();
 		var branch = $("#branch").val();
 		var project = $("#project").val();
