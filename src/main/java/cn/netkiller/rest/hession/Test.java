@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.netkiller.service.HelloWorldService;
 
 @RestController
-@RequestMapping("/v1/hession/test")
+@RequestMapping("/public/hession/test")
 public class Test {
 	@Autowired
 	HelloWorldService helloWorldService;
