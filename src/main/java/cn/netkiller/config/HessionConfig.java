@@ -13,20 +13,20 @@ import cn.netkiller.service.HelloWorldService;
 public class HessionConfig {
 	@Autowired
 	private HelloWorldService helloWorldService;
-	
+
 	@Bean(name = "/HelloWorldService")
-	public HessianServiceExporter hessianServiceExporter() {   
-	    HessianServiceExporter exporter = new HessianServiceExporter();      
-	    exporter.setService(helloWorldService);   
-	    exporter.setServiceInterface(HelloWorldService.class);   
-	    return exporter;
+	public HessianServiceExporter hessianServiceExporter() {
+		HessianServiceExporter exporter = new HessianServiceExporter();
+		exporter.setService(helloWorldService);
+		exporter.setServiceInterface(HelloWorldService.class);
+		return exporter;
 	}
-	
+
 	@Bean
-	public HessianProxyFactoryBean helloClient() {              
-	      HessianProxyFactoryBean factory = new HessianProxyFactoryBean();   
-	      factory.setServiceUrl("http://localhost:7000/HelloWorldService");   
-	      factory.setServiceInterface(HelloWorldService.class);   
-	      return factory;
+	public HessianProxyFactoryBean helloClient() {
+		HessianProxyFactoryBean factory = new HessianProxyFactoryBean();
+		factory.setServiceUrl("http://localhost:7000/HelloWorldService");
+		factory.setServiceInterface(HelloWorldService.class);
+		return factory;
 	}
 }

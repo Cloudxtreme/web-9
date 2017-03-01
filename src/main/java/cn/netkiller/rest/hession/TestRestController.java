@@ -8,11 +8,12 @@ import cn.netkiller.service.HelloWorldService;
 
 @RestController
 @RequestMapping("/public/hession/test")
-public class Test {
+public class TestRestController {
 	@Autowired
 	HelloWorldService helloWorldService;
-	@RequestMapping("/test")
-	public String test(){
-	    return helloWorldService.sayHello("Spring boot with Hessian.");
+
+	@RequestMapping("/hello")
+	public String test() {
+		return helloWorldService.sayHello("Spring boot with Hessian.");
 	}
 }
