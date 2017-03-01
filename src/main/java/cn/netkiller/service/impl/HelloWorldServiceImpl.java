@@ -1,7 +1,9 @@
 package cn.netkiller.service.impl;
 
-import cn.netkiller.service.HelloWorldService;
+import org.springframework.stereotype.Component;
 
+import cn.netkiller.service.HelloWorldService;
+@Component
 public class HelloWorldServiceImpl implements HelloWorldService {
 	@Override
 	public String sayHello(String name) {
