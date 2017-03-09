@@ -14,11 +14,11 @@ import cn.netkiller.kafka.producer.Producer;
 
 @Controller
 @RequestMapping("/test")
-public class TestControlller {
+public class KafkaTestController {
 
 	private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
-	public TestControlller() {
+	public KafkaTestController() {
 		// TODO Auto-generated constructor stub
 	}
 
