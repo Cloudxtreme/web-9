@@ -17,11 +17,13 @@ import org.springframework.web.servlet.ModelAndView;
 import cn.netkiller.repository.CityRepository;
 import cn.netkiller.repository.MultilevelDirectSellingAccountRewardsRepository;
 import cn.netkiller.repository.MultilevelDirectSellingTradingRebateRepository;
+import cn.netkiller.repository.PyramidSellingRepository;
 import cn.netkiller.domain.City;
 import cn.netkiller.domain.MultilevelDirectSellingAccountRewards;
 import cn.netkiller.domain.MultilevelDirectSellingTradingRebate;
 import cn.netkiller.domain.MultilevelDirectSellingTradingRebate.Rebate;
 import cn.netkiller.domain.MultilevelDirectSellingTradingRebate.Type;
+import cn.netkiller.domain.PyramidSelling;
 
 @Controller
 @RequestMapping("/test/mongodb")
@@ -37,7 +39,7 @@ public class TestMongDBController {
 	
 	@Autowired
 	private MultilevelDirectSellingAccountRewardsRepository multilevelDirectSellingAccountRewardsRepository;
-
+	
 	@RequestMapping("/index")
 	@ResponseBody
 	public ModelAndView index() {
@@ -140,4 +142,97 @@ public class TestMongDBController {
 		return rev.toString();
 	}
 
+	
+	@Autowired
+	private PyramidSellingRepository pyramidSellingRepository;
+	
+	@RequestMapping("/pyramidselling")
+	@ResponseBody
+	public String PyramidSelling() {
+		
+		pyramidSellingRepository.deleteAll();
+		
+		PyramidSelling pyramidSelling = new PyramidSelling();
+		pyramidSelling.username = "Neo";
+		pyramidSelling.directRecommender = "";
+		pyramidSelling.mobile = "1300000001";
+		pyramidSelling.email = "test@qq.com";
+		pyramidSelling.createDate = new Date();
+		AddUserForPyramidSelling(pyramidSelling);
+		
+		pyramidSelling = new PyramidSelling();
+		pyramidSelling.username = "Luke";
+		pyramidSelling.directRecommender = "1300000001";
+		pyramidSelling.mobile = "1300000002";
+		pyramidSelling.email = "test@qq.com";
+		pyramidSelling.createDate = new Date();
+		AddUserForPyramidSelling(pyramidSelling);
+		
+		pyramidSelling = new PyramidSelling();
+		pyramidSelling.username = "Ran";
+		pyramidSelling.directRecommender = "1300000002";
+		pyramidSelling.mobile = "1300000003";
+		pyramidSelling.email = "test@qq.com";
+		pyramidSelling.createDate = new Date();
+		AddUserForPyramidSelling(pyramidSelling);
+		
+		pyramidSelling = new PyramidSelling();
+		pyramidSelling.username = "Larry";
+		pyramidSelling.directRecommender = "1300000002";
+		pyramidSelling.mobile = "1300000004";
+		pyramidSelling.email = "test@qq.com";
+		pyramidSelling.createDate = new Date();
+		AddUserForPyramidSelling(pyramidSelling);
+		
+		pyramidSelling = new PyramidSelling();
+		pyramidSelling.username = "Joey";
+		pyramidSelling.directRecommender = "1300000000";
+		pyramidSelling.mobile = "1300000005";
+		pyramidSelling.email = "test@qq.com";
+		pyramidSelling.createDate = new Date();
+		AddUserForPyramidSelling(pyramidSelling);
+		
+		pyramidSelling = new PyramidSelling();
+		pyramidSelling.username = "Grant";
+		pyramidSelling.directRecommender = "1300000004";
+		pyramidSelling.mobile = "1300000006";
+		pyramidSelling.email = "test@qq.com";
+		pyramidSelling.createDate = new Date();
+		AddUserForPyramidSelling(pyramidSelling);
+		
+		Map<String, Integer> threshold = new HashMap<String, Integer>();
+
+		threshold.put("USD", 10);
+		threshold.put("RMB", 6);
+		 
+		PyramidSelling.TradeBonus tradeBonus = new PyramidSelling.TradeBonus(threshold);
+		tradeBonus.threshold = threshold;
+		tradeBonus.status = true;
+		
+		pyramidSelling.tradeBonus = tradeBonus;
+		
+		pyramidSellingRepository.save(pyramidSelling);
+		
+		PyramidSelling rev = pyramidSellingRepository.findByUsername("Neo");
+		System.out.println(rev);
+		logger.info(rev.toString());
+		return rev.toString();
+	}
+	private void AddUserForPyramidSelling(PyramidSelling pyramidSelling){
+		PyramidSelling indirectRecommender = pyramidSellingRepository.findByMobile(pyramidSelling.getDirectRecommender());
+		if(indirectRecommender != null){
+			pyramidSelling.indirectRecommender = indirectRecommender.getDirectRecommender();
+		}
+		logger.info(pyramidSelling.toString());
+		pyramidSellingRepository.save(pyramidSelling);
+	}
+//	private void UpdatePyramidSellingTradeBonus(PyramidSelling pyramidSelling){
+//		PyramidSelling indirectRecommender = pyramidSellingRepository.save(pyramidSelling.getDirectRecommender());
+//		if(indirectRecommender != null){
+//			pyramidSelling.indirectRecommender = indirectRecommender.getDirectRecommender();
+//		}
+//		logger.info(pyramidSelling.toString());
+//		pyramidSellingRepository.save(pyramidSelling);
+//	}
+	
 }
